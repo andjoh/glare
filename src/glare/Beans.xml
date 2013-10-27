@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+   <bean id="pictureController" class="bll.PictureController">
+   </bean> 
+   
+   <bean id="adminController" class="bll.AdminController">
+     <constructor-arg ref="pictureController"/>
+   </bean>  
+
+   <bean id="administration" class="gui.Administration">
+     <constructor-arg ref="adminController"/>
+     <!--<property name="uiController" ref="uiController" />-->
+   </bean>  
+
+   <!-- Definition for TwitterReader bean -->
+   <!--<bean id="twitterReader" class="dal.TwitterReader">-->
+     <!--<constructor-arg ref="twitterParser"/>-->
+     <!--<property name="twitterParser" ref="twitterParser" />-->
+   <!--</bean>-->
+
+   <!--<bean id="twitterParser" class="dal.TwitterParser">-->
+   <!--</bean>-->  
+      
+   <bean id="instagramReader" class="dal.InstagramReader">
+     <constructor-arg ref="instagramParser"/>
+      <!--<property name="instagramParser" ref="instagramParser" />-->
+   </bean>
+   
+   <bean id="instagramParser" class="dal.InstagramParser">
+   </bean>     
+   
+   <bean id="pictureGetter" class="dal.PictureGetter">
+   </bean>
+   
+</beans>
