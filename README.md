@@ -1,4 +1,4 @@
 glare
 =====
 
-DAT310 Programvareutvikling
+DAT210 Programvareutvikling
