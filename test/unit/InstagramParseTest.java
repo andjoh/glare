@@ -16,7 +16,7 @@ import dal.InstagramReader;
 import dal.PictureData;
 import static org.hamcrest.CoreMatchers.*;
 
-public class InstagramParseTests {
+public class InstagramParseTest {
 	private List<PictureData> pictures;
 	
 	@Before
