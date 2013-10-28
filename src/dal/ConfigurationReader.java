@@ -38,7 +38,7 @@ public class ConfigurationReader {
 	}
 	
 	public static void main(String[] args) {
-		ConfigurationReader reader = new ConfigurationReader("config.ini");
+		ConfigurationReader reader = new ConfigurationReader("access_tokens.ini");
 		System.out.println(reader.read("consumer_key"));
 		System.out.println(reader.read("consumer_secret"));
 		System.out.println(reader.read("access_token"));
