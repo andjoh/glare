@@ -11,11 +11,19 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+   <bean id="databaseHandler" class="dal.DatabaseHandler">
+   </bean> 
+
+   <bean id="databaseManager" class="dal.DatabaseManager">
+   </bean> 
+   
    <bean id="pictureController" class="bll.PictureController">
+     <constructor-arg ref="databaseManager"/>
    </bean> 
    
    <bean id="adminController" class="bll.AdminController">
      <constructor-arg ref="pictureController"/>
+     <constructor-arg ref="databaseManager"/>
    </bean>  
 
    <bean id="administration" class="gui.Administration">
@@ -25,22 +33,24 @@
 
    <!-- Definition for TwitterReader bean -->
    <!--<bean id="twitterReader" class="dal.TwitterReader">-->
-     <!--<constructor-arg ref="twitterParser"/>-->
-     <!--<property name="twitterParser" ref="twitterParser" />-->
-   <!--</bean>-->
+   <!--</bean>--> 
 
-   <!--<bean id="twitterParser" class="dal.TwitterParser">-->
-   <!--</bean>-->  
-      
    <bean id="instagramReader" class="dal.InstagramReader">
      <constructor-arg ref="instagramParser"/>
       <!--<property name="instagramParser" ref="instagramParser" />-->
    </bean>
-   
+
    <bean id="instagramParser" class="dal.InstagramParser">
    </bean>     
-   
+
    <bean id="pictureGetter" class="dal.PictureGetter">
    </bean>
    
+   
+   <!-- Definition dummy beans -->
+   <bean id="instagramReaderDummy" class="resources.InstagramReaderDummy">
+   </bean>   
+
+   <bean id="twitterReaderDummy" class="resources.TwitterReaderDummy">
+   </bean>  
 </beans>
