@@ -24,7 +24,7 @@ public class TwitterReader  implements IReader {
 
 	private static ConfigurationBuilder cb;
 	private static Twitter twitter;
-	
+
 	public void TwitterAuth() throws TwitterException{
 		ConfigurationReader reader = new ConfigurationReader("src/resource/conf.ini");
 		cb = new ConfigurationBuilder();
@@ -34,7 +34,7 @@ public class TwitterReader  implements IReader {
 		.setOAuthAccessToken(reader.read("access_token"))
 		.setOAuthAccessTokenSecret(reader.read("access_token_secret"));
 	}
-	
+
 	private int DateConvert(Date time) throws ParseException{
 		DateFormat sdf = new SimpleDateFormat("yyyMMddHHmmss");
 		String sDate = sdf.format(time);
@@ -49,7 +49,7 @@ public class TwitterReader  implements IReader {
 		ArrayList<PictureData> pictures = new ArrayList<PictureData>();
 
 		try {
-			Query query = new Query(searchTag);
+			Query query = new Query("#" + searchTag);
 			QueryResult result = twitter.search(query);
 			List<Status> tweets = result.getTweets();
 			for (Status tweet : tweets){
@@ -57,12 +57,16 @@ public class TwitterReader  implements IReader {
 				MediaEntity[] media = tweet.getMediaEntities();
 				Date date = tweet.getCreatedAt();
 
-				if (media[0].getType().equals("photo")){
-					String id = String.valueOf(media[0].getId());
-					pd.setId(id);
-					pd.setUrlStd(media[0].getMediaURL() + ":large");
-					pd.setUrlThumb(media[0].getMediaURL() + ":thumb");
-					pd.setTime(DateConvert(date));
+				for (int i=0; i<media.length; i++){
+					if (media[0].getType().equals("photo")){
+						String id = String.valueOf(media[0].getId());
+						pd.setId(id);
+						pd.setUrlStd(media[0].getMediaURL() + ":large");
+						pd.setUrlThumb(media[0].getMediaURL() + ":thumb");
+						pd.setTime(DateConvert(date));
+						pd.setRemoveFlag(false);
+						pd.setHashtag(searchTag);
+					}
 				}
 				pictures.add(pd);
 			}

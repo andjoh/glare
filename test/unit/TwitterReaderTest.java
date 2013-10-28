@@ -32,14 +32,28 @@ public class TwitterReaderTest {
 		public void ReturnsListWithPictures(){
 			assertThat(pictures.size(), is(not(nullValue())));
 		}
-		/*
 		@Test
 		public void FirstPictureHasUrlStandardRes(){
 			assertThat(pictures.get(0).getUrlStd(), is(not(nullValue())));
 		}
-		
 		@Test
 		public void FirstPictureHasUrlThumbnailRes(){
 			assertThat(pictures.get(0).getUrlThumb(), is(not(nullValue())));
-		}*/
+		}
+		@Test
+		public void FirstPictureHasTime(){
+			assertThat(pictures.get(0).getTime(), is(not(nullValue())));
+		}
+		@Test
+		public void FirstPictureHasID(){
+			assertThat(pictures.get(0).getId(), is(not(nullValue())));
+		}
+		@Test
+		public void FirstPictureHasRemoveFlag(){
+			assertThat(pictures.get(0).isRemoveFlag(), is(false));
+		}
+		@Test
+		public void FirstPictureHasHashtag(){
+			assertThat(pictures.get(0).getHashtag(), is(not(nullValue())));
+		}
 }
