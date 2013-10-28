@@ -1,54 +1,17 @@
 package gui;
 
-// TODO For testing purposes using com line
-import static java.lang.System.out;
-import java.util.Scanner;
+import java.util.*;
 
 import bll.*;
 
-public class Administration 
-{
-	private AdminController controller;
+public class Administration {
+	private AdministrationController administrationController;
 
-	public Administration(AdminController controller)
-	{
-		this.controller = controller;
+	public Administration(AdministrationController administrationController) {
+		this.administrationController = administrationController;
 	}
 
-	public void search(String query, String source) {		
-
-		this.controller.searchPictures(query, source);		
+	private void updateHashtagBySource(String source, List<String> hashtag) {		
+		this.administrationController.updateHashtagBySource(source, hashtag);		
 	}
-	
-	// TODO For testing purposes using com line
-	public void testFetchPicturesFromSource() 
-	{
-		System.out.println("Administration: testFetchPicturesFromSource");
-		Scanner input = new Scanner(System.in);
-		out.println("");
-		out.print("Skriv søkestreng. Uten #! Ved å skrive Test vil alt utenom hent fra source bli testet: ");
-		String searchTag = input.next();
-		
-		out.print("Velg source. 1: Twitter, 2: Instagram: ");
-		String choice = input.next();
-		
-		while (choice.equals("1") || choice.equals("2"))
-		{
-			if ( choice.equals("1") )
-				this.search(searchTag, "twitterReader");
-			else if ( choice.equals("2") )
-				this.search(searchTag, "instagramReader");
-
-			out.println("");
-			out.print("Skriv søkestreng. Uten #! Ved å skrive Test vil alt utenom hent fra source bli testet: ");
-			searchTag = input.next();
-			
-			out.println("");
-			out.print("Velg source. 1: Twitter, 2: Instagram: ");
-			choice = input.next();
-		}
-		
-		System.out.println("The End...");
-	}
-
 }
