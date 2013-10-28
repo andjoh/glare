@@ -14,4 +14,10 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
+	<variableList>
+		<variable>
+			<name>twitter4j</name>
+			<value>$%7BPROJECT_LOC%7D/lib/twitter4j</value>
+		</variable>
+	</variableList>
 </projectDescription>
