@@ -16,7 +16,8 @@ public class InstagramReader implements IReader{
 	}
 
 	public List<PictureData> getPictures(String searchTag) {
-		String instagramURL = "https://api.instagram.com/v1/tags/"+searchTag+"/media/recent?client_id=";
+		ConfigurationReader confReader = new ConfigurationReader("src/resource/conf.ini");
+		String instagramURL = "https://api.instagram.com/v1/tags/"+searchTag+"/media/recent?client_id=" + confReader.read("client_id");
 
 		URL url;
 		HttpURLConnection connection = null;

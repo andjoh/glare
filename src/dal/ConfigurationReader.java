@@ -37,11 +37,11 @@ public class ConfigurationReader {
 		return ini.getProperty(key);
 	}
 	
-	public static void main(String[] args) {
-		ConfigurationReader reader = new ConfigurationReader("access_tokens.ini");
+	/*public static void main(String[] args) {
+		ConfigurationReader reader = new ConfigurationReader("src/resource/conf.ini");
 		System.out.println(reader.read("consumer_key"));
 		System.out.println(reader.read("consumer_secret"));
 		System.out.println(reader.read("access_token"));
 		System.out.println(reader.read("access_token_secret"));
-	}
+	}*/
 }

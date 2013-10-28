@@ -26,12 +26,13 @@ public class TwitterReader  implements IReader {
 	private static Twitter twitter;
 	
 	public void TwitterAuth() throws TwitterException{
+		ConfigurationReader reader = new ConfigurationReader("src/resource/conf.ini");
 		cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
-		.setOAuthConsumerKey("")
-		.setOAuthConsumerSecret("")
-		.setOAuthAccessToken("")
-		.setOAuthAccessTokenSecret((""));
+		.setOAuthConsumerKey(reader.read("consumer_key"))
+		.setOAuthConsumerSecret(reader.read("consumer_secret"))
+		.setOAuthAccessToken(reader.read("access_token"))
+		.setOAuthAccessTokenSecret(reader.read("access_token_secret"));
 	}
 	
 	private int DateConvert(Date time) throws ParseException{
