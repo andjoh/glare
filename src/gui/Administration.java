@@ -11,7 +11,7 @@ public class Administration {
 		this.administrationController = administrationController;
 	}
 
-	private void updateHashtagBySource(String source, List<String> hashtag) {		
+	private void updateHashtagBySource(String source, Set<String> hashtag) {		
 		this.administrationController.updateHashtagBySource(source, hashtag);		
 	}
 }

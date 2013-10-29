@@ -4,27 +4,45 @@ import java.util.*;
 
 public class HashtagBySource {
 	private String source;
-	private List<String> hashtag;
+	private Set<String> hashtag;
 
+	
 	public HashtagBySource() {
-		hashtag = new ArrayList<String>();
+		hashtag = new HashSet<String>();
 	}
+	
+	
 	public String getSource() {
 		return source;
 	}
+	
+	
 	public void setSource(String source) {
 		this.source = source;
 	}
-	public List<String> getHashtag() {
+	
+	
+	public Set<String> getHashtag() {
 		return hashtag;
 	}
-	public void setHashtag(String ht) {
-		// TODO Check/remove duplicates
-		hashtag.add(ht);
+
+	
+	public void setHashtag(Set<String> hashtag) {
+		this.hashtag.addAll(hashtag);
 	}
 	
-	public void setAllHashtag(List<String> ht) {
-		// TODO Check/remove duplicates
-		hashtag = ht;
+	
+	public void setHashtag(String hashtag) {
+		this.hashtag.add(hashtag);
+	}
+	
+
+	public void removeHashtag(String hashtag) {
+		this.hashtag.remove(hashtag);
+	}
+	
+	
+	public void clearHashtag() {
+		this.hashtag.clear();
 	}
 }

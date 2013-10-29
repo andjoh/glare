@@ -39,10 +39,10 @@ public class PictureController {
 
 	public ArrayList<PictureData> searchPicturesFromSource(HashtagBySource htbs) {
 		
-		String source        = htbs.getSource(); 
-		List<String> hashtag = htbs.getHashtag();
+		String source       = htbs.getSource(); 
+		Set<String> hashtag = htbs.getHashtag();
 		
-		IReader reader       = (IReader) ClassFactory.getBeanByName(source);	
+		IReader reader      = (IReader) ClassFactory.getBeanByName(source);	
 
 		for ( String ht : hashtag )
 		{
@@ -85,7 +85,7 @@ public class PictureController {
 		pictureData = pictureDataFromDb;
 		sortPictureData(pictureData);
 		
-		databaseManager.savePictureData(pictureData);
+		databaseManager.savePictureDataToDb(pictureData);
 	}
 
 	
