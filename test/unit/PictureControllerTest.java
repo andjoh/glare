@@ -66,11 +66,11 @@ public class PictureControllerTest {
 	}
 	
 
-//	@After
-//	public void tearDown() {
-//		htbsDummy = null;
-//	pdfdDummy = null;
-//	}
+	@After
+	public void tearDown() {
+		htbsDummy = null;
+	pdfdDummy = null;
+	}
 	
 	
 	@Test

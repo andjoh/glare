@@ -32,8 +32,8 @@
    </bean>  
 
    <!-- Definition for TwitterReader bean -->
-   <!--<bean id="twitterReader" class="dal.TwitterReader">-->
-   <!--</bean>--> 
+   <bean id="twitterReader" class="dal.TwitterReader">
+   </bean>
 
    <bean id="instagramReader" class="dal.InstagramReader">
      <constructor-arg ref="instagramParser"/>
