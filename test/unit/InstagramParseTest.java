@@ -1,6 +1,8 @@
 package unit;
 
 import static org.junit.Assert.*;
+import glare.ClassFactory;
+
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -11,20 +13,19 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import dal.InstagramParser;
 import dal.InstagramReader;
 import dal.PictureData;
 import static org.hamcrest.CoreMatchers.*;
 
 public class InstagramParseTest {
 	private List<PictureData> pictures;
+	private InstagramReader ir;
 	
 	@Before
 	public void setUp() throws FileNotFoundException, UnsupportedEncodingException{
 		pictures = new ArrayList<PictureData>();
 
-		InstagramParser ip = new InstagramParser();
-		InstagramReader ir = new InstagramReader(ip);
+		ir = (InstagramReader) ClassFactory.getBeanByName("instagramReader");
 		pictures = ir.getPictures("winter");
 	}
 	@After
