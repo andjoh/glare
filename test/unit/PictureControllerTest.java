@@ -41,7 +41,7 @@ public class PictureControllerTest {
 
 		PictureData p = new PictureData();
 		p.setId("picID 1");
-		p.setTime(1);
+		p.setCreatedTime(1);
 		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_6.jpg");
 		p.setUrlThumb("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_5.jpg");
 		p.setHashtag("db1");
@@ -49,7 +49,7 @@ public class PictureControllerTest {
 		
 		p = new PictureData();
 		p.setId("picID 3");
-		p.setTime(3);
+		p.setCreatedTime(3);
 		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_8.jpg");
 		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
 		p.setHashtag("db3");
@@ -57,7 +57,7 @@ public class PictureControllerTest {
 		
 		p = new PictureData();
 		p.setId("picID 4");
-		p.setTime(4);
+		p.setCreatedTime(4);
 		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_8.jpg");
 		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
 		p.setHashtag("hashtag4");
@@ -144,7 +144,7 @@ public class PictureControllerTest {
 //		HashtagBySource h = new HashtagBySource();
 //		h.setSource("instagramReader");
 //		h.setHashtag("raskebriller");		
-//		h.setHashtag("dennekanikkefinnesdeterjegheltsikkerpå");
+//		h.setHashtag("dennekanikkefinnesdeterjegheltsikkerpaa");
 //		htbs.add(h);
 //		dbManager.setHashtagBySource(htbs);
 //		

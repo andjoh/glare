@@ -69,7 +69,7 @@ public class TwitterReader  implements IReader {
 						pd.setId(id);
 						pd.setUrlStd(media[0].getMediaURL() + ":large");
 						pd.setUrlThumb(media[0].getMediaURL() + ":thumb");
-						pd.setTime(DateConvert(date));
+						pd.setCreatedTime(DateConvert(date));
 						pd.setRemoveFlag(false);
 						pd.setHashtag(searchTag);
 					}
