@@ -136,24 +136,46 @@ public class PictureControllerTest {
 	}
 	
 	
-//	@Test
-//	public void SearchPictureData_Instagram_WhenCalled_ReturnsListOfPictureData() {
-//
-//		// Set test data for source and hashtag
-//		List<HashtagBySource> htbs = new ArrayList<HashtagBySource>();
-//		HashtagBySource h = new HashtagBySource();
-//		h.setSource("instagramReader");
-//		h.setHashtag("raskebriller");		
-//		h.setHashtag("dennekanikkefinnesdeterjegheltsikkerpaa");
-//		htbs.add(h);
-//		dbManager.setHashtagBySource(htbs);
-//		
-//		boolean success = picCtrl.searchPictureData();
-//
-//		assertThat(success,is(true));
-//		
-//		List<PictureData> pictureData = picCtrl.getPictureDataFromSources();
-//		
-//		assertThat(pictureData.isEmpty(),is(false));
-//	}
+	@Test
+	public void SearchPictureData_Instagram_WhenCalled_ReturnsListOfPictureData() {
+
+		// Set test data for source and hashtag
+		List<HashtagBySource> htbs = new ArrayList<HashtagBySource>();
+		HashtagBySource h = new HashtagBySource();
+		h.setSource("instagramReader");
+		h.setHashtag("raskebriller");		
+		h.setHashtag("dennekanikkefinnesdeterjegheltsikkerpaa");
+		htbs.add(h);
+		dbManager.setHashtagBySource(htbs);
+		
+		boolean success = picCtrl.searchPictureData();
+
+		assertThat(success,is(true));
+		
+		List<PictureData> pictureData = picCtrl.getPictureDataFromSources();
+		
+		assertThat(pictureData.isEmpty(),is(false));
+	}
+	
+	
+	@Test
+	public void SearchPictureData_Twitter_WhenCalled_ReturnsListOfPictureData() {
+
+		// Set test data for source and hashtag
+		List<HashtagBySource> htbs = new ArrayList<HashtagBySource>();
+		HashtagBySource h = new HashtagBySource();
+		h.setSource("twitterReader");
+		h.setHashtag("twittermotjavatesting");		
+		h.setHashtag("dennekanikkefinnesdeterjegheltsikkerpaa");
+		htbs.add(h);
+		dbManager.setHashtagBySource(htbs);
+		
+		boolean success = picCtrl.searchPictureData();
+
+		assertThat(success,is(true));
+		
+		List<PictureData> pictureData = picCtrl.getPictureDataFromSources();
+		
+		assertThat(pictureData.isEmpty(),is(false));
+	}
 }
