@@ -26,7 +26,7 @@ public class TwitterReaderTest {
 			pictures = new ArrayList<PictureData>();
 			tr = (TwitterReader) ClassFactory.getBeanByName("twitterReader");
 			
-			pictures = tr.getPictures("#twittermotjavatesting");
+			pictures = tr.getPictures("twittermotjavatesting");
 		}
 		@After
 		public void tearDown() {

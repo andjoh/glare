@@ -22,9 +22,9 @@ public class TwitterReader  implements IReader {
 	 * @param args
 	 */
 
-	private static ConfigurationReader confReader;
-	private static ConfigurationBuilder cb;
-	private static Twitter twitter;
+	private ConfigurationReader confReader;
+	private ConfigurationBuilder cb;
+	private Twitter twitter;
 	
 	public TwitterReader(ConfigurationReader confReader){
 		this.confReader = confReader;
