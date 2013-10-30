@@ -22,17 +22,23 @@ public class TwitterReader  implements IReader {
 	 * @param args
 	 */
 
+	private static ConfigurationReader confReader;
 	private static ConfigurationBuilder cb;
 	private static Twitter twitter;
+	
+	public TwitterReader(ConfigurationReader confReader){
+		this.confReader = confReader;
+	}
 
 	public void TwitterAuth() throws TwitterException{
-		ConfigurationReader reader = new ConfigurationReader("src/resource/conf.ini");
+//		ConfigurationReader reader = new ConfigurationReader("src/resource/conf.ini");
+		confReader.setPath("src/resource/conf.ini");
 		cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
-		.setOAuthConsumerKey(reader.read("consumer_key"))
-		.setOAuthConsumerSecret(reader.read("consumer_secret"))
-		.setOAuthAccessToken(reader.read("access_token"))
-		.setOAuthAccessTokenSecret(reader.read("access_token_secret"));
+		.setOAuthConsumerKey(confReader.read("consumer_key"))
+		.setOAuthConsumerSecret(confReader.read("consumer_secret"))
+		.setOAuthAccessToken(confReader.read("access_token"))
+		.setOAuthAccessTokenSecret(confReader.read("access_token_secret"));
 	}
 
 	private int DateConvert(Date time) throws ParseException{
