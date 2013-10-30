@@ -21,13 +21,13 @@
      <constructor-arg ref="databaseManager"/>
    </bean> 
    
-   <bean id="administrationController" class="bll.AdministrationController">
+   <bean id="settingsController" class="bll.SettingsController">
      <constructor-arg ref="pictureController"/>
      <constructor-arg ref="databaseManager"/>
    </bean>  
 
-   <bean id="administration" class="gui.Administration">
-     <constructor-arg ref="administrationController"/>
+   <bean id="settings" class="gui.Settings">
+     <constructor-arg ref="settingsController"/>
      <!--<property name="uiController" ref="uiController" />-->
    </bean>  
 
