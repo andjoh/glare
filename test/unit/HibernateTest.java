@@ -26,6 +26,16 @@ public class HibernateTest{
 		pic.setHashtag("tull");
 		pic.setRemoveFlag(false);
 		DatabaseHandler.addPictureToDB(pic);
+		
+		PictureData pic2 = new PictureData();
+		pic2.setId("1247845_57891A");
+		pic2.setUrlStd("www.twitter.com");
+		pic2.setUrlThumb("www.instagram.com");
+		pic2.setCreatedTime(123456);
+		pic2.setHashtag("tull");
+		pic2.setRemoveFlag(false);
+		DatabaseHandler.addPictureToDB(pic2);
+		
 		pictures = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();
 		
 		for(PictureData pic1: pictures){
