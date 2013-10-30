@@ -31,18 +31,26 @@
      <!--<property name="uiController" ref="uiController" />-->
    </bean>  
 
+   <bean id="configurationReader" class="dal.ConfigurationReader">
+   </bean>  
+
    <!-- Definition for TwitterReader bean -->
    <bean id="twitterReader" class="dal.TwitterReader">
+     <constructor-arg ref="configurationReader"/>
    </bean>
 
+
+   <bean id="instagramParser" class="dal.InstagramParser">
+   </bean>  
+   
    <bean id="instagramReader" class="dal.InstagramReader">
      <constructor-arg ref="instagramParser"/>
+     <constructor-arg ref="configurationReader"/>    
       <!--<property name="instagramParser" ref="instagramParser" />-->
    </bean>
 
-   <bean id="instagramParser" class="dal.InstagramParser">
-   </bean>     
 
+   <!-- Not sure if we need this -->
    <bean id="pictureGetter" class="dal.PictureGetter">
    </bean>
    

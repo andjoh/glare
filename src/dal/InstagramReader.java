@@ -10,13 +10,15 @@ import java.util.List;
 public class InstagramReader implements IReader{
 
 	InstagramParser parser;
+	ConfigurationReader confReader;
 
-	public InstagramReader(InstagramParser parser){
+	public InstagramReader(InstagramParser parser, ConfigurationReader confReader){
 		this.parser = parser;
+		this.confReader = confReader;
 	}
 
 	public List<PictureData> getPictures(String searchTag) {
-		ConfigurationReader confReader = new ConfigurationReader("src/resource/conf.ini");
+		confReader.setPath("src/resource/conf.ini");
 		String instagramURL = "https://api.instagram.com/v1/tags/"+searchTag+"/media/recent?client_id=" + confReader.read("client_id");
 
 		URL url;

@@ -12,7 +12,11 @@ public class ConfigurationReader {
 	private Properties ini;
 	private FileInputStream stream;
 
-	public ConfigurationReader(String filePath) {
+	public String read(String key)  {
+		return ini.getProperty(key);
+	}
+	
+	public void setPath(String filePath){
 		try {
 			ini = new Properties();
 			stream = new FileInputStream(filePath);
@@ -31,10 +35,7 @@ public class ConfigurationReader {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public String read(String key)  {
-		return ini.getProperty(key);
+		
 	}
 	
 	/*public static void main(String[] args) {

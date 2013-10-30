@@ -3,6 +3,8 @@ package unit;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
 
+import glare.ClassFactory;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,17 +12,20 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import dal.ConfigurationReader;
 import dal.PictureData;
 import dal.TwitterReader;
 
 public class TwitterReaderTest {
 
 		private List<PictureData> pictures;
+		private TwitterReader tr;
 		
 		@Before
 		public void setUp() throws Exception {
 			pictures = new ArrayList<PictureData>();
-			TwitterReader tr = new TwitterReader();
+			tr = (TwitterReader) ClassFactory.getBeanByName("twitterReader");
+			
 			pictures = tr.getPictures("#twittermotjavatesting");
 		}
 		@After
