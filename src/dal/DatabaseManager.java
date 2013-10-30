@@ -47,6 +47,7 @@ public class DatabaseManager {
 			hashtagBySource.add(newHtbs);
 		}
 
+		// TODO Call metode to update db
 	}
 
 
@@ -61,7 +62,11 @@ public class DatabaseManager {
 
 
 	public void savePictureDataToDb(List<PictureData> pictureData) {
-		// TODO Auto-generated method stub
-
+		// TODO Call metode to update db
+	}
+	
+	
+	public void setRemoveFlag(List<String> pictureDataId) {
+		// TODO Call metode to update db
 	}
 }

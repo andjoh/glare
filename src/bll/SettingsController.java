@@ -24,7 +24,7 @@ public class SettingsController {
 
 	
 	public void setRemoveFlag(List<String> pictureDataId) {
-		// Call method in DatabaseManager or PictureController to set remove flag
+		databaseManager.setRemoveFlag(pictureDataId);
 	}
 	
 

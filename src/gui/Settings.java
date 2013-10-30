@@ -5,13 +5,23 @@ import java.util.*;
 import bll.*;
 
 public class Settings {
-	private SettingsController administrationController;
+	private SettingsController settingsController;
 
-	public Settings(SettingsController administrationController) {
-		this.administrationController = administrationController;
+	
+	public Settings(SettingsController settingsController) {
+		this.settingsController = settingsController;
 	}
 
-	private void updateHashtagBySource(String source, Set<String> hashtag) {		
-		this.administrationController.updateHashtagBySource(source, hashtag);		
-	}
+	// TODO Call metode getHashtagBySource in SettingController to get a list
+	// of hashtag connected to source and populate in GUI
+	
+	
+	// TODO Call method updateHashtagBySource(String source, Set<String> hashtag)
+	// to update hashtag, based on input from administrator, for a source in the database
+	
+	
+	// TODO Call method getSettingsViewModel in SettingsController to get data regarding pictures
+	
+	
+	// TODO Call method setRemoveFlag in SettingsController to add flag to database
 }
