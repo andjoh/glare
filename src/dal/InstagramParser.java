@@ -45,7 +45,7 @@ public class InstagramParser {
 				JsonElement caption = jsonPicture.get("caption");
 				if(caption.isJsonObject()){
 					int time = caption.getAsJsonObject().get("created_time").getAsInt();
-					picture.setTime(time);
+					picture.setCreatedTime(time);
 
 					String picID = caption.getAsJsonObject().get("id").getAsString();
 					picture.setId(picID);

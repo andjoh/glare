@@ -4,26 +4,27 @@ public class PictureData {
 	private String id;
 	private String urlStd;
 	private String urlThumb;
-	private long time;
+	private long createdTime;
 	private String hashtag;
 	private boolean removeFlag;
 	
 	public PictureData() {}
 	
-//	public PictureData(String id, String urlStd, String urlThumb, long time, String hashtag, boolean removeFlag){
-//		this.id = id;
-//		this.urlStd = urlStd;
-//		this.urlThumb = urlThumb;
-//		this.time = time;
-//		this.removeFlag = removeFlag;
-//	}
+	public PictureData(String id, String urlStd, String urlThumb, long createdTime, String hashtag, boolean removeFlag){
+		this.id = id;
+		this.urlStd = urlStd;
+		this.urlThumb = urlThumb;
+		this.createdTime = createdTime;
+		this.hashtag = hashtag;
+		this.removeFlag = removeFlag;
+	}
 
 	public String getId() {
 		return id;
 	}
 
-	public void setId(String picID) {
-		this.id = picID;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getUrlStd() {
@@ -42,12 +43,12 @@ public class PictureData {
 		this.urlThumb = urlThumb;
 	}
 
-	public long getTime() {
-		return time;
+	public long getCreatedTime() {
+		return createdTime;
 	}
 
-	public void setTime(long time) {
-		this.time = time;
+	public void setCreatedTime(long createdTime) {
+		this.createdTime = createdTime;
 	}
 
 	public String getHashtag() {

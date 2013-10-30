@@ -42,7 +42,7 @@ public class TwitterReaderTest {
 		}
 		@Test
 		public void FirstPictureHasTime(){
-			assertThat(pictures.get(0).getTime(), is(not(nullValue())));
+			assertThat(pictures.get(0).getCreatedTime(), is(not(nullValue())));
 		}
 		@Test
 		public void FirstPictureHasID(){

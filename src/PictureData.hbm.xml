@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
 
@@ -9,14 +9,14 @@
     	<meta attribute="class-description">
     		This class contains the pictures data
     	</meta>
-        <id name="id" column="id" type="string">
+        <id name="id" type="string" column="id">
             <generator class="assigned"/>
         </id>
-        <property name="urlStd" column="fullsizeURL" type="string"/>
-        <property name="urlThumb" column="thumbnailURL" type="string"/>
-		<property name="createdTime" column="time" type="int"/>
-		<property name="hashtag" column="hashtag" type="string"/>
-		<property name="removeFlag" column="removeFlag" type="boolean"/>
+        <property name="urlStd"/>
+        <property name="urlThumb"/>
+		<property name="createdTime"/>
+		<property name="hashtag"/>
+		<property name="removeFlag"/>
 
     </class>
 
