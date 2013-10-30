@@ -72,9 +72,9 @@ public class TwitterReader  implements IReader {
 						pd.setCreatedTime(DateConvert(date));
 						pd.setRemoveFlag(false);
 						pd.setHashtag(searchTag);
+						pictures.add(pd);
 					}
 				}
-				pictures.add(pd);
 			}
 		} catch (TwitterException te){
 			te.printStackTrace();
