@@ -1,15 +1,24 @@
 package bll;
 
-import java.util.ArrayList;
+import java.awt.image.BufferedImage;
 
 public class PictureViewModel {
-	private ArrayList<String> pictures;
-	
-	public PictureViewModel(ArrayList<String> pictures) {
-		this.pictures = pictures;
+	private BufferedImage picture;     // Not sure if this is correct type?
+	private String id;
+
+
+	public PictureViewModel(BufferedImage picture, String id) {
+		this.picture = picture;
+		this.id      = id;
 	}
 	
-	public ArrayList<String> getPictures() {
-		return pictures;
+	
+	public BufferedImage getPicture() {
+		return picture;
+	}
+
+
+	public String getId() {
+		return id;
 	}
 }

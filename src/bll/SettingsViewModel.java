@@ -1,22 +1,24 @@
 package bll;
 
+import java.awt.image.BufferedImage;
+
 public class SettingsViewModel {
+	private BufferedImage thumbnail;     // Not sure if this is correct type?
 	private String id;
-	private String urlThumb;
+
+
+	public SettingsViewModel(BufferedImage thumbnail, String id) {
+		this.thumbnail = thumbnail;
+		this.id        = id;
+	}
 	
 	
-	public SettingsViewModel(String id, String urlThumb){
-		this.id = id;
-		this.urlThumb = urlThumb;
+	public BufferedImage getThumbnail() {
+		return thumbnail;
 	}
 
-	
+
 	public String getId() {
 		return id;
-	}
-
-	
-	public String getUrlThumb() {
-		return urlThumb;
 	}
 }
