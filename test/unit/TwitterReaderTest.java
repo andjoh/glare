@@ -12,7 +12,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import dal.ConfigurationReader;
 import dal.PictureData;
 import dal.TwitterReader;
 
