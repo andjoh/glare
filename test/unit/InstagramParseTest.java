@@ -61,9 +61,4 @@ public class InstagramParseTest {
 	public void GivenFirstPicture_FirstPictureHasRemoveFlag(){
 		assertThat(pictures.get(0).isRemoveFlag(), is(false));
 	}
-	@Test
-	public void GivenFirstPicture_FirstPictureHasHashtag(){
-		assertThat(pictures.get(0).getHashtag(), is(not(nullValue())));
-	}
-
 }

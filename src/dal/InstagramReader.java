@@ -35,7 +35,7 @@ public class InstagramReader implements IReader{
 			e.printStackTrace();
 		}
 
-		List<PictureData> pictures = parser.parse(reader, searchTag);
+		List<PictureData> pictures = parser.parse(reader);
 
 		return pictures;
 	}

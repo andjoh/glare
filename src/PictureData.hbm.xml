@@ -15,7 +15,6 @@
         <property name="urlStd"/>
         <property name="urlThumb"/>
 		<property name="createdTime"/>
-		<property name="hashtag"/>
 		<property name="removeFlag"/>
 
     </class>
