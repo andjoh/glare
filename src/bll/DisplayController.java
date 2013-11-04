@@ -39,7 +39,7 @@ public class DisplayController {
 				po.add(pvm);
 				i++;
 			}
-			if (i > 99){
+			if (i > 100){
 				break;
 			}
 		}
