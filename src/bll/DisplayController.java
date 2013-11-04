@@ -12,9 +12,9 @@ public class DisplayController {
 	//for (for each PictureData)
 	//	if !flag
 	//		Lag bufImg
+	//		PictureViewModel pVm = new PictureViewModel(url, id);
 	//		pVm.PictureUrl = picture.Url; <-- ?
 	//		pVm.PictureId = picture.Id;	  <-- ?
-	//		PictureViewModel pVm = new PictureViewModel(url, id);
 	//		pictureVms.Add(pVm);
 	//	when pictureVms.length is 100 --> break
 	//return pictureVms;
