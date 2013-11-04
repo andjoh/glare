@@ -29,7 +29,7 @@ public class HibernateTwitterInstagramTest {
 		System.out.println(twitterPics.size());
 		for(PictureData pic1: twitterPics){
 			System.out.println(pic1.getId() + " " + pic1.getUrlStd() + " " + pic1.getUrlThumb() + " "
-					+ pic1.getCreatedTime() + " " + pic1.getHashtag() + " " + pic1.isRemoveFlag());
+					+ pic1.getCreatedTime() + " " + pic1.isRemoveFlag());
 		}
 		
 		for(PictureData pd : twitterPics){
@@ -41,7 +41,7 @@ public class HibernateTwitterInstagramTest {
 		listOfPics = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();
 		for(PictureData pic1: listOfPics){
 			System.out.println(pic1.getId() + " " + pic1.getUrlStd() + ": " + pic1.getUrlThumb() + " "
-					+ pic1.getCreatedTime() + " " + pic1.getHashtag() + " " + pic1.isRemoveFlag());
+					+ pic1.getCreatedTime() + " " + pic1.isRemoveFlag());
 		}
 	}
 

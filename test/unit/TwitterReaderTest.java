@@ -56,8 +56,4 @@ public class TwitterReaderTest {
 		public void FirstPictureHasRemoveFlag(){
 			assertThat(pictures.get(0).isRemoveFlag(), is(false));
 		}
-		@Test
-		public void FirstPictureHasHashtag(){
-			assertThat(pictures.get(0).getHashtag(), is(not(nullValue())));
-		}
 }

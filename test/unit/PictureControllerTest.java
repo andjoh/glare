@@ -44,7 +44,6 @@ public class PictureControllerTest {
 		p.setCreatedTime(1);
 		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_6.jpg");
 		p.setUrlThumb("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_5.jpg");
-		p.setHashtag("db1");
 		pdfdDummy.add(p);
 		
 		p = new PictureData();
@@ -52,7 +51,6 @@ public class PictureControllerTest {
 		p.setCreatedTime(3);
 		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_8.jpg");
 		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
-		p.setHashtag("db3");
 		pdfdDummy.add(p);
 		
 		p = new PictureData();
@@ -60,7 +58,6 @@ public class PictureControllerTest {
 		p.setCreatedTime(4);
 		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_8.jpg");
 		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
-		p.setHashtag("hashtag4");
 		pdfdDummy.add(p);		
 			
 	}

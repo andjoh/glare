@@ -9,7 +9,7 @@ import com.google.gson.*;
 
 public class InstagramParser {
 
-	public List<PictureData> parse(InputStreamReader reader, String searchTag) {
+	public List<PictureData> parse(InputStreamReader reader) {
 
 		ArrayList<PictureData> pictures = new ArrayList<PictureData>();
 		JsonParser JParser = new JsonParser();
@@ -48,9 +48,6 @@ public class InstagramParser {
 
 					//Sets removeFlag for picture
 					picture.setRemoveFlag(false);
-
-					//Sets hashtag for picture
-					picture.setHashtag(searchTag);
 
 					pictures.add(picture);
 				}
