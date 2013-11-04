@@ -38,7 +38,7 @@ public class DisplayController {
 				po.add(pvm);
 				i++;
 			}
-			if (i > 99){
+			if (i > 99){ //hva skjer hvis lista er mindre enn 100?
 				break;
 			}
 		}
