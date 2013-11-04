@@ -2,19 +2,21 @@ package bll;
 
 public class DisplayController {
 
-	//getPictures from PictureController:
+	//getSortedPictures from PictureController:
 	//public PictureViewModel[] GetPicturesToDisplay() {
 	//PictureGetter picGetter = new PictureGetter(currentContext); cC=IReader?
 	//Picture[] pictures = picGetter.GetPictures(); 
 	
 	//create list of PictureViewModel objects:
 	//List<PictureViewModel> pictureVms = new List<PictureViewModel>();
-	//for ( 100 newest elements of getPictures list)
-	//	PictureViewModel pVm = new PictureViewModel();
-	//	pVm.PictureUrl = picture.Url;
-	//	pVm.PictureId = picture.Id;
-	//	pictureVms.Add(pVm);
-	//currentPictureData = pictureVms - somewhere around here?
+	//for (for each PictureData)
+	//	if !flag
+	//		Lag bufImg
+	//		pVm.PictureUrl = picture.Url; <-- ?
+	//		pVm.PictureId = picture.Id;	  <-- ?
+	//		PictureViewModel pVm = new PictureViewModel(url, id);
+	//		pictureVms.Add(pVm);
+	//	when pictureVms.length is 100 --> break
 	//return pictureVms;
 	
 	//method to return to GUI
