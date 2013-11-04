@@ -99,6 +99,10 @@ public class PictureController {
 	}
 
 	
+	public List<PictureData> getSortedPictureDataFromDb() {
+		return databaseManager.getPictureDataFromDb();
+	}
+	
 	public void setPictureData(List<PictureData> pictureData) {
 		this.pictureData = pictureData;
 	}
