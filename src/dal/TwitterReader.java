@@ -11,7 +11,7 @@ import twitter4j.*;
 import twitter4j.conf.ConfigurationBuilder;
 
 /**
- * @author Simen & Kristine
+ * @author Simen Sollie & Kristine Svaboe
  * @since 2013-10-13
  */
 

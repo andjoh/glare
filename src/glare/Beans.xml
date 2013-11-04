@@ -24,7 +24,11 @@
    <bean id="settingsController" class="bll.SettingsController">
      <constructor-arg ref="pictureController"/>
      <constructor-arg ref="databaseManager"/>
-   </bean>  
+   </bean>
+   
+   <bean id="displayController" class="bll.DisplayController">
+     <constructor-arg ref="pictureController"/>
+   </bean>
 
    <bean id="settings" class="gui.Settings">
      <constructor-arg ref="settingsController"/>
