@@ -12,11 +12,11 @@
         <id name="id" type="string" column="id">
             <generator class="assigned"/>
         </id>
-        <property name="urlStd"/>
-        <property name="urlThumb"/>
-		<property name="createdTime"/>
-		<property name="hashtag"/>
-		<property name="removeFlag"/>
+        <property name="urlStd" not-null="true"/>
+        <property name="urlThumb" not-null="true"/>
+		<property name="createdTime" not-null="true"/>
+		<property name="hashtag" not-null="true"/>
+		<property name="removeFlag" not-null="true"/>
 
     </class>
 

@@ -25,7 +25,7 @@ public class HibernateTwitterInstagramTest {
 	public void setUp() throws Exception {
 		tr = (TwitterReader) ClassFactory.getBeanByName("twitterReader");
 		twitterPics = new ArrayList<PictureData>();
-		twitterPics = tr.getPictures("#winter");
+		twitterPics = tr.getPictures("#lol");
 		System.out.println(twitterPics.size());
 		for(PictureData pic1: twitterPics){
 			System.out.println(pic1.getId() + " " + pic1.getUrlStd() + " " + pic1.getUrlThumb() + " "
@@ -40,7 +40,7 @@ public class HibernateTwitterInstagramTest {
 		
 		listOfPics = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();
 		for(PictureData pic1: listOfPics){
-			System.out.println(pic1.getId() + " " + pic1.getUrlStd() + ": " + pic1.getUrlThumb() + " "
+			System.out.println(pic1.getId() + " " + pic1.getUrlStd() + " " + pic1.getUrlThumb() + " "
 					+ pic1.getCreatedTime() + " " + pic1.getHashtag() + " " + pic1.isRemoveFlag());
 		}
 	}
