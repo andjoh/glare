@@ -71,7 +71,6 @@ public class TwitterReader  implements IReader {
 						pd.setUrlThumb(media[0].getMediaURL() + ":thumb");
 						pd.setCreatedTime(DateConvert(date));
 						pd.setRemoveFlag(false);
-						pd.setHashtag(searchTag);
 						pictures.add(pd);
 					}
 				}

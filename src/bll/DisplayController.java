@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -28,7 +29,7 @@ public class DisplayController {
 		this.pictureController = pictureController;
 	}
 
-	public List<PictureViewModel> getPictureObjects() throws IOException{
+	public List<PictureViewModel> getPictureObjects(boolean random) throws IOException{
 		ArrayList<PictureViewModel> po = new ArrayList<PictureViewModel>();
 		List<PictureData> sortedPictureList = pictureController.getSortedPictureDataFromDb();
 		int i = 1;
@@ -38,9 +39,12 @@ public class DisplayController {
 				po.add(pvm);
 				i++;
 			}
-			if (i > 99){
+			if (i > 100){
 				break;
 			}
+		}
+		if (random = true){
+			Collections.shuffle(po);
 		}
 		return po;
 	}
@@ -53,11 +57,3 @@ public class DisplayController {
 		return image;
 	}
 }
-//method to return to GUI
-//getPicturesToDisplay(viewMode String)
-//if viewMode.equals(rand)
-//	Collections.shuffle(pictureVms)
-//	return pictureVms;
-//else if viewMode.equals(seq)
-//	Collections.sort(pictureVms) - Dunno if it is already sorted??
-//	return pictureVms;
