@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <class name="dal.Source" table="GivenSource">
+    	<meta attribute="class-description">
+    		This class contains the source data
+    	</meta>
+        <id name="id" type="int" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="sourceName" not-null="true"/>
+        
+        <set name="hashtags" table="Hashtag_Source">
+        	<key column="sourceID"/>
+        	<many-to-many column="hashID" class="dal.Hashtag"/>
+        </set>
+
+    </class>
+
+</hibernate-mapping>
