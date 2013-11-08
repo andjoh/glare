@@ -1,9 +1,12 @@
-
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
 public class ShowInterface extends JFrame implements ActionListener {
+    /**
+ *
+ * @author ubuntu
+ */
 
     private final JButton settingsButton;
 
