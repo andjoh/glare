@@ -1,4 +1,3 @@
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -9,6 +8,10 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 public class LoadImages {
+/**
+ *
+ * @author Andreas J
+ */
   private final String[] urls = new String[]{
       "win2.jpg","win3.jpg","win4.jpg","win5.jpg",
       
