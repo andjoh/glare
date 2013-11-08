@@ -5,7 +5,7 @@ import javax.swing.*;
 public class ShowInterface extends JFrame implements ActionListener {
     /**
  *
- * @author ubuntu
+ * @author Andreas J
  */
 
     private final JButton settingsButton;
