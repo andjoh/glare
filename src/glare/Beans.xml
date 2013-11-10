@@ -15,6 +15,7 @@
    </bean> 
 
    <bean id="databaseManager" class="dal.DatabaseManager">
+     <constructor-arg ref="databaseHandler"/>
    </bean> 
    
    <bean id="pictureController" class="bll.PictureController">

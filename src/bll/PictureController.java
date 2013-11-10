@@ -8,12 +8,10 @@ import java.util.*;
 
 public class PictureController {
 	private DatabaseManager databaseManager;
-	private List<PictureData> pictureData;
 	private List<PictureData> pictureDataFromSources;
-
 	
-	public PictureController(DatabaseManager databaseManager)
-	{
+	
+	public PictureController(DatabaseManager databaseManager) {
 		this.databaseManager = databaseManager;
 	}
 
@@ -21,14 +19,16 @@ public class PictureController {
 	public boolean searchPictureData() {	
 		pictureDataFromSources = new ArrayList<PictureData>();
 		
-		// Get sources, with appurtenant hashtags, to search from
-		List<HashtagBySource> hashtagBySource = databaseManager.getHashtagBySource();
-		if ( hashtagBySource.isEmpty() )
+		// Get sources and hashtags
+		List<String> sources = databaseManager.getSources();
+		Set<String> hashtags = databaseManager.getHashtags();
+		
+		if ( hashtags.isEmpty() || sources.isEmpty() )
 			return false;
 		
-		// Get new picture data from sources like Instagram
-		for ( HashtagBySource htbs : hashtagBySource )
-			pictureDataFromSources.addAll(searchPicturesFromSource(htbs));
+		// Get new picture data from sources
+		for ( String source : sources )
+			pictureDataFromSources.addAll(searchPicturesFromSource(source, hashtags));
 		
 		if ( pictureDataFromSources.isEmpty() )
 			return false;
@@ -37,26 +37,29 @@ public class PictureController {
 	}
 
 
-	public ArrayList<PictureData> searchPicturesFromSource(HashtagBySource htbs) {
+	private ArrayList<PictureData> searchPicturesFromSource(String source, Set<String> hashtags) {
 		
-		String source       = htbs.getSource(); 
-		Set<String> hashtag = htbs.getHashtag();
-		
-		IReader reader      = (IReader) ClassFactory.getBeanByName(source);	
+		// Get source reader and search picture data
+		String beanName = source.toLowerCase() + "Reader";		
+		IReader reader  = (IReader) ClassFactory.getBeanByName(beanName);	
 
-		for ( String ht : hashtag )
+		for ( String ht : hashtags )
 		{
 			try {
 				return (ArrayList<PictureData>) reader.getPictures(ht);
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
+				return null;
 			}
 		}
 		
 		return new ArrayList<PictureData>();
 	}
 	
-	
+	/**
+	 * Add list of new picturedata, from sources, to existing picturedata list
+	 * Sort and save to database
+	 */	
 	public void processPictureData() {
 
 		List<PictureData> pictureDataFromDb = databaseManager.getPictureDataFromDb();
@@ -71,6 +74,10 @@ public class PictureController {
 				
 				// Check if picture data already exists
 				if ( pdfd.getId() == p.getId() ) {			
+					// PictureData already exists. Add hashtag to existing PictureData.
+					for ( Hashtag ht : p.getHashtags() )
+						pdfd.addHashtag(ht);
+					
 					found = true;
 					break;
 				}				
@@ -81,30 +88,28 @@ public class PictureController {
 				pictureDataFromDb.add(p);
 		}
 		
-		// Update and sort instance variable
-		pictureData = pictureDataFromDb;
-		sortPictureData(pictureData);
-		
-		databaseManager.savePictureDataToDb(pictureData);
+		// Sort and save to database	
+		databaseManager.savePictureDataToDb(sortPictureData(pictureDataFromDb));
 	}
+	
 
-	
-	private void sortPictureData(List<PictureData> pictureData) {
+	private List<PictureData> sortPictureData(List<PictureData> pictureData) {
 		Collections.sort(pictureData, new PictureDataComparator());
-	}
-		
-	
-	public List<PictureData> getPictureData() {
 		return pictureData;
 	}
+		
+	/**
+	 * Return sorted List of PictureData objects that can be displayed, i.e. no inappropriate.
+	 * @return List of PictureData
+	 */
+	public List<PictureData> getPictureDataToDisplay() {
 
-	
-	public List<PictureData> getSortedPictureDataFromDb() {
-		return databaseManager.getPictureDataFromDb();
-	}
-	
-	public void setPictureData(List<PictureData> pictureData) {
-		this.pictureData = pictureData;
+		List<PictureData> pictureData = databaseManager.getPictureDataFromDb();
+		for ( PictureData pD : pictureData ) {
+			if ( pD.isRemoveFlag() )
+				pictureData.remove(pD);
+		}
+		return sortPictureData(pictureData);
 	}
 
 	
