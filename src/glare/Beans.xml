@@ -15,6 +15,7 @@
    </bean> 
 
    <bean id="databaseManager" class="dal.DatabaseManager">
+     <constructor-arg ref="databaseHandler"/>
    </bean> 
    
    <bean id="pictureController" class="bll.PictureController">
@@ -60,9 +61,9 @@
    
    
    <!-- Definition dummy beans -->
-   <bean id="instagramReaderDummy" class="resources.InstagramReaderDummy">
+   <bean id="dummyinstagramReader" class="resources.InstagramReaderDummy">
    </bean>   
 
-   <bean id="twitterReaderDummy" class="resources.TwitterReaderDummy">
+   <bean id="dummytwitterReader" class="resources.TwitterReaderDummy">
    </bean>  
 </beans>

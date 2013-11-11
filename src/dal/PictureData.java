@@ -1,13 +1,18 @@
 package dal;
 
+import java.util.*;
+
 public class PictureData {
 	private String id;
 	private String urlStd;
 	private String urlThumb;
 	private long createdTime;
 	private boolean removeFlag;
-	
-	public PictureData() {}
+	private Set<Hashtag> hashtags;     // Skal typen være Hashtag eller String?
+
+	public PictureData() {
+		hashtags = new HashSet<Hashtag>();
+	}
 	
 	public PictureData(String id, String urlStd, String urlThumb, long createdTime, boolean removeFlag){
 		this.id = id;
@@ -15,6 +20,7 @@ public class PictureData {
 		this.urlThumb = urlThumb;
 		this.createdTime = createdTime;
 		this.removeFlag = removeFlag;
+		hashtags = new HashSet<Hashtag>();
 	}
 
 	public String getId() {
@@ -49,12 +55,23 @@ public class PictureData {
 		this.createdTime = createdTime;
 	}
 
-
 	public boolean isRemoveFlag() {
 		return removeFlag;
 	}
 
 	public void setRemoveFlag(boolean removeFlag) {
 		this.removeFlag = removeFlag;
+	}
+	
+	public Set<Hashtag> getHashtags() {
+		return hashtags;
+	}
+
+	public void addHashtag(Hashtag ht) {
+		hashtags.add(ht);
+	}
+	
+	public void remHashtag(Hashtag ht) {
+		hashtags.remove(ht);
 	}
 }

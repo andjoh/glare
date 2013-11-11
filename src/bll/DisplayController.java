@@ -31,7 +31,7 @@ public class DisplayController {
 
 	public List<PictureViewModel> getPictureObjects(boolean random) throws IOException{
 		ArrayList<PictureViewModel> po = new ArrayList<PictureViewModel>();
-		List<PictureData> sortedPictureList = pictureController.getSortedPictureDataFromDb();
+		List<PictureData> sortedPictureList = pictureController.getPictureDataToDisplay();
 		int i = 1;
 		for (PictureData p : sortedPictureList){
 			if (!p.isRemoveFlag()){

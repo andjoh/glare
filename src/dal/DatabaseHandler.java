@@ -28,4 +28,8 @@ public class DatabaseHandler {
 		return result;
 	}
 
+	public List<Hashtag> getListOfHashtagsFromDB() {
+		// TODO Made by Petter
+		return null;
+	}
 }
