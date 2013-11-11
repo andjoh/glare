@@ -1,4 +1,4 @@
-
+package gui;
 
 public class Twinstagram{
 public static void main(String args[]) {
