@@ -14,9 +14,9 @@ public class PictureController {
 	public PictureController(DatabaseManager databaseManager) {
 		this.databaseManager = databaseManager;
 	}
-
 	
 	public boolean searchPictureData() {	
+
 		pictureDataFromSources = new ArrayList<PictureData>();
 		
 		// Get sources and hashtags
@@ -27,33 +27,36 @@ public class PictureController {
 			return false;
 		
 		// Get new picture data from sources
-		for ( String source : sources )
-			pictureDataFromSources.addAll(searchPicturesFromSource(source, hashtags));
-		
+		for ( String source : sources ) {
+			
+			// Get source reader and search picture data
+			String beanName = source.toLowerCase() + "Reader";		
+			IReader reader  = (IReader) ClassFactory.getBeanByName(beanName);	
+			
+			for ( String hashtag : hashtags ) {				
+				pictureDataFromSources.addAll(searchPicturesDataFromHashtag(reader, hashtag));	
+			}
+
+		}
 		if ( pictureDataFromSources.isEmpty() )
 			return false;
 				
 		return true;
 	}
 
-
-	private ArrayList<PictureData> searchPicturesFromSource(String source, Set<String> hashtags) {
+	private ArrayList<PictureData> searchPicturesDataFromHashtag(IReader reader, String hashtag) {
 		
-		// Get source reader and search picture data
-		String beanName = source.toLowerCase() + "Reader";		
-		IReader reader  = (IReader) ClassFactory.getBeanByName(beanName);	
-
-		for ( String ht : hashtags )
-		{
-			try {
-				return (ArrayList<PictureData>) reader.getPictures(ht);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				return null;
-			}
+		ArrayList<PictureData> pictureData = null;
+		try {
+			pictureData = (ArrayList<PictureData>) reader.getPictures(hashtag);
+			
+			return pictureData;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
-		return new ArrayList<PictureData>();
+		return pictureData;
 	}
 	
 	/**
