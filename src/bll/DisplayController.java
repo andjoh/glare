@@ -39,7 +39,7 @@ public class DisplayController {
 				po.add(pvm);
 				i++;
 			}
-			if (i > 100){
+			if (i > 100){ //hva skjer hvis listen ikke har 100 objekt?
 				break;
 			}
 		}
