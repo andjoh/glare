@@ -30,4 +30,12 @@ public class DatabaseManagerDummy extends DatabaseManager {
 	public void setHashtags(Set<String> hashtags) {
 		this.hashtags = hashtags;
 	}
+	public List<String> getSources() {
+		// TODO This should not be hardcoded
+		List<String> sources = new ArrayList<String>();
+		sources.add("dummyinstagram");
+		sources.add("dummytwitter");
+
+		return sources;
+	}
 }

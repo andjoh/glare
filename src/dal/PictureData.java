@@ -10,7 +10,9 @@ public class PictureData {
 	private boolean removeFlag;
 	private Set<Hashtag> hashtags;     // Skal typen være Hashtag eller String?
 
-	public PictureData() {}
+	public PictureData() {
+		hashtags = new HashSet<Hashtag>();
+	}
 	
 	public PictureData(String id, String urlStd, String urlThumb, long createdTime, boolean removeFlag){
 		this.id = id;
