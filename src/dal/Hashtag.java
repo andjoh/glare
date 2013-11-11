@@ -7,25 +7,25 @@ public class Hashtag {
 	private int id;
 	private String hashtag;
 	
-	private Set<Source> sources;
+	private Set<PictureData> pics;
 	
 	public Hashtag(String hashtag){
 		this.hashtag = hashtag;
-		sources = new HashSet<Source>();
+		pics = new HashSet<PictureData>();
 	}
 	
-	public Set<Source> getSources() {
-		return sources;
+	public Set<PictureData> getPictures() {
+		return pics;
 	}
 
-	public void setSources(Set<Source> sources) {
-		this.sources = sources;
+	public void setPictures(Set<PictureData> pics) {
+		this.pics = pics;
 	}
-	
-	public void addGivenSource(Source s){
-		sources.add(s);
-		s.getHashtags().add(this);
-	}
+//	
+//	public void addGivenSource(Source s){
+//		sources.add(s);
+//		s.getHashtags().add(this);
+//	}
 
 	public int getId() {
 		return id;
