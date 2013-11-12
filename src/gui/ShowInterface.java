@@ -13,49 +13,35 @@ public class ShowInterface extends JFrame implements ActionListener {
     private final JButton settingsButton;
 
     private final JPanel panel;
+    Constraints gbc;
     private final ImageShow show;
     private boolean stop = true;
     private ImageSlider slider;
 
     public ShowInterface() {
-        setTitle("Image Slide Show");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
        
-
-        settingsButton = new JButton(new ImageIcon("/img/play.png"));
-
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        settingsButton = new JButton("Test");
         settingsButton.addActionListener(this);
-
         panel = new JPanel();
-        panel.setLayout(null);
         panel.add(settingsButton);
         panel.setBackground(Color.BLACK);
         add(panel, BorderLayout.SOUTH);
 
         show = new ImageShow();
-        show.setImages();
+      
+  
         add(show, BorderLayout.CENTER);
+        //this.setUndecorated(true);
         setVisible(true);
        
       
-        // switching to fullscre this.setUndecorated(true);en mode 
+        
         GraphicsEnvironment.getLocalGraphicsEnvironment().
         getDefaultScreenDevice().setFullScreenWindow(this);
         startClick();
     }
 
-    public void setConstraints(GridBagConstraints gbc, int gridx, int gridy, int gridw, int gridh, int ipadx, int ipady, int anchor, Insets ins, JComponent cmp) {
-        gbc.gridx = gridx;
-        gbc.gridy = gridy;
-        gbc.gridwidth = gridw;
-        gbc.gridheight = gridh;
-        gbc.ipadx = ipadx;
-        gbc.ipady = ipady;
-        gbc.anchor = anchor;
-        gbc.insets = ins;
-        getContentPane().add(cmp, gbc);
-
-    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -87,31 +73,28 @@ public class ShowInterface extends JFrame implements ActionListener {
         ld.setVisible(true);
     }
 
+
     class ImageSlider extends Thread {
 
         boolean started;
         int size;
-
-        // map= getImages();
         ImageSlider() {
             started = true;
-            size = show.getImgsSize();
+      
         }
 
         @Override
         public void run() {
             int i;
             try {
-                for (i = 0; i < size; i++) {
-                    if (started != false) {
+               while(true){
+                    if (stop != false) {
                         Thread.sleep(2000);
                         show.moveNext();
                         repaint();
                     }
+         
                 }
-                stopClick();
-                show.moveFirst();
-                repaint();
             } catch (InterruptedException ie) {
                 System.out.println("Interrupted slide show...");
             }
