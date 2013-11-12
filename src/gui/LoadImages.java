@@ -31,7 +31,7 @@ public class LoadImages {
     BufferedImage tmp=null;
       for (String url1 : urls) {
           System.out.println(url1);
-          url = this.getClass().getResource("/img/"+url1);
+          url = this.getClass().getResource(url1);
           
           try {
              
