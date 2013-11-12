@@ -15,8 +15,8 @@ public class ImageShow extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private BufferedImage currImg;
 	private LoadImages loadimgs;
-	private ArrayList<BufferedImage> images;
-	private int curImgIndex;
+
+
 
 	/*
 	 * Class to shuffle trough images in the slideshow. 
@@ -27,18 +27,12 @@ public class ImageShow extends JPanel {
 	 * 
 	 * 	 */
 	public ImageShow() {
-		images = new ArrayList<>();
-		loadimgs = new LoadImages();
-		loadimgs.load();
-		images = loadimgs.getImages();
-		if (images != null) {
-
-		}
+                loadmgs= LoadImages();
+	
 		//getToolkit().getScreenSize();
 
 		currImg = null;
-		curImgIndex = 0;
-
+	
 	}
 
 	@Override
@@ -62,15 +56,7 @@ public class ImageShow extends JPanel {
 
 		paint(g);
 	}
-    /* Goes to first image
-     *  
-     */
-	public void moveFirst() {
-		if (!images.isEmpty()) {
-			curImgIndex = 0;
-			currImg = images.get(curImgIndex);
-		}
-	}
+   
    /*
     * Changes currImage to the next Image in the list.
     * Only if the list contains images and that that the
@@ -78,32 +64,20 @@ public class ImageShow extends JPanel {
     * 
     * */
 	public void moveNext() {	
-		curImgIndex++;
-		if (!images.isEmpty() && curImgIndex<getImgsSize()) {
+	
 		
-			currImg = images.get(curImgIndex);
-		}
+			currImg = images.getImage();
+		
 	}
    /*
     * 
     */
-	public ArrayList<BufferedImage> getImages() {
-		return images;
-	}
 
-	public void setImages() {
-		loadimgs.load();
-		images = loadimgs.getImages();
-	}
+
+	
     /* 
      * Returns number of images. 
      * Used by the ImageSlider so that it knows when to stop.
 	*/
-	public int getImgsSize() {
-
-		if (!images.isEmpty())
-			return images.size();
-		return 0;
-	}
 
 }
