@@ -19,8 +19,12 @@ public class LoadImages {
       
       "win6.jpg","win7.jpg","win8.jpeg","win9.jpeg","win10.jpg"};
   private ArrayList<BufferedImage> images;
+  // Used for testing of GUI slideshow.
+  // The arraylist is now in this class, with no copy in the GUI.
+  // GUI can request 1 image which will be drawn from a list
+  // if List is empty. Refill
   public LoadImages(){
-  images= new ArrayList<>();
+  images=  new ArrayList<BufferedImage>();
   }
   public void load(){
   URL url;
@@ -40,7 +44,12 @@ public class LoadImages {
         if(tmp!=null)images.add(tmp);
       }
   }
-  public ArrayList<BufferedImage> getImages(){
-  return images;
-  }
+  public BufferedImage getImage
+        (){
+            if(images.isEmpty())load();
+            BufferedImage tmp=images.get(0);
+            images.remove(tmp);
+            return tmp;
+  
+        }
 }
