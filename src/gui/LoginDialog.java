@@ -46,9 +46,9 @@ public class LoginDialog extends JDialog implements ActionListener {
 		okButton.addActionListener(this);
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
-		JPanel bp = new JPanel();
-		bp.add(okButton);
-		bp.add(cancelButton);
+		buttonPanel = new JPanel();
+	buttonPanel.add(okButton);
+		buttonPanel.add(cancelButton);
 	
 		
 	}
@@ -137,11 +137,11 @@ public class LoginDialog extends JDialog implements ActionListener {
 			gbc.setConstraints(0, 0, 1, 0);
 			add(usernameLabel, gbc);
 			gbc.setConstraints(1, 0, 2, 0);
-			panel.add(usernameInputField, gbc);
+			add(usernameInputField, gbc);
 			gbc.setConstraints(0, 1, 1, 0);
-			panel.add(passwordLabel, gbc);
+			add(passwordLabel, gbc);
 			gbc.setConstraints(1, 1, 2, 0);
-			panel.add(passwordInputField, gbc);
+			add(passwordInputField, gbc);
 
 		}
 
