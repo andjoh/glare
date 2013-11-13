@@ -70,16 +70,16 @@
       <!--<property name="instagramParser" ref="instagramParser" />-->
    </bean>
 
-
-   <!-- Not sure if we need this -->
-   <bean id="pictureGetter" class="dal.PictureGetter">
-   </bean>
    
-   
-   <!-- Definition dummy beans -->
+   <!-- Definition of dummy beans -->
    <bean id="dummyinstagramReader" class="resources.InstagramReaderDummy">
    </bean>   
 
    <bean id="dummytwitterReader" class="resources.TwitterReaderDummy">
-   </bean>  
+   </bean>
+   
+   <bean id="databaseManagerDummy" class="resources.DatabaseManagerDummy">
+     <constructor-arg ref="databaseHandler"/>
+   </bean>
+   
 </beans>
