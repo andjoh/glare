@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import bll.DisplayController;
 
 import java.awt.Graphics.*;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
