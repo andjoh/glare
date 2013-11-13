@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import dal.DatabaseHandler;
+import dal.Hashtag;
 import dal.PictureData;
 
 public class HibernateTest{
@@ -17,12 +18,21 @@ public class HibernateTest{
 
 	@Before
 	public void setUp() throws Exception {
+		Hashtag h1 = new Hashtag("winter");
+		Hashtag h2 = new Hashtag("summer");
+		Hashtag h3 = new Hashtag("hibernate");
+//		DatabaseHandler.addHashtagToDB(h1);
+//		DatabaseHandler.addHashtagToDB(h2);
+//		DatabaseHandler.addHashtagToDB(h3);
+		
 		PictureData pic = new PictureData();
 		pic.setId("1247845_2455");
 		pic.setUrlStd("www.twitter.com");
 		pic.setUrlThumb("www.instagram.com");
 		pic.setCreatedTime(123456);
 		pic.setRemoveFlag(false);
+		pic.addHashtag(h1);
+		pic.addHashtag(h3);
 		DatabaseHandler.addPictureToDB(pic);
 		
 		PictureData pic2 = new PictureData();
@@ -31,6 +41,7 @@ public class HibernateTest{
 		pic2.setUrlThumb("www.instagram.com");
 		pic2.setCreatedTime(123456);
 		pic2.setRemoveFlag(false);
+		pic2.addHashtag(h2);
 		DatabaseHandler.addPictureToDB(pic2);
 		
 		pictures = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();

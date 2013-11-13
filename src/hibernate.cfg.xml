@@ -30,11 +30,9 @@
 
         <!-- Drop and re-create the database schema on startup -->
         <property name="hbm2ddl.auto">create</property>
-        
-        <!-- Drop and re-create the database schema on startup -->        
-        <!-- <property name="hibernate.bytecode.provider">javassist</property>  -->
 
 		<mapping resource="PictureData.hbm.xml"/>
+		<mapping resource="Hashtag.hbm.xml"/>
     </session-factory>
 
 </hibernate-configuration>

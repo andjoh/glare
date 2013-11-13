@@ -21,11 +21,11 @@ public class Hashtag {
 	public void setPictures(Set<PictureData> pics) {
 		this.pics = pics;
 	}
-//	
-//	public void addGivenSource(Source s){
-//		sources.add(s);
-//		s.getHashtags().add(this);
-//	}
+	
+	public void addPicToHashtag(PictureData pd){
+		pics.add(pd);
+		pd.getHashtags().add(this);
+	}
 
 	public int getId() {
 		return id;

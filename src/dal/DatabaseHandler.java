@@ -27,6 +27,16 @@ public class DatabaseHandler {
 		
 		return result;
 	}
+	
+	public static void addHashtagToDB(Hashtag hash){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		session.beginTransaction();
+		
+		session.save(hash);
+		
+		session.getTransaction().commit();
+	}
 
 	public List<Hashtag> getListOfHashtagsFromDB() {
 		// TODO Made by Petter

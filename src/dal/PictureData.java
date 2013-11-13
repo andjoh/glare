@@ -8,9 +8,10 @@ public class PictureData {
 	private String urlThumb;
 	private long createdTime;
 	private boolean removeFlag;
-	private Set<Hashtag> hashtags;     // Skal typen være Hashtag eller String?
-
-	public PictureData() {
+	
+	private Set<Hashtag> hashtags;
+	
+	public PictureData(){
 		hashtags = new HashSet<Hashtag>();
 	}
 	
@@ -69,6 +70,7 @@ public class PictureData {
 
 	public void addHashtag(Hashtag ht) {
 		hashtags.add(ht);
+		ht.getPictures().add(this);
 	}
 	
 	public void remHashtag(Hashtag ht) {

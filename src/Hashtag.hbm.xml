@@ -15,9 +15,9 @@
         <property name="hashtag" not-null="true"/>
         
         <!-- er det riktig å bruke inverse her?? må sette cascade -->
-        <set name="sources" table="Hashtag_Source" inverse="true">
+        <set name="pics" cascade="delete" table="Hash_Pics" inverse="true">
         	<key column="hashID"/>
-        	<many-to-many column="sourceID" class="dal.Source"/>
+        	<many-to-many column="picID" class="dal.PictureData"/>
         </set>
 
     </class>
