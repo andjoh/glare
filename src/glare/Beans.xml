@@ -33,33 +33,33 @@
 
    <bean id="settings" class="gui.Settings">
      <constructor-arg ref="settingsController"/>
-     <!--<property name="uiController" ref="uiController" />-->
    </bean>
-   
-   <bean id="imageShow" class="gui.ImageShow">
-     <constructor-arg ref="displayController"/>
-   </bean>  
-   
-   <bean id="showInterface" class="gui.ShowInterface">
-     <constructor-arg ref="imageShow"/>
-     <constructor-arg ref="loginDialog"/>
-   </bean>  
-   
-   <bean id="loginDialog" class="gui.LoginDialog">
-       <!--<constructor-arg ref="constraints"/>-->
-   </bean>
-   
+
    <bean id="constraints" class="gui.Constraints">
    </bean>
 
+  
+ <!--  <bean id="imageShow" class="gui.ImageShow">-->
+ <!--    <constructor-arg ref="displayController"/>-->
+ <!--  </bean>  -->
+   
+<!--   <bean id="showInterface" class="gui.ShowInterface">-->
+<!--     <constructor-arg ref="imageShow"/>-->
+<!--     <constructor-arg ref="loginDialog"/>-->
+<!--   </bean>  -->
+   
+<!--   <bean id="loginDialog" class="gui.LoginDialog">-->
+      <!--<constructor-arg ref="constraints"/>-->
+<!--   </bean>-->
+   
+ 
+   <!-- Definition for Instagram and Twitter beans -->
    <bean id="configurationReader" class="dal.ConfigurationReader">
-   </bean>  
+   </bean> 
 
-   <!-- Definition for TwitterReader bean -->
    <bean id="twitterReader" class="dal.TwitterReader">
      <constructor-arg ref="configurationReader"/>
    </bean>
-
 
    <bean id="instagramParser" class="dal.InstagramParser">
    </bean>  
@@ -67,7 +67,6 @@
    <bean id="instagramReader" class="dal.InstagramReader">
      <constructor-arg ref="instagramParser"/>
      <constructor-arg ref="configurationReader"/>    
-      <!--<property name="instagramParser" ref="instagramParser" />-->
    </bean>
 
    
