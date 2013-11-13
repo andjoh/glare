@@ -5,6 +5,8 @@ import dal.*;
 
 import java.util.*;
 
+import resources.TwitterReaderDummy;
+
 
 public class PictureController {
 	private DatabaseManager databaseManager;
@@ -108,6 +110,8 @@ public class PictureController {
 	public List<PictureData> getPictureDataToDisplay() {
 
 		List<PictureData> pictureData = databaseManager.getPictureDataFromDb();
+		/*TwitterReaderDummy trd = new TwitterReaderDummy();
+		List<PictureData> pictureData = (List<PictureData>) trd;*/
 		for ( PictureData pD : pictureData ) {
 			if ( pD.isRemoveFlag() )
 				pictureData.remove(pD);

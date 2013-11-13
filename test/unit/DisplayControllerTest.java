@@ -19,7 +19,7 @@ public class DisplayControllerTest {
 	@Before
 	public void setUp() throws IOException{
 		dc = (DisplayController) ClassFactory.getBeanByName("displayController");
-		dc.getPictureObjects(false);
+		dc.getCurrentPicture(false);
 	}
 	@After
 	public void tearDown(){
