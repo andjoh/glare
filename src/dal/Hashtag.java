@@ -7,23 +7,23 @@ public class Hashtag {
 	private int id;
 	private String hashtag;
 	
-	private Set<PictureData> pics;
+	private Set<PictureData> pictures;
 	
 	public Hashtag(String hashtag){
 		this.hashtag = hashtag;
-		pics = new HashSet<PictureData>();
-	}
-	
-	public Set<PictureData> getPictures() {
-		return pics;
+		pictures = new HashSet<PictureData>();
 	}
 
-	public void setPictures(Set<PictureData> pics) {
-		this.pics = pics;
+	public Set<PictureData> getPictures(){
+		return pictures;
+	}
+
+	public void setPictures(Set<PictureData> pics){
+		this.pictures = pics;
 	}
 	
 	public void addPicToHashtag(PictureData pd){
-		pics.add(pd);
+		pictures.add(pd);
 		pd.getHashtags().add(this);
 	}
 

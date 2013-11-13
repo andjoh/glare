@@ -17,10 +17,10 @@
 		<property name="createdTime" not-null="true"/>
 		<property name="removeFlag" not-null="true"/>
 		
-	<set name="hashtags" cascade="save-update" table="Hash_Pics">
-		<key column="picID"/>
-		<many-to-many column="hashID" class="dal.Hashtag"/>
-	</set>
+		<set name="hashtags" cascade="save-update" table="Hash_Pics">
+			<key column="picID"/>
+			<many-to-many column="hashID" class="dal.Hashtag"/>
+		</set>
 
     </class>
 

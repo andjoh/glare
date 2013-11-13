@@ -67,6 +67,9 @@ public class PictureData {
 	public Set<Hashtag> getHashtags() {
 		return hashtags;
 	}
+	public void setHashtags(Set<Hashtag> hashtags){
+		this.hashtags=hashtags;
+	}
 
 	public void addHashtag(Hashtag ht) {
 		hashtags.add(ht);
