@@ -24,36 +24,50 @@ public class DisplayController {
 	 */
 
 	private PictureController pictureController;
+	private BufferedImage currentPic;
+	private int count = 0;
 	
 	public DisplayController(PictureController pictureController){
 		this.pictureController = pictureController;
 	}
 
-	public List<PictureViewModel> getPictureObjects(boolean random) throws IOException{
-		ArrayList<PictureViewModel> po = new ArrayList<PictureViewModel>();
+	public BufferedImage getCurrentPicture(boolean random) throws IOException{
+		ArrayList<BufferedImage> po = new ArrayList<BufferedImage>();
 		List<PictureData> sortedPictureList = pictureController.getPictureDataToDisplay();
 		int i = 1;
 		for (PictureData p : sortedPictureList){
-			if (!p.isRemoveFlag()){
-				PictureViewModel pvm = new PictureViewModel(getBufImage(p), p.getId());
-				po.add(pvm);
-				i++;
-			}
+			po.add(getBufImage(p));
+			i++;
 			if (i > 100){ //hva skjer hvis listen ikke har 100 objekt?
 				break;
 			}
 		}
-		if (random = true){
-			Collections.shuffle(po);
-		}
-		return po;
+		shufflePictures(random, po);
+		currentPicture(po);
+		
+		return currentPic;
 	}
 	private BufferedImage getBufImage(PictureData p) throws IOException{
 //		URL testUrl = new URL("http://pbs.twimg.com/media/BXrietbIgAAiroP.jpg");
 		URL imageUrl = new URL(p.getUrlStd());
-		InputStream in = imageUrl.openStream();;
+		InputStream in = imageUrl.openStream();
 		BufferedImage image = ImageIO.read(in);
 		in.close();
 		return image;
+	}
+	private void shufflePictures(boolean random, ArrayList<BufferedImage> po){
+		if (random = true){
+			Collections.shuffle(po);
+		}
+	}
+	private void currentPicture(ArrayList<BufferedImage> po){
+		if (count < 100){
+			currentPic = po.get(count);
+			count++;
+		} else {
+			count = 0;
+			currentPic = po.get(count);
+			count++;
+		}
 	}
 }
