@@ -4,12 +4,12 @@ import javax.swing.JPanel;
 
 import bll.DisplayController;
 
-import java.awt.Graphics;
+import java.awt.Graphics.*;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
+
 
 public class ImageShow extends JPanel {
 
@@ -25,7 +25,7 @@ public class ImageShow extends JPanel {
 	/*
 	 * Class to shuffle trough images in the slideshow. 
 	 * Images are drawn to the  screen in this class
-	 * Uses LoadImages to extract images from urls. 
+	 * Uses DisplayController to extract images from urls. 
 	 * 
 	 * 
 	 * 
@@ -60,8 +60,8 @@ public class ImageShow extends JPanel {
 	}
    
    /*
-    * Changes currImage to the next Image in the list.
-    * Only if the list contains images and that that the
+    *  sets currImg to returned image from displaycontroller
+    * 
     * 
     * 
     * */
@@ -77,9 +77,6 @@ public class ImageShow extends JPanel {
 
 
 	
-    /* 
-     * Returns number of images. 
-     * Used by the ImageSlider so that it knows when to stop.
-	*/
+
 
 }
