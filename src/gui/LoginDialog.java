@@ -7,16 +7,16 @@ import javax.swing.border.*;
 
 public class LoginDialog extends JDialog implements ActionListener {
 
-/**
- *
- * @author Andreas J.
- */
+	/**
+	 *
+	 * @author Andreas J.
+	 */
 	private static final long serialVersionUID = 1L;
 
 	private LoginPanel panel;
 
 	private Constraints gbc;
- private JPanel buttonPanel;
+	private JPanel buttonPanel;
 	private JButton okButton, cancelButton;
 	private JPasswordField passwordInputField;
 	private JTextField usernameInputField;
@@ -25,7 +25,6 @@ public class LoginDialog extends JDialog implements ActionListener {
 
 	public LoginDialog(Frame parent) {
 		super(parent, "Login", true);
-		//
 
 		init();
 		getContentPane().add(panel, BorderLayout.CENTER);
@@ -40,21 +39,21 @@ public class LoginDialog extends JDialog implements ActionListener {
 	 */
 	public void init(){
 		panel = new LoginPanel();
-        buttonPanel = new JPanel();
+		buttonPanel = new JPanel();
 		okButton = new JButton("Login");
 
 		okButton.addActionListener(this);
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(this);
 		buttonPanel = new JPanel();
-	buttonPanel.add(okButton);
+		buttonPanel.add(okButton);
 		buttonPanel.add(cancelButton);
-	
-		
+
+
 	}
-     /*
-      * Returns username typed by user (without spaces)
-      */
+	/*
+	 * Returns username typed by user (without spaces)
+	 */
 	public String getUsername() {
 		return usernameInputField.getText().trim();
 	}
@@ -62,27 +61,27 @@ public class LoginDialog extends JDialog implements ActionListener {
 	public String getPassword() {
 		return new String(passwordInputField.getPassword());
 	}
-  /*
-   * 
-   */
+	/*
+	 * 
+	 */
 	public boolean isSucceeded() {
 		return succeeded;
 	}
-/*
- *  If user has clicked cancel: close Dialog.
- *  If user has clicked OK: call class to check info
- * */
+	/*
+	 *  If user has clicked cancel: close Dialog.
+	 *  If user has clicked OK: call class to check info
+	 * */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object jc= e.getSource();
 		if (jc.equals(okButton))tryToLogin();
 		else if (jc.equals(cancelButton))dispose();
 	}
-    /* Calls method to compare provided login information with the hardcoded values.
-     * If correct: closes dialog box. 
-     * If fail: opens up a messageDialog with error message.
-     * 
-     */
+	/* Calls method to compare provided login information with the hardcoded values.
+	 * If correct: closes dialog box. 
+	 * If fail: opens up a messageDialog with error message.
+	 * 
+	 */
 	public void tryToLogin() {
 
 		if (LoginData.authenticate(getUsername(), getPassword())) {
@@ -128,10 +127,10 @@ public class LoginDialog extends JDialog implements ActionListener {
 			usernameInputField = new JTextField(20);
 			passwordInputField = new JPasswordField(20);
 		}
- /*
-  * Sets GUI objects with GB Layout using the Constraint class 
-  * 
-*/
+		/*
+		 * Sets GUI objects with GB Layout using the Constraint class 
+		 * 
+		 */
 		private void setConstraints() {
 
 			gbc.setConstraints(0, 0, 1, 0);

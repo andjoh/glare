@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+
 import javax.swing.*;
 
 public class ShowInterface extends JFrame implements ActionListener {
@@ -17,9 +19,12 @@ public class ShowInterface extends JFrame implements ActionListener {
     private final ImageShow show;
     private boolean stop = true;
     private ImageSlider slider;
+    private ImageShow imageShow;
+    private LoginDialog loginDialog;
 
-    public ShowInterface() {
-       
+    public ShowInterface(ImageShow imageShow, LoginDialog loginDialog) {
+       this.imageShow = imageShow;
+       this.loginDialog = loginDialog;
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         settingsButton = new JButton("Test");
         settingsButton.addActionListener(this);
@@ -28,7 +33,7 @@ public class ShowInterface extends JFrame implements ActionListener {
         panel.setBackground(Color.BLACK);
         add(panel, BorderLayout.SOUTH);
 
-        show = new ImageShow();
+        show = imageShow;
       
   
         add(show, BorderLayout.CENTER);
@@ -66,7 +71,8 @@ public class ShowInterface extends JFrame implements ActionListener {
     }
 
     public void openLoginBox() {
-        LoginDialog ld = new LoginDialog(this);
+        LoginDialog ld = loginDialog;
+    	
         ld.setLocationRelativeTo(null);
         ld.setSize(400, 500);
         ld.pack();
@@ -97,7 +103,10 @@ public class ShowInterface extends JFrame implements ActionListener {
                 }
             } catch (InterruptedException ie) {
                 System.out.println("Interrupted slide show...");
-            }
+            } catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
         }
 
         public void stopShow() {
