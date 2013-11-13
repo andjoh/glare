@@ -7,11 +7,13 @@ import dal.*;
 
 public class DatabaseManagerDummy extends DatabaseManager {
 	private List<PictureData> pictureDataFromDb;
+	private List<String> sources;
 	private Set<String> hashtags;
 	
 	public DatabaseManagerDummy(DatabaseHandler databaseHandler) {
 		super(databaseHandler);
 		pictureDataFromDb = new ArrayList<PictureData>();
+		sources           = new ArrayList<String>();
 		hashtags          = new HashSet<String>();
 	}
 
@@ -23,19 +25,19 @@ public class DatabaseManagerDummy extends DatabaseManager {
 		this.pictureDataFromDb = pictureData;
 	}
 
+	public void setSources(List<String> sources) {
+		this.sources = sources;
+	}
+	
+	public List<String> getSources() {		
+		return sources;
+	}
+	
 	public Set<String> getHashtags() {
 		return hashtags;
 	}
 	
 	public void setHashtags(Set<String> hashtags) {
 		this.hashtags = hashtags;
-	}
-	public List<String> getSources() {
-		// TODO This should not be hardcoded
-		List<String> sources = new ArrayList<String>();
-		sources.add("dummyinstagram");
-		sources.add("dummytwitter");
-
-		return sources;
-	}
+	}	
 }

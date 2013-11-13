@@ -5,70 +5,97 @@ import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.*;
 
-import resources.DatabaseManagerDummy;
+import resources.*;
 import java.util.*;
+
 import bll.*;
 import dal.*;
 
 public class PictureControllerTest {
 
 	private PictureController picCtrl;
-	private DatabaseManagerDummy dbManager;
+	private DatabaseManagerDummy dbManagerDummy;
 	private Set<String> hashtagsDummy;
-	private ArrayList<PictureData> pDFromDbDummy;
+	private ArrayList<PictureData> pictureDataFromDbDummy;
+	private List<String> sourcesDummy;
+
 	
 	@Before
 	public void setUp() {
+		
+		// New up PictureController with dummy DatabaseHandler
 		DatabaseHandler dbHandler = new DatabaseHandler();
-		dbManager = new DatabaseManagerDummy(dbHandler);
-		picCtrl   = new PictureController(dbManager);
+		dbManagerDummy = new DatabaseManagerDummy(dbHandler);
+		picCtrl        = new PictureController(dbManagerDummy);
 
+		// Set dummy sources
+		sourcesDummy = new ArrayList<String>();
+		sourcesDummy.add("dummyinstagram");
+		sourcesDummy.add("dummytwitter");
+		
 		// Set test data for source and hashtag
 		hashtagsDummy = new HashSet<String>();
-		hashtagsDummy.add("raskebriller");
 		hashtagsDummy.add("twittermotjavatesting");
+		hashtagsDummy.add("raskebriller");
 					
-		// Add dummy picturedata from db
-		pDFromDbDummy = new ArrayList<PictureData>();
+		// Set dummy picturedata from db
+		pictureDataFromDbDummy = new ArrayList<PictureData>();
 
 		PictureData p = new PictureData();
 		p.setId("picID 1");
 		p.setCreatedTime(1);
 		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_6.jpg");
 		p.setUrlThumb("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_5.jpg");
-		pDFromDbDummy.add(p);
+		p.addHashtag(new Hashtag("hashtag 1"));
+		pictureDataFromDbDummy.add(p);
 		
 		p = new PictureData();
 		p.setId("picID 3");
 		p.setCreatedTime(3);
 		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_8.jpg");
 		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
-		pDFromDbDummy.add(p);
+		p.addHashtag(new Hashtag("hashtag 3"));
+		pictureDataFromDbDummy.add(p);
 		
 		p = new PictureData();
 		p.setId("picID 4");
 		p.setCreatedTime(4);
 		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_8.jpg");
 		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
-		pDFromDbDummy.add(p);		
-			
+		p.addHashtag(new Hashtag("hashtag 4"));
+		pictureDataFromDbDummy.add(p);			
 	}
 	
 
 	@After
 	public void tearDown() {
-		hashtagsDummy = null;
-		pDFromDbDummy = null;
+		picCtrl                = null;
+		dbManagerDummy         = null;
+		sourcesDummy           = null;
+		hashtagsDummy          = null;
+		pictureDataFromDbDummy = null;
 	}
 	
 		
 	@Test
 	public void SearchPictureData_UsingDummyHashtags_UsingDummyPictureData_WhenCalled_ReturnsListOfPictureData() {
-		dbManager.setHashtags(hashtagsDummy);
 		
+		// Set dummy sources and hashtag
+		dbManagerDummy.setSources(sourcesDummy);
+		dbManagerDummy.setHashtags(hashtagsDummy);
+		
+		// Run test
 		picCtrl.searchPictureData();
 		
 		List<PictureData> pictureData = picCtrl.getPictureDataFromSources();
+
+		// Additional output
+		System.out.println("8 Dummy Picturedata from Instagram and Twitter");
+		for ( PictureData pd : pictureData )
+		{
+			System.out.println(pd.getId());
+		}
+		System.out.println("");
 		
 		assertThat(pictureData.isEmpty(),is(false));
 	}	
@@ -76,14 +103,26 @@ public class PictureControllerTest {
 	
 	@Test
 	public void ProcessPictureData_UsingDummyHashtags_UsingDummyPictureData_NoPictureDataFromDb_WhenCalled_ReturnsListOfPictureData() {
-		dbManager.setHashtags(hashtagsDummy);
 		
+		// Set dummy sources and hashtag
+		dbManagerDummy.setSources(sourcesDummy);
+		dbManagerDummy.setHashtags(hashtagsDummy);
+		
+		// Run test
 		picCtrl.searchPictureData();
 
 		picCtrl.processPictureData();		
 		
-		List<PictureData> pictureDataAll = dbManager.getPictureDataFromDb();
-		
+		List<PictureData> pictureDataAll = dbManagerDummy.getPictureDataFromDb();
+
+		// Additional output
+		System.out.println("PictureData after process");
+		for ( PictureData pd : pictureDataAll )
+		{
+			System.out.println(pd.getId());
+		}
+		System.out.println("");
+			
 		assertThat(pictureDataAll.size() == 5,is(true));
 	}
 	
@@ -99,29 +138,62 @@ public class PictureControllerTest {
 	
 	@Test
 	public void ProcessPictureData_UsingDummyHashtags_UsingDummyPictureData_WhenCalled_Returns6PictureDataInOrder() {
-		dbManager.setHashtags(hashtagsDummy);
-		dbManager.setPictureDataFromDb(pDFromDbDummy);
+
+		// Set dummy sources, hashtag and picturedata
+		dbManagerDummy.setSources(sourcesDummy);
+		dbManagerDummy.setHashtags(hashtagsDummy);
+		dbManagerDummy.setPictureDataFromDb(pictureDataFromDbDummy);
 		
+		// Run test
 		picCtrl.searchPictureData();
 
 		picCtrl.processPictureData();		
 		
-		List<PictureData> pictureDataAll = dbManager.getPictureDataFromDb();
+		List<PictureData> pictureDataAll = dbManagerDummy.getPictureDataFromDb();
+
+		// Additional output
+		System.out.println("PictureData after process");
+		for ( PictureData pd : pictureDataAll )
+		{
+			System.out.println(pd.getId());
+			for ( Hashtag ht : pd.getHashtags() ) {
+				System.out.println(ht.getHashtag());
+			}
+		}
+		System.out.println("");
 		
 		assertThat(pictureDataAll.size() == 6,is(true));
 	}
 	
-	
+
 	@Test
 	public void SearchPictureData_Instagram_And_Twitter_WhenCalled_ReturnsListOfPictureData() {
 
-		dbManager.setHashtags(hashtagsDummy);
+		// Set real sources and add to dummy DatabaseManager
+		ArrayList<String> sources = new ArrayList<String>();
+		sources.add("instagram");
+		sources.add("twitter");
+		dbManagerDummy.setSources(sources);
+
+		dbManagerDummy.setHashtags(hashtagsDummy);
 		
+		// Run test
 		boolean success = picCtrl.searchPictureData();
 
 		assertThat(success,is(true));
 		
-		List<PictureData> pictureData = picCtrl.getPictureDataFromSources();
+		picCtrl.processPictureData();
+		
+		List<PictureData> pictureData = dbManagerDummy.getPictureDataFromDb();
+
+		// Additional output
+		System.out.println("PictureData from Instagram and Twitter");
+		for ( PictureData pd : pictureData )
+		{
+			System.out.println(pd.getId());
+			System.out.println(pd.getUrlStd());
+		}
+		System.out.println("");
 		
 		assertThat(pictureData.isEmpty(),is(false));
 	}

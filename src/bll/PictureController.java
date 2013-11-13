@@ -31,14 +31,13 @@ public class PictureController {
 		// Get new picture data from sources
 		for ( String source : sources ) {
 			
-			// Get source reader and search picture data
+			// Get source reader and search for picture data
 			String beanName = source.toLowerCase() + "Reader";		
 			IReader reader  = (IReader) ClassFactory.getBeanByName(beanName);	
 			
 			for ( String hashtag : hashtags ) {				
-				pictureDataFromSources.addAll(searchPicturesDataFromHashtag(reader, hashtag));	
+				pictureDataFromSources.addAll(searchPictureDataFromHashtags(reader, hashtag));	
 			}
-
 		}
 		if ( pictureDataFromSources.isEmpty() )
 			return false;
@@ -46,13 +45,12 @@ public class PictureController {
 		return true;
 	}
 
-	private ArrayList<PictureData> searchPicturesDataFromHashtag(IReader reader, String hashtag) {
+	private List<PictureData> searchPictureDataFromHashtags(IReader reader, String hashtag) {
 		
 		ArrayList<PictureData> pictureData = null;
 		try {
-			pictureData = (ArrayList<PictureData>) reader.getPictures(hashtag);
+			return (ArrayList<PictureData>) reader.getPictures(hashtag);
 			
-			return pictureData;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -67,21 +65,32 @@ public class PictureController {
 	 */	
 	public void processPictureData() {
 
-		List<PictureData> pictureDataFromDb = databaseManager.getPictureDataFromDb();
+		List<PictureData> pictureDataExisting = databaseManager.getPictureDataFromDb();
 
-		// Iterate over new picture data and add new 
+		// Iterate over new picture data and add to existing 
 		boolean found;
-		for ( PictureData p : pictureDataFromSources ) {
+		for ( PictureData pictureDataNew : pictureDataFromSources ) {
 			
 			found = false;
 			
-			for ( PictureData pdfd : pictureDataFromDb ) {
+			for ( PictureData pictureDataExt : pictureDataExisting ) {
 				
 				// Check if picture data already exists
-				if ( pdfd.getId() == p.getId() ) {			
-					// PictureData already exists. Add hashtag to existing PictureData.
-					for ( Hashtag ht : p.getHashtags() )
-						pdfd.addHashtag(ht);
+				if ( pictureDataExt.getId() == pictureDataNew.getId() ) {			
+					
+					// PictureData already exists. Add hashtag to existing PictureData.				
+					Set<String> existingHashtag = new HashSet<String>();
+					
+					for ( Hashtag hashtagObject : pictureDataExt.getHashtags() ){
+						existingHashtag.add(hashtagObject.getHashtag());
+					}
+					
+					for ( Hashtag hashtagObject : pictureDataNew.getHashtags() ){
+						existingHashtag.add(hashtagObject.getHashtag());
+					}
+					
+					for ( String hashtag : existingHashtag )
+						pictureDataExt.addHashtag(new Hashtag(hashtag));
 					
 					found = true;
 					break;
@@ -90,11 +99,11 @@ public class PictureController {
 			
 			// Picture data doesn't exist - add it
 			if ( !found ) 
-				pictureDataFromDb.add(p);
+				pictureDataExisting.add(pictureDataNew);
 		}
 		
 		// Sort and save to database	
-		databaseManager.savePictureDataToDb(sortPictureData(pictureDataFromDb));
+		databaseManager.savePictureDataToDb(sortPictureData(pictureDataExisting));
 	}
 	
 
@@ -118,7 +127,6 @@ public class PictureController {
 		}
 		return sortPictureData(pictureData);
 	}
-
 	
 	public List<PictureData> getPictureDataFromSources() {
 		return pictureDataFromSources;
