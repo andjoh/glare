@@ -2,14 +2,13 @@ package gui;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-public class LoadImages {
+public class DisplayController {
 /**
  *
  * @author Andreas J
@@ -23,7 +22,7 @@ public class LoadImages {
   // The arraylist is now in this class, with no copy in the GUI.
   // GUI can request 1 image which will be drawn from a list
   // if List is empty. Refill
-  public LoadImages(){
+  public DisplayController(){
   images=  new ArrayList<BufferedImage>();
   }
   public void load(){
@@ -39,13 +38,13 @@ public class LoadImages {
               
               
           } catch (IOException ex) {
-              Logger.getLogger(LoadImages.class.getName()).log(Level.SEVERE, null, ex);
+              Logger.getLogger(DisplayController.class.getName()).log(Level.SEVERE, null, ex);
           }   
         if(tmp!=null)images.add(tmp);
       }
   }
-  public BufferedImage getImage
-        (){
+  public BufferedImage getCurrentPicture(boolean t)
+        {
             if(images.isEmpty())load();
             BufferedImage tmp=images.get(0);
             images.remove(tmp);
