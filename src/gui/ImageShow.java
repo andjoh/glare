@@ -27,7 +27,7 @@ public class ImageShow extends JPanel {
 	 * 
 	 * 	 */
 	public ImageShow() {
-                loadmgs= LoadImages();
+                loadimgs= LoadImages();
 	
 		//getToolkit().getScreenSize();
 
