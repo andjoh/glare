@@ -35,6 +35,10 @@
      <constructor-arg ref="settingsController"/>
      <!--<property name="uiController" ref="uiController" />-->
    </bean>  
+   
+   <bean id="imageShow" class="gui.ImageShow">
+     <constructor-arg ref="displayController"/>
+   </bean>
 
    <bean id="configurationReader" class="dal.ConfigurationReader">
    </bean>  

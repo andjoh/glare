@@ -1,10 +1,14 @@
 package gui;
 
 import javax.swing.JPanel;
+
+import bll.DisplayController;
+
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ImageShow extends JPanel {
@@ -14,7 +18,7 @@ public class ImageShow extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private BufferedImage currImg;
-	private LoadImages loadimgs;
+	private DisplayController dc;
 
 
 
@@ -26,12 +30,10 @@ public class ImageShow extends JPanel {
 	 * 
 	 * 
 	 * 	 */
-	public ImageShow() {
-                loadimgs= LoadImages();
-	
+	public ImageShow(DisplayController dc) throws IOException {
+		this.dc = dc;
 		//getToolkit().getScreenSize();
-
-		currImg = null;
+		currImg = dc.getCurrentPicture(false);
 	
 	}
 
@@ -63,10 +65,10 @@ public class ImageShow extends JPanel {
     * 
     * 
     * */
-	public void moveNext() {	
+	public void moveNext() throws IOException {	
 	
 		
-			currImg = images.getImage();
+			currImg = dc.getCurrentPicture(false);
 		
 	}
    /*
