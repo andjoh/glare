@@ -26,7 +26,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 		imageShow = imageShow_;
 		loginDialog = loginDialog_;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
+        init();
 		add(panel, BorderLayout.SOUTH);
 		add(imageShow, BorderLayout.CENTER);
 
