@@ -43,7 +43,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 
 	public void init() {
 
-		settingsButton = new JButton("Test");
+		settingsButton = new JButton("Settings");
 		settingsButton.addActionListener(this);
 		panel = new JPanel();
 		panel.add(settingsButton);
@@ -68,14 +68,14 @@ public class ShowInterface extends JFrame implements ActionListener {
 	}
 
 	private void startClick() {
-		settingsButton.setIcon(new ImageIcon("/img/pause.png"));
+		
 		stop = false;
 		slider = new ImageSlider();
 		slider.start();
 	}
 
 	public void stopClick() {
-		settingsButton.setIcon(new ImageIcon("/img/play.png"));
+	
 		stop = true;
 		slider.stopShow();
 	}
@@ -111,7 +111,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 			} catch (InterruptedException ie) {
 				System.out.println("Interrupted slide show...");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+		
 				e.printStackTrace();
 			}
 		}
