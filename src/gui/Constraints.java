@@ -11,7 +11,7 @@ public class Constraints extends GridBagConstraints{
 public Constraints(){
     super();
 }
- public void setConstraints(int grx,int gry,int grw,int grh,int ipx,int ipy, Insets ins,int anc){
+ public void set(int grx,int gry,int grw,int grh,int ipx,int ipy, Insets ins,int anc){
   gridx=grx;
   gridy=gry;
   gridwidth=grw;
@@ -23,15 +23,16 @@ public Constraints(){
   
  }
  
- public void setConstraints(int grx,int gry,int grw,int grh,int ipx,int ipy){
+ public void set(int grx,int gry,int grw,int grh,int ipx,int ipy){
   gridx=grx;
   gridy=gry;
+  insets= new Insets(0,0,0,0);
   gridwidth=grw;
   gridheight=grh;
   ipadx=ipx;
   
  }
- public void setConstraints(int grx,int gry,int grw,int grh,Insets ins,int anc){
+ public void set(int grx,int gry,int grw,int grh,Insets ins,int anc){
   gridx=grx;
   gridy=gry;
   gridwidth=grw;
