@@ -19,12 +19,9 @@ public class ShowInterface extends JFrame implements ActionListener {
     private final ImageShow show;
     private boolean stop = true;
     private ImageSlider slider;
-    private ImageShow imageShow;
-    private LoginDialog loginDialog;
 
-    public ShowInterface(ImageShow imageShow, LoginDialog loginDialog) {
-       this.imageShow = imageShow;
-       this.loginDialog = loginDialog;
+    public ShowInterface() {
+       
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         settingsButton = new JButton("Test");
         settingsButton.addActionListener(this);
@@ -33,16 +30,11 @@ public class ShowInterface extends JFrame implements ActionListener {
         panel.setBackground(Color.BLACK);
         add(panel, BorderLayout.SOUTH);
 
-        show = imageShow;
+        show = new ImageShow();
       
   
         add(show, BorderLayout.CENTER);
-       
-        /*
-         * <edited out for easier testing> - Andreas J
-        this.setUndecorated(true);
-        
-        */
+        //this.setUndecorated(true);
         setVisible(true);
        
       
@@ -76,8 +68,7 @@ public class ShowInterface extends JFrame implements ActionListener {
     }
 
     public void openLoginBox() {
-        LoginDialog ld = loginDialog;
-    	
+        LoginDialog ld = new LoginDialog(this);
         ld.setLocationRelativeTo(null);
         ld.setSize(400, 500);
         ld.pack();

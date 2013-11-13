@@ -1,18 +1,15 @@
 package gui;
 
 import javax.swing.JPanel;
-/*
-/edited out to do tests without bll - Andreas J
 
-//import bll.DisplayController;
+import bll.DisplayController;
 
-*/
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
+import java.util.ArrayList;
 
 public class ImageShow extends JPanel {
 
@@ -28,15 +25,11 @@ public class ImageShow extends JPanel {
 	/*
 	 * Class to shuffle trough images in the slideshow. 
 	 * Images are drawn to the  screen in this class
-	 * Uses DisplayController to extract images from urls. 
-	 * 
-	 * 
-	 * 
-	 * 	 */
-	public ImageShow(DisplayController dc)  {
-		this.dc = dc;;
+	 * Uses LoadImages to extract images from urls. 
+	 */
+	public ImageShow() {
+		//		currImg = dc.getCurrentPicture(false);
 		currImg = null;
-	
 	}
 
 	@Override
@@ -57,28 +50,16 @@ public class ImageShow extends JPanel {
 
 	@Override
 	public void update(Graphics g) {
-
 		paint(g);
 	}
-   
-   /*
-    *  sets currImg to returned image from displaycontroller
-    * 
-    * 
-    * 
-    * */
+
+	/*
+	 * Changes currImage to the next Image in the list.
+	 * Only if the list contains images and that that the
+	 * 
+	 * 
+	 * */
 	public void moveNext() throws IOException {	
-	
-		
-			currImg = dc.getCurrentPicture(false);
-		
+		currImg = dc.getCurrentPicture(false);
 	}
-   /*
-    * 
-    */
-
-
-	
-
-
 }

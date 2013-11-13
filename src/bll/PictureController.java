@@ -118,9 +118,9 @@ public class PictureController {
 	 */
 	public List<PictureData> getPictureDataToDisplay() {
 
-		List<PictureData> pictureData = databaseManager.getPictureDataFromDb();
-		/*TwitterReaderDummy trd = new TwitterReaderDummy();
-		List<PictureData> pictureData = (List<PictureData>) trd;*/
+//		List<PictureData> pictureData = databaseManager.getPictureDataFromDb();
+		TwitterReaderDummy trd = new TwitterReaderDummy();
+		List<PictureData> pictureData = (List<PictureData>) trd;
 		for ( PictureData pD : pictureData ) {
 			if ( pD.isRemoveFlag() )
 				pictureData.remove(pD);

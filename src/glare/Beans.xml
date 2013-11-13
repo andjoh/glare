@@ -1,84 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:aop="http://www.springframework.org/schema/aop"
-  xmlns:context="http://www.springframework.org/schema/context"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
            http://www.springframework.org/schema/aop
            http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-   <bean id="databaseHandler" class="dal.DatabaseHandler">
-   </bean> 
+	<bean id="databaseHandler" class="dal.DatabaseHandler">
+	</bean>
 
-   <bean id="databaseManager" class="dal.DatabaseManager">
-     <constructor-arg ref="databaseHandler"/>
-   </bean> 
-   
-   <bean id="pictureController" class="bll.PictureController">
-     <constructor-arg ref="databaseManager"/>
-   </bean> 
-   
-   <bean id="settingsController" class="bll.SettingsController">
-     <constructor-arg ref="pictureController"/>
-     <constructor-arg ref="databaseManager"/>
-   </bean>
-   
-   <bean id="displayController" class="bll.DisplayController">
-     <constructor-arg ref="pictureController"/>
-   </bean>
+	<bean id="databaseManager" class="dal.DatabaseManager">
+		<constructor-arg ref="databaseHandler" />
+	</bean>
 
-   <bean id="settings" class="gui.Settings">
-     <constructor-arg ref="settingsController"/>
-   </bean>
+	<bean id="pictureController" class="bll.PictureController">
+		<constructor-arg ref="databaseManager" />
+	</bean>
 
-   <bean id="constraints" class="gui.Constraints">
-   </bean>
+	<bean id="settingsController" class="bll.SettingsController">
+		<constructor-arg ref="pictureController" />
+		<constructor-arg ref="databaseManager" />
+	</bean>
 
-  
- <!--  <bean id="imageShow" class="gui.ImageShow">-->
- <!--    <constructor-arg ref="displayController"/>-->
- <!--  </bean>  -->
-   
-<!--   <bean id="showInterface" class="gui.ShowInterface">-->
-<!--     <constructor-arg ref="imageShow"/>-->
-<!--     <constructor-arg ref="loginDialog"/>-->
-<!--   </bean>  -->
-   
-<!--   <bean id="loginDialog" class="gui.LoginDialog">-->
-      <!--<constructor-arg ref="constraints"/>-->
-<!--   </bean>-->
-   
- 
-   <!-- Definition for Instagram and Twitter beans -->
-   <bean id="configurationReader" class="dal.ConfigurationReader">
-   </bean> 
+	<bean id="displayController" class="bll.DisplayController">
+		<constructor-arg ref="pictureController" />
+	</bean>
 
-   <bean id="twitterReader" class="dal.TwitterReader">
-     <constructor-arg ref="configurationReader"/>
-   </bean>
+	<bean id="settings" class="gui.Settings">
+		<constructor-arg ref="settingsController" />
+	</bean>
 
-   <bean id="instagramParser" class="dal.InstagramParser">
-   </bean>  
-   
-   <bean id="instagramReader" class="dal.InstagramReader">
-     <constructor-arg ref="instagramParser"/>
-     <constructor-arg ref="configurationReader"/>    
-   </bean>
+	<bean id="constraints" class="gui.Constraints">
+	</bean>
 
-   
-   <!-- Definition of dummy beans -->
-   <bean id="dummyinstagramReader" class="resources.InstagramReaderDummy">
-   </bean>   
 
-   <bean id="dummytwitterReader" class="resources.TwitterReaderDummy">
-   </bean>
-   
-   <bean id="databaseManagerDummy" class="resources.DatabaseManagerDummy">
-     <constructor-arg ref="databaseHandler"/>
-   </bean>
-   
+	<!-- <bean id="imageShow" class="gui.ImageShow"> -->
+	<!-- <constructor-arg ref="displayController"/> -->
+	<!-- </bean> -->
+
+	<bean id="showInterface" class="gui.ShowInterface">
+		<!-- <constructor-arg ref="imageShow"/> -->
+		<!-- <constructor-arg ref="loginDialog"/> -->
+	</bean>
+
+	<!-- <bean id="loginDialog" class="gui.LoginDialog"> -->
+	<!--<constructor-arg ref="constraints"/> -->
+	<!-- </bean> -->
+
+
+	<!-- Definition for Instagram and Twitter beans -->
+	<bean id="configurationReader" class="dal.ConfigurationReader">
+	</bean>
+
+	<bean id="twitterReader" class="dal.TwitterReader">
+		<constructor-arg ref="configurationReader" />
+	</bean>
+
+	<bean id="instagramParser" class="dal.InstagramParser">
+	</bean>
+
+	<bean id="instagramReader" class="dal.InstagramReader">
+		<constructor-arg ref="instagramParser" />
+		<constructor-arg ref="configurationReader" />
+	</bean>
+
+
+	<!-- Definition of dummy beans -->
+	<bean id="dummyinstagramReader" class="resources.InstagramReaderDummy">
+	</bean>
+
+	<bean id="dummytwitterReader" class="resources.TwitterReaderDummy">
+	</bean>
+
+	<bean id="databaseManagerDummy" class="resources.DatabaseManagerDummy">
+		<constructor-arg ref="databaseHandler" />
+	</bean>
+
 </beans>
