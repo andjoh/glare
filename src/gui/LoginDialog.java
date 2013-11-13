@@ -23,15 +23,15 @@ public class LoginDialog extends JDialog implements ActionListener {
 	private JLabel usernameLabel, passwordLabel;
 	private boolean succeeded;
 
-	public LoginDialog(Frame parent) {
-		super(parent, "Login", true);
+	public LoginDialog() {
+
 
 		init();
 		getContentPane().add(panel, BorderLayout.CENTER);
 		getContentPane().add(buttonPanel, BorderLayout.PAGE_END);
 		pack();
-		setResizable(false);
-		setLocationRelativeTo(parent);
+	
+	
 	}
 	/*Declares GUI objects.
 	 * 

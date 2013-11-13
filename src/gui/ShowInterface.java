@@ -76,12 +76,17 @@ public class ShowInterface extends JFrame implements ActionListener {
     }
 
     public void openLoginBox() {
-        LoginDialog ld = loginDialog;
+      
     	
-        ld.setLocationRelativeTo(null);
-        ld.setSize(400, 500);
-        ld.pack();
-        ld.setVisible(true);
+    	loginDialog.setLocationRelativeTo(this);
+    	loginDialog.setSize(400, 500);
+   
+    	loginDialog.setAlwaysOnTop(true);
+
+    	loginDialog.setResizable(false);
+    	loginDialog.pack();
+    	
+    	loginDialog.setVisible(true);
     }
 
 
