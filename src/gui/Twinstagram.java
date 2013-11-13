@@ -12,8 +12,11 @@ public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                ShowInterface showInterface;
-                showInterface = new ShowInterface();
+            	DisplayController disp = new DisplayController();
+            	LoginDialog ld= new LoginDialog(null);
+            	ImageShow imsh= new ImageShow(disp);
+            	ShowInterface showInterface;
+                showInterface = new ShowInterface(imsh, ld);
             }
         });
     } 

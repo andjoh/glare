@@ -37,7 +37,12 @@ public class ShowInterface extends JFrame implements ActionListener {
       
   
         add(show, BorderLayout.CENTER);
-        //this.setUndecorated(true);
+       
+        /*
+         * <edited out for easier testing> - Andreas J
+        this.setUndecorated(true);
+        
+        */
         setVisible(true);
        
       

@@ -133,13 +133,13 @@ public class LoginDialog extends JDialog implements ActionListener {
 		 */
 		private void setConstraints() {
                         
-			gbc.setConstraints(0, 0, 1, 1,0,0);
+			gbc.set(0, 0, 1, 1,0,0);
 			add(usernameLabel, gbc);
-			gbc.setConstraints(1, 0, 2, 1,0,0);
+			gbc.set(1, 0, 2, 1,0,0);
 			add(usernameInputField, gbc);
-			gbc.setConstraints(0, 1, 1, 1,0,0);
+			gbc.set(0, 1, 1, 1,0,0);
 			add(passwordLabel, gbc);
-			gbc.setConstraints(1, 1, 2, 1,0,0);
+			gbc.set(1, 1, 2, 1,0,0);
 			add(passwordInputField, gbc);
 		}
 

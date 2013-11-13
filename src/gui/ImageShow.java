@@ -1,10 +1,12 @@
 package gui;
 
 import javax.swing.JPanel;
+/*
+/edited out to do tests without bll - Andreas J
 
-import bll.DisplayController;
+//import bll.DisplayController;
 
-import java.awt.Graphics.*;
+*/
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -31,10 +33,9 @@ public class ImageShow extends JPanel {
 	 * 
 	 * 
 	 * 	 */
-	public ImageShow(DisplayController dc) throws IOException {
-		this.dc = dc;
-		//getToolkit().getScreenSize();
-		currImg = dc.getCurrentPicture(false);
+	public ImageShow(DisplayController dc)  {
+		this.dc = dc;;
+		currImg = null;
 	
 	}
 
