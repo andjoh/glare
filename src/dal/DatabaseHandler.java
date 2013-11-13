@@ -38,8 +38,15 @@ public class DatabaseHandler {
 		session.getTransaction().commit();
 	}
 
-	public List<Hashtag> getListOfHashtagsFromDB() {
-		// TODO Made by Petter
-		return null;
+	public static List<String> listOfHashtagsFromDB() {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		session.beginTransaction();
+		
+		List<String> result = session.createQuery("select hashtag from Hashtag").list();
+		
+		session.getTransaction().commit();
+		
+		return result;
 	}
 }

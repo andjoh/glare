@@ -15,15 +15,13 @@ import dal.PictureData;
 
 public class HibernateTest{
 	ArrayList<PictureData> pictures;
+	ArrayList<String> hashtags;
 
 	@Before
 	public void setUp() throws Exception {
 		Hashtag h1 = new Hashtag("winter");
 		Hashtag h2 = new Hashtag("summer");
 		Hashtag h3 = new Hashtag("hibernate");
-//		DatabaseHandler.addHashtagToDB(h1);
-//		DatabaseHandler.addHashtagToDB(h2);
-//		DatabaseHandler.addHashtagToDB(h3);
 		
 		PictureData pic = new PictureData();
 		pic.setId("1247845_2455");
@@ -45,10 +43,15 @@ public class HibernateTest{
 		DatabaseHandler.addPictureToDB(pic2);
 		
 		pictures = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();
+		hashtags = (ArrayList<String>) DatabaseHandler.listOfHashtagsFromDB();
 		
 		for(PictureData pic1: pictures){
 			System.out.println(pic1.getId() + " " + pic1.getUrlStd() + ": " + pic1.getUrlThumb() + " "
 					+ pic1.getCreatedTime() + " " + pic1.isRemoveFlag());
+		}
+		
+		for(String ht: hashtags){
+			System.out.println(ht.toString());
 		}
 	}
 
@@ -59,5 +62,8 @@ public class HibernateTest{
 	@Test
 	public void AddPictureToDB_ReturnsListWithPicturesFromDB() {
 		assertThat(pictures.size(), is(not(nullValue())));
+	}
+	public void ListHashtagsFromDB_ReturnsListWithHashtagsFromDB(){
+		assertThat(hashtags.size(), is(not(nullValue())));
 	}
 }

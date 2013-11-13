@@ -23,7 +23,7 @@ public class DatabaseManager {
 
 	public Set<String> getHashtags() {
 		Set<String> hashtags     = new HashSet<String>();
-		List<Hashtag> hashtagObj = databaseHandler.getListOfHashtagsFromDB();
+		List<Hashtag> hashtagObj = databaseHandler.listOfHashtagsFromDB();
 		for ( Hashtag ht : hashtagObj )
 			hashtags.add(ht.getHashtag());
 
