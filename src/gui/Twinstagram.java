@@ -13,9 +13,8 @@ public static void main(String args[]) {
             @Override
             public void run() {
             	DisplayController disp = new DisplayController();
-            	LoginDialog ld= new LoginDialog();
+            	LoginDialog ld= new LoginDialog(null);
             	ImageShow imsh= new ImageShow(disp);
-            	
             	ShowInterface showInterface;
                 showInterface = new ShowInterface(imsh, ld);
             }

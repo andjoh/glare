@@ -23,15 +23,15 @@ public class LoginDialog extends JDialog implements ActionListener {
 	private JLabel usernameLabel, passwordLabel;
 	private boolean succeeded;
 
-	public LoginDialog() {
-
+	public LoginDialog(Frame parent) {
+		super(parent, "Login", true);
 
 		init();
-		add(panel, BorderLayout.CENTER);
-	    add(buttonPanel, BorderLayout.PAGE_END);
-		//pack();
-	
-	
+		getContentPane().add(panel, BorderLayout.CENTER);
+		getContentPane().add(buttonPanel, BorderLayout.PAGE_END);
+		pack();
+		setResizable(false);
+		setLocationRelativeTo(parent);
 	}
 	/*Declares GUI objects.
 	 * 
@@ -75,7 +75,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		Object jc= e.getSource();
 		if (jc.equals(okButton))tryToLogin();
-		else if (jc.equals(cancelButton))setVisible(false);
+		else if (jc.equals(cancelButton))dispose();
 	}
 	/* Calls method to compare provided login information with the hardcoded values.
 	 * If correct: closes dialog box. 
@@ -86,7 +86,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 
 		if (LoginData.authenticate(getUsername(), getPassword())) {
 			succeeded = true;
-			setVisible(false);
+			dispose();
 		} else {
 			JOptionPane.showMessageDialog(LoginDialog.this,
 					"Wrong credentials", "Login", JOptionPane.ERROR_MESSAGE);
