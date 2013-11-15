@@ -42,10 +42,10 @@
 	<!-- <constructor-arg ref="displayController"/> -->
 	<!-- </bean> -->
 
-	<bean id="showInterface" class="gui.ShowInterface">
+<!--	<bean id="showInterface" class="gui.ShowInterface">-->
 		<!-- <constructor-arg ref="imageShow"/> -->
 		<!-- <constructor-arg ref="loginDialog"/> -->
-	</bean>
+<!--	</bean>-->
 
 	<!-- <bean id="loginDialog" class="gui.LoginDialog"> -->
 	<!--<constructor-arg ref="constraints"/> -->

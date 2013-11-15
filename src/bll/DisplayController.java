@@ -32,6 +32,8 @@ public class DisplayController {
 	}
 
 	public BufferedImage getCurrentPicture(boolean random) throws IOException{
+		System.out.println("PictureController: getCurrentPicture");
+
 		ArrayList<BufferedImage> po = new ArrayList<BufferedImage>();
 		List<PictureData> sortedPictureList = pictureController.getPictureDataToDisplay();
 		int i = 1;

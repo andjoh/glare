@@ -8,7 +8,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
-public class DisplayController {
+public class DisplayControllerDummy {
 /**
  *
  * @author Andreas J
@@ -22,7 +22,7 @@ public class DisplayController {
   // The arraylist is now in this class, with no copy in the GUI.
   // GUI can request 1 image which will be drawn from a list
   // if List is empty. Refill
-  public DisplayController(){
+  public DisplayControllerDummy(){
   images=  new ArrayList<BufferedImage>();
   }
   public void load(){
@@ -38,7 +38,7 @@ public class DisplayController {
               
               
           } catch (IOException ex) {
-              Logger.getLogger(DisplayController.class.getName()).log(Level.SEVERE, null, ex);
+              Logger.getLogger(DisplayControllerDummy.class.getName()).log(Level.SEVERE, null, ex);
           }   
         if(tmp!=null)images.add(tmp);
       }

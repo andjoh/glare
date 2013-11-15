@@ -6,12 +6,14 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import bll.DisplayController;
+
 public class ShowInterface extends JFrame implements ActionListener {
 	/**
 	 *
 	 * @author Andreas J
 	 */
-
+	private DisplayController dc;
 	private final JButton settingsButton;
 
 	private final JPanel panel;
@@ -20,8 +22,9 @@ public class ShowInterface extends JFrame implements ActionListener {
 	private boolean stop = true;
 	private ImageSlider slider;
 
-	public ShowInterface() throws IOException {
+	public ShowInterface(DisplayController displayController) throws IOException {
 
+		dc = displayController;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		settingsButton = new JButton("Test");
 		settingsButton.addActionListener(this);
@@ -30,7 +33,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 		panel.setBackground(Color.BLACK);
 		add(panel, BorderLayout.SOUTH);
 
-		show = new ImageShow();
+		show = new ImageShow(dc);
 
 
 		add(show, BorderLayout.CENTER);
