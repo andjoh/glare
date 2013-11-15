@@ -27,9 +27,9 @@ public class ImageShow extends JPanel {
 	 * Images are drawn to the  screen in this class
 	 * Uses LoadImages to extract images from urls. 
 	 */
-	public ImageShow() {
-		//		currImg = dc.getCurrentPicture(false);
-		currImg = null;
+	public ImageShow() throws IOException {
+		currImg = dc.getCurrentPicture(false);
+//		currImg = null;
 	}
 
 	@Override

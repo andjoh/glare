@@ -10,15 +10,28 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import resources.DatabaseManagerDummy;
+
+import dal.DatabaseHandler;
+import dal.DatabaseManager;
+
 import bll.DisplayController;
+import bll.PictureController;
 
 public class DisplayControllerTest {
 	
 	private DisplayController dc;
+	private PictureController pc;
+	private DatabaseHandler dbHandler;
+	private DatabaseManagerDummy dbManagerDummy;
 	
 	@Before
 	public void setUp() throws IOException{
-		dc = (DisplayController) ClassFactory.getBeanByName("displayController");
+		dbHandler = new DatabaseHandler();
+		dbManagerDummy = new DatabaseManagerDummy(dbHandler);
+		pc = new PictureController(dbManagerDummy);
+		
+		dc = new DisplayController(pc);
 		dc.getCurrentPicture(false);
 	}
 	@After

@@ -20,7 +20,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 	private boolean stop = true;
 	private ImageSlider slider;
 
-	public ShowInterface() {
+	public ShowInterface() throws IOException {
 
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		settingsButton = new JButton("Test");
