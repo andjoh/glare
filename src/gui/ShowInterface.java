@@ -34,17 +34,21 @@ public class ShowInterface extends JFrame implements ActionListener {
 		add(panel, BorderLayout.SOUTH);
 
 		show = new ImageShow(dc);
+		System.out.println("kaller imageshow");
 
 
 		add(show, BorderLayout.CENTER);
 		//this.setUndecorated(true);
 		setVisible(true);
+		System.out.println("setVIsible");
 
 
 
 		GraphicsEnvironment.getLocalGraphicsEnvironment().
 		getDefaultScreenDevice().setFullScreenWindow(this);
+		System.out.println("graphicsEnvironment");
 		startClick();
+		System.out.println("kaller startClick() / slider");
 	}
 
 
@@ -84,19 +88,24 @@ public class ShowInterface extends JFrame implements ActionListener {
 		boolean started;
 		int size;
 		ImageSlider() {
+			System.out.println("imageSlider");
 			started = true;
-
+//			run();
 		}
 
 		@Override
 		public void run() {
+			System.out.println("run()");
 			int i;
 			try {
 				while(true){
-					if (stop != false) {
+					if (stop != true) {
+						System.out.println("before thread");
 						Thread.sleep(2000);
+						System.out.println("after thread");
 						show.moveNext();
 						repaint();
+						System.out.println("ShowINterface, kaller moveNext()");
 					}
 
 				}
