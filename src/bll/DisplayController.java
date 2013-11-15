@@ -53,7 +53,6 @@ public class DisplayController {
 			}
 		}
 		
-		
 //		shufflePictures(random, po);
 		currentPicture(po);
 
