@@ -29,8 +29,8 @@ public class ImageShow extends JPanel {
 	 */
 	public ImageShow(DisplayController displayController) throws IOException {
 		dc = displayController;
-		currImg = dc.getCurrentPicture(false);
-//		currImg = null;
+//		currImg = dc.getCurrentPicture(false);
+		currImg = null;
 	}
 
 	@Override
