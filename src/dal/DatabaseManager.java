@@ -21,17 +21,13 @@ public class DatabaseManager {
 		// TODO Call metode to update db
 	}
 
+	@SuppressWarnings("unchecked")
 	public Set<String> getHashtags() {
-		Set<String> hashtags     = new HashSet<String>();
-		List<Hashtag> hashtagObj = databaseHandler.listOfHashtagsFromDB();
-		for ( Hashtag ht : hashtagObj )
-			hashtags.add(ht.getHashtag());
-
-		return hashtags;
+		return (Set<String>) DatabaseHandler.listOfHashtagsFromDB();
 	}
 
 	public void addHashtags(Set<String> hashtags) {
-		// TODO Invoke metod to add hashtags
+		// TODO Invoke method to add hashtags
 		// Consider creating Hashtag objekts here		
 	}
 
