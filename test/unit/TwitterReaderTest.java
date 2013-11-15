@@ -12,6 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import dal.ConfigurationReader;
 import dal.PictureData;
 import dal.TwitterReader;
 
@@ -23,7 +24,7 @@ public class TwitterReaderTest {
 		@Before
 		public void setUp() throws Exception {
 			pictures = new ArrayList<PictureData>();
-			tr = (TwitterReader) ClassFactory.getBeanByName("twitterReader");
+			tr = new TwitterReader(new ConfigurationReader());
 			
 			pictures = tr.getPictures("twittermotjavatesting");
 		}
