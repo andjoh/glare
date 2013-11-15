@@ -2,6 +2,10 @@ package dal;
 
 import java.util.*;
 
+/**
+ * @author Andreas Bjerga & Marius Vasshus
+ */
+
 public class PictureData {
 	private String id;
 	private String urlStd;

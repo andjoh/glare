@@ -3,6 +3,10 @@ package dal;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * @author Andreas Bjerga & Marius Vasshus
+ */
+
 public class Hashtag {
 	private int id;
 	private String hashtag;

@@ -2,7 +2,14 @@ package dal;
 
 import java.util.List;
 
+/**
+ * @author Andreas Bjerga & Marius Vasshus
+ */
+
+import org.hibernate.Query;
 import org.hibernate.Session;
+
+import com.sun.org.apache.bcel.internal.generic.Select;
 
 public class DatabaseHandler {
 	
@@ -43,10 +50,41 @@ public class DatabaseHandler {
 		
 		session.beginTransaction();
 		
-		List<String> result = session.createQuery("select hashtag from Hashtag").list();
+		List<String> result = session.createQuery("SELECT hashtag FROM Hashtag").list();
 		
 		session.getTransaction().commit();
 		
 		return result;
+	}
+	
+	public static void removeHashtagFromDB(String hashName){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		session.beginTransaction();
+		
+		String s = "DELETE FROM Hashtag WHERE hashtag=\'" + hashName.toLowerCase() + "\'";
+		
+		Query q = session.createQuery(s);
+		q.executeUpdate();
+
+		session.getTransaction().commit();
+	}
+	
+	public static void removePicturesWithoutHashTagFromDB(){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		session.beginTransaction();
+		
+		String s = "DELETE FROM PictureData "
+				+ "WHERE NOT EXISTS ("
+					+ "SELECT * "
+					+ "FROM Hash_Pics "
+					+ "WHERE Hash_Pics.picID=PictureData.id"
+					+ ")";
+		
+		Query q = session.createSQLQuery(s);
+		q.executeUpdate();
+
+		session.getTransaction().commit();
 	}
 }

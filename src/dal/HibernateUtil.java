@@ -5,6 +5,10 @@ import org.hibernate.cfg.*;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 
+/**
+ * @author Andreas Bjerga & Marius Vasshus
+ */
+
 public class HibernateUtil {
     private static final SessionFactory sessionFactory;
     private static final ServiceRegistry serviceRegistry;
