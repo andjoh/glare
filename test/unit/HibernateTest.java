@@ -52,12 +52,12 @@ public class HibernateTest{
 		pic3.addHashtag(h2);
 		DatabaseHandler.addPictureToDB(pic3);
 
+		//DatabaseHandler.removeHashtagFromDB("summer");
+		//DatabaseHandler.removePicturesWithoutHashTagFromDB();		
 		
 		pictures = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();
 		hashtags = (ArrayList<String>) DatabaseHandler.listOfHashtagsFromDB();
 		
-		DatabaseHandler.removeHashtagFromDB("summer");
-		DatabaseHandler.removePicturesWithoutHashTagFromDB();		
 		
 		for(PictureData pic1: pictures){
 			System.out.println(pic1.getId() + " " + pic1.getUrlStd() + ": " + pic1.getUrlThumb() + " "
@@ -71,16 +71,19 @@ public class HibernateTest{
 
 	@After
 	public void tearDown() throws Exception {
+		//pictures = new ArrayList<PictureData>();
+		//hashtags = new ArrayList<String>();
 	}
 
-//	@Test
+	@Test
 	public void AddPictureToDB_ReturnsListWithPicturesFromDB() {
 		assertThat(pictures.size(), is(not(nullValue())));
 	}
+	@Test
 	public void ListHashtagsFromDB_ReturnsListWithHashtagsFromDB(){
 		assertThat(hashtags.size(), is(not(nullValue())));
 	}
-	@Test
+	//@Test
 	public void DeletePicturesWithoutHashtag_CheckHowManyPicturesLeft(){
 		assertThat(pictures.size(), is(2));
 	}
