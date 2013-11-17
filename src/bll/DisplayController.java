@@ -39,7 +39,7 @@ public class DisplayController {
 
 		if (count == 0) {
 			po = new ArrayList<BufferedImage>();
-			sortedPictureList = pictureController.getPictureDataToDisplay();
+			sortedPictureList = pictureController.getSortedPictureData();
 
 			int i = 1;
 			for (PictureData p : sortedPictureList){
