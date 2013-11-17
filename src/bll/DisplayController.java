@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import bll.SettingsController.ViewMode;
+
 import dal.PictureData;
 
 /**
@@ -29,9 +31,15 @@ public class DisplayController {
 	private BufferedImage currentPic;
 	private int count = 0;
 	private final int MAX_SIZE = 100;
+	private ViewMode viewMode;
+	private int displayTime;
 
 	public DisplayController(PictureController pictureController){
 		this.pictureController = pictureController;
+		
+		// Default settings
+		viewMode    = SettingsController.ViewMode.SEQUENTIAL;
+		displayTime = 4000;
 	}
 
 	public BufferedImage getCurrentPicture(boolean random) throws IOException{
@@ -53,8 +61,12 @@ public class DisplayController {
 			}
 		}
 		
-//		shufflePictures(random, po);
-		currentPicture(po);
+		// TODO: Something like this...
+		if ( viewMode == SettingsController.ViewMode.RANDOM ) {
+			shufflePictures(random, po);
+		}
+		else
+			currentPicture(po);
 
 		return currentPic;
 	}
@@ -82,5 +94,17 @@ public class DisplayController {
 		if (random = true){
 			Collections.shuffle(po);
 		}
+	}
+
+	public void setViewMode(ViewMode viewMode) {
+		this.viewMode = viewMode;
+	}
+
+	public int getDisplayTime() {
+		return displayTime;
+	}
+
+	public void setDisplayTime(int displayTime) {
+		this.displayTime = displayTime;
 	}
 }

@@ -19,7 +19,7 @@ public class SettingsController {
 	private List<SettingsPicture> settingsPictures;
 	private Set<String> hashtags;
 	public static enum ViewMode {SEQUENTIAL, RANDOM};
-	private ViewMode currentMode;
+	private ViewMode viewMode;
 	private int displayTime;
 
 	
@@ -101,21 +101,22 @@ public class SettingsController {
 			dbManager.removeHashtags(remHashtags);
 	}
 
-	public ViewMode getCurrentMode() {
+	public ViewMode getViewMode() {
 		// TODO Get setting from db
 //		String mode = dbManager.getMode();
 //		if ( mode.equalsIgnoreCase(ViewMode.RANDOM.toString()) )
 //			currentMode = ViewMode.RANDOM;
 //		else
-			currentMode = ViewMode.SEQUENTIAL;
+			viewMode = ViewMode.SEQUENTIAL;
 
-		return currentMode;
+		return viewMode;
 	}
 
-	public void setCurrentMode(ViewMode currentMode) {
-		this.currentMode = currentMode;
-		// TODO Set setting in DisplayController
-		//dispCtrl.setMode(currentMode);
+	public void setViewMode(ViewMode viewMode) {
+		this.viewMode = viewMode;
+
+		dispCtrl.setViewMode(viewMode);
+		
 		// TODO Save setting in db
 		//dbManager.setMode(currentMode);
 	}
@@ -123,14 +124,16 @@ public class SettingsController {
 	public int getDisplayTime() {
 		// TODO Get setting from db
 		//displayTime = dbManager.getDisplayTime();
+		displayTime = 4000;
 		
 		return displayTime;
 	}
 
 	public void setDisplayTime(int displayTime) {
 		this.displayTime = displayTime;
-		// TODO Not sure if this should be set in disp ctrl or display gui
-		//dispCtrl.setDisplayTime(displayTime);
+
+		dispCtrl.setDisplayTime(displayTime);
+		
 		// TODO Save setting in db
 		//dbManager.setDisplayTime(displayTime);
 	}

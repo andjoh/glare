@@ -101,7 +101,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 				while(true){
 					if (stop != true) {
 						System.out.println("before thread");
-						Thread.sleep(4000);
+						Thread.sleep(dc.getDisplayTime());
 						System.out.println("after thread");
 						show.moveNext();
 						repaint();
