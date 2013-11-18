@@ -27,12 +27,20 @@ public class HibernateAddAndListPicturesTest {
 		pic.setRemoveFlag(false);
 		DatabaseHandler.addPictureToDB(pic);
 		
+		PictureData pic2 = new PictureData();
+		pic2.setId("10_2455");
+		pic2.setUrlStd("www.twitter.com");
+		pic2.setUrlThumb("www.instagram.com");
+		pic2.setCreatedTime(123456);
+		pic2.setRemoveFlag(true);
+		DatabaseHandler.addPictureToDB(pic2);
+		
 		pictures = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();
 		
-//		for(PictureData pic1: pictures){
-//			System.out.println(pic1.getId() + " " + pic1.getUrlStd() + ": " + pic1.getUrlThumb() + " "
-//					+ pic1.getCreatedTime() + " " + pic1.isRemoveFlag());
-//		}
+		for(PictureData pic1: pictures){
+			System.out.println(pic1.getId() + " " + pic1.getUrlStd() + ": " + pic1.getUrlThumb() + " "
+					+ pic1.getCreatedTime() + " " + pic1.isRemoveFlag());
+		}
 		
 		assertThat(pictures.size(), is(not(nullValue())));
 	}
