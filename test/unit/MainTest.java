@@ -26,36 +26,37 @@ public class MainTest {
 			@Override
 			public void run() {
 				
-				// DUMMY CHECK
-//				DatabaseHandler dbHandler           = new DatabaseHandler();
-//				DatabaseManagerDummy dbManagerDummy = new DatabaseManagerDummy(dbHandler);
-//				PictureController picCtrl           = new PictureController(dbManagerDummy);
-//
-//				// Do some dummy stuff
-//				List<String> sourcesDummy;
-//				Set<String> hashtagsDummy;
-//
-//				// Set dummy sources
-//				sourcesDummy = new ArrayList<String>();
-//				sourcesDummy.add("instagram");
-//				sourcesDummy.add("twitter");
-//
-//				// Set test data for source and hashtag
-//				hashtagsDummy = new HashSet<String>();
-//				hashtagsDummy.add("twittermotjavatesting");
-//				hashtagsDummy.add("raskebriller");
-//
-//				// Set dummy sources and hashtag
-//				dbManagerDummy.setSources(sourcesDummy);
-//				dbManagerDummy.setHashtags(hashtagsDummy);
-//
-//				// Run test
-//				picCtrl.searchPictureData();
-//				picCtrl.processPictureData();
-//				DisplayController dc = new DisplayController(picCtrl);
+				//MMY CHECK
+				DatabaseHandler dbHandler           = new DatabaseHandler();
+				DatabaseManagerDummy dbManagerDummy = new DatabaseManagerDummy(dbHandler);
+				PictureController picCtrl           = new PictureController(dbManagerDummy);
+
+				//Do some dummy stuff
+				List<String> sourcesDummy;
+				Set<String> hashtagsDummy;
+
+				// Set dummy sources
+				sourcesDummy = new ArrayList<String>();
+				sourcesDummy.add("instagram");
+				sourcesDummy.add("twitter");
+
+				// Set test data for source and hashtag
+			hashtagsDummy = new HashSet<String>();
+				hashtagsDummy.add("twittermotjavatesting");
+				hashtagsDummy.add("raskebriller");
+
+				// Set dummy sources and hashtag
+				dbManagerDummy.setSources(sourcesDummy);
+				dbManagerDummy.setHashtags(hashtagsDummy);
+
+				// Run test
+				picCtrl.searchPictureData();
+				picCtrl.processPictureData();
+				DisplayController dc = new DisplayController(picCtrl);
 				
 				// REAL CHECK
-				DisplayController dc = (DisplayController) ClassFactory.getBeanByName("displayController");
+			     
+			     				//DisplayController dc = (DisplayController) ClassFactory.getBeanByName("displayController");
 
 				try {
 					ShowInterface showInterface = new ShowInterface(dc);
