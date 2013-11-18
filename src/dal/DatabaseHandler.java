@@ -55,6 +55,17 @@ public class DatabaseHandler {
 		return result;
 	}
 	
+	public static void removePictureDataFromDB(){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		session.beginTransaction();
+		
+		Query q = session.createSQLQuery("DELETE FROM PictureData");
+		q.executeUpdate();
+		
+		session.getTransaction().commit();
+	}
+	
 	public static void removeHashtagFromDB(String hashName){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		
