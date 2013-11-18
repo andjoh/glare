@@ -12,10 +12,10 @@
         <id name="id" type="int" column="id">
             <generator class="native"/>
         </id>
-        <property name="hashtag" not-null="true"/>
+        <property name="hashtag" not-null="true" unique="true"/>
         
         <!-- er det riktig å bruke inverse her?? må sette cascade -->
-        <set name="pictures" cascade="delete" table="Hash_Pics" inverse="true">
+        <set name="pictures" cascade="delete" table="Hash_Pics">
         	<key column="hashID"/>
         	<many-to-many column="picID" class="dal.PictureData"/>
         </set>
