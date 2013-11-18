@@ -16,7 +16,15 @@ public class DatabaseManager {
 	}
 	
 	public void savePictureDataToDb(List<PictureData> pictureData) {
+		
+		DatabaseHandler.removePictureDataFromDB();
+		
 		for (PictureData pd: pictureData){
+			System.out.println(pd.getId());
+			for ( Hashtag ht : pd.getHashtags())
+				System.out.println(ht.getHashtag());
+			System.out.println("");
+
 			DatabaseHandler.addPictureToDB(pd);
 		}
 	}
@@ -27,9 +35,12 @@ public class DatabaseManager {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public Set<String> getHashtags() {
-		return (Set<String>) DatabaseHandler.listOfHashtagsFromDB();
+		Set<String> hashtags = new HashSet<String>();
+		for ( String ht : DatabaseHandler.listOfHashtagsFromDB() )
+			hashtags.add(ht);
+		
+		return hashtags;
 	}
 
 	public void addHashtags(Set<String> hashtags) {
