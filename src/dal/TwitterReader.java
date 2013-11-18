@@ -41,10 +41,10 @@ public class TwitterReader  implements IReader {
 		.setOAuthAccessTokenSecret(confReader.read("access_token_secret"));
 	}
 
-	private int DateConvert(Date time) throws ParseException{
-		DateFormat sdf = new SimpleDateFormat("yyyMMddHHmmss");
+	private long DateConvert(Date time) throws ParseException{
+		DateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		String sDate = sdf.format(time);
-		int timestamp = (int)sdf.parse(sDate).getTime();
+		long timestamp = (long)sdf.parse(sDate).getTime();
 		return (timestamp/1000);
 	}
 
