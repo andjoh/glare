@@ -20,6 +20,16 @@ public class DatabaseHandler {
 		
 		session.getTransaction().commit();
 	}
+	public static void addPictureToDBOPT(List<PictureData> picList){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		session.beginTransaction();
+		
+		for(PictureData pd: picList){
+			session.save(pd);
+		}
+		session.getTransaction().commit();
+	}
 	
 	public static List<PictureData> listOfPicturesFromDB(){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
