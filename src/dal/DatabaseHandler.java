@@ -70,6 +70,7 @@ public class DatabaseHandler {
 		session.getTransaction().commit();
 	}
 	
+	//NOTE TO SELF!! PICS WITH REMOVEFLAG SHOULD NOT BE REMOVED! FIX THIS LATER
 	public static void removePicturesWithoutHashTagFromDB(){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		
