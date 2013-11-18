@@ -25,6 +25,10 @@ public class DatabaseManagerDummy extends DatabaseManager {
 		this.pictureDataFromDb = pictureData;
 	}
 
+	public void savePictureDataToDb(List<PictureData> pictureData) {
+		this.pictureDataFromDb = pictureData;
+	}
+	
 	public void setSources(List<String> sources) {
 		this.sources = sources;
 	}

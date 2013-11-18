@@ -90,7 +90,7 @@ public class PictureControllerTest {
 		List<PictureData> pictureData = picCtrl.getPictureDataFromSources();
 
 		// Additional output
-		System.out.println("8 Dummy Picturedata from Instagram and Twitter");
+		System.out.println("16 Dummy Picturedata from Instagram and Twitter");
 		for ( PictureData pd : pictureData )
 		{
 			System.out.println(pd.getId());

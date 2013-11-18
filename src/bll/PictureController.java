@@ -11,6 +11,7 @@ import resources.TwitterReaderDummy;
 public class PictureController {
 	private DatabaseManager databaseManager;
 	private List<PictureData> pictureDataFromSources;
+	private List<PictureData> currentPictureData;
 	
 	
 	public PictureController(DatabaseManager databaseManager) {
@@ -18,7 +19,6 @@ public class PictureController {
 	}
 	
 	public boolean searchPictureData() {	
-
 		pictureDataFromSources = new ArrayList<PictureData>();
 		
 		// Get sources and hashtags
@@ -45,8 +45,7 @@ public class PictureController {
 		return true;
 	}
 
-	private List<PictureData> searchPictureDataFromHashtags(IReader reader, String hashtag) {
-		
+	private List<PictureData> searchPictureDataFromHashtags(IReader reader, String hashtag) {	
 		ArrayList<PictureData> pictureData = null;
 		try {
 			return (ArrayList<PictureData>) reader.getPictures(hashtag);
@@ -64,7 +63,6 @@ public class PictureController {
 	 * Sort and save to database
 	 */	
 	public void processPictureData() {
-
 		List<PictureData> pictureDataExisting = databaseManager.getPictureDataFromDb();
 
 		// Iterate over new picture data and add to existing 
@@ -106,9 +104,10 @@ public class PictureController {
 		databaseManager.savePictureDataToDb(sortPictureData(pictureDataExisting));
 	}
 	
-
 	private List<PictureData> sortPictureData(List<PictureData> pictureData) {
+		
 		Collections.sort(pictureData, new PictureDataComparator());
+		
 		return pictureData;
 	}
 		
@@ -116,16 +115,22 @@ public class PictureController {
 	 * Return sorted List of PictureData objects that can be displayed, i.e. no inappropriate.
 	 * @return List of PictureData
 	 */
-	public List<PictureData> getPictureDataToDisplay() {
-
+	public List<PictureData> getSortedPictureData() {		
+		currentPictureData          = new ArrayList<PictureData>();
 		List<PictureData> pictureData = databaseManager.getPictureDataFromDb();
-//		TwitterReaderDummy trd = new TwitterReaderDummy();
-//		List<PictureData> pictureData = (List<PictureData>) trd;
+
 		for ( PictureData pD : pictureData ) {
-			if ( pD.isRemoveFlag() )
-				pictureData.remove(pD);
+			if ( !pD.isRemoveFlag() )
+				currentPictureData.add(pD);
 		}
-		return sortPictureData(pictureData);
+		
+		currentPictureData = sortPictureData(currentPictureData);
+		
+		return currentPictureData;
+	}
+
+	public List<PictureData> getCurrentPictureData() {
+		return currentPictureData;
 	}
 	
 	public List<PictureData> getPictureDataFromSources() {

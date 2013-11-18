@@ -9,8 +9,6 @@ import java.util.List;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import com.sun.org.apache.bcel.internal.generic.Select;
-
 public class DatabaseHandler {
 	
 	public static void addPictureToDB(PictureData pic){
@@ -87,5 +85,20 @@ public class DatabaseHandler {
 		q.executeUpdate();
 
 		session.getTransaction().commit();
+	}
+	public static void setRemoveFlag(String picID){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		session.beginTransaction();
+		
+		String s = "update PictureData set removeFlag = :newFlag where id = :picID";
+		Query q = session.createQuery(s);
+		q.setBoolean("newFlag", true);
+		q.setString("picID", picID);
+		
+		q.executeUpdate();
+		
+		session.getTransaction().commit();
+		
 	}
 }
