@@ -5,6 +5,8 @@ import static org.hamcrest.CoreMatchers.*;
 
 import org.junit.*;
 
+import resources.DatabaseManagerDummy;
+
 import glare.ClassFactory;
 
 import java.util.*;
@@ -27,14 +29,37 @@ public class GetPictureDataAndSaveToDbTest {
 	@Test
 	public void SearchPictureData_Instagram_And_Twitter_WhenCalled_SavePictureDataToDb() {
 
-		PictureController picCtrl = (PictureController) ClassFactory.getBeanByName("pictureController");
-		DatabaseManager dbMan     = (DatabaseManager) ClassFactory.getBeanByName("databaseManager");
+		// DUMMY CHECK
+		DatabaseHandler dbHandler  = new DatabaseHandler();
+		DatabaseManagerDummy dbMan = new DatabaseManagerDummy(dbHandler);
+		PictureController picCtrl  = new PictureController(dbMan);
+
+		// Do some dummy stuff
+		List<String> sourcesDummy;
+		Set<String> hashtagsDummy;
+
+		// Set dummy sources
+		sourcesDummy = new ArrayList<String>();
+		sourcesDummy.add("instagram");
+		sourcesDummy.add("twitter");
 
 		// Set test data for source and hashtag
-		Set<String> hashtagsDummy = new HashSet<String>();
+		hashtagsDummy = new HashSet<String>();
 		hashtagsDummy.add("twittermotjavatesting");
 		hashtagsDummy.add("raskebriller");
-		dbMan.addHashtags(hashtagsDummy);
+
+		// Set dummy sources and hashtag
+		dbMan.setSources(sourcesDummy);
+		dbMan.setHashtags(hashtagsDummy);		
+		
+//		PictureController picCtrl = (PictureController) ClassFactory.getBeanByName("pictureController");
+//		DatabaseManager dbMan     = (DatabaseManager) ClassFactory.getBeanByName("databaseManager");
+
+		// Set test data for source and hashtag
+//		Set<String> hashtagsDummy = new HashSet<String>();
+//		hashtagsDummy.add("twittermotjavatesting");
+//		hashtagsDummy.add("raskebriller");
+//		dbMan.addHashtags(hashtagsDummy);
 		
 		picCtrl.searchPictureData();
 		picCtrl.processPictureData();
