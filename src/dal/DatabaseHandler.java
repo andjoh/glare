@@ -75,7 +75,8 @@ public class DatabaseHandler {
 		session.beginTransaction();
 		
 		String s = "DELETE FROM PictureData "
-				+ "WHERE NOT EXISTS ("
+				+ "WHERE removeFlag = (0) "
+				+ "AND NOT EXISTS ("
 					+ "SELECT * "
 					+ "FROM Hash_Pics "
 					+ "WHERE Hash_Pics.picID=PictureData.id"

@@ -18,6 +18,7 @@ public class HibernateRemovePicturesWithoutHashtagTest {
 	@Test
 	public void AddPicturesToDB_ReturnsListOfPicturesFromDB() {
 		Hashtag h1 = new Hashtag("test1");
+		Hashtag h2 = new Hashtag("test2");
 		
 		//Insert picture with hashtag
 		PictureData pic = new PictureData();
@@ -38,10 +39,21 @@ public class HibernateRemovePicturesWithoutHashtagTest {
 		pic2.setRemoveFlag(false);
 		DatabaseHandler.addPictureToDB(pic2);
 		
+		PictureData pic3 = new PictureData();
+		pic3.setId("2031_57891A");
+		pic3.setUrlStd("www.twitter.com");
+		pic3.setUrlThumb("www.instagram.com");
+		pic3.setCreatedTime(145122);
+		pic3.setRemoveFlag(true);
+		pic3.addHashtag(h2);
+		DatabaseHandler.addPictureToDB(pic3);
+		
+		DatabaseHandler.removeHashtagFromDB("test2");
+		
 		DatabaseHandler.removePicturesWithoutHashTagFromDB();
 		pictures = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();
 		
-		assertThat(pictures.size(), is(1));
+		assertThat(pictures.size(), is(2));
 	}
 
 }
