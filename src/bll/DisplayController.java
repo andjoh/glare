@@ -30,19 +30,36 @@ public class DisplayController {
 	private PictureController pictureController;
 	private BufferedImage currentPic;
 	private int count = 0;
+	private int current = 0;
 	private final int MAX_SIZE = 100;
 	private ViewMode viewMode;
 	private int displayTime;
 
 	public DisplayController(PictureController pictureController){
 		this.pictureController = pictureController;
-		
+
 		// Default settings
 		viewMode    = SettingsController.ViewMode.SEQUENTIAL;
 		displayTime = 4000;
 	}
 
-	public BufferedImage getCurrentPicture(boolean random) throws IOException{
+	public void getSortedList() {
+		sortedPictureList = pictureController.getSortedPictureData();
+	}
+
+	public BufferedImage getCurrentPicture() throws IOException{
+		getSortedList();
+		PictureData p = sortedPictureList.get(current);
+		currentPic = getBufImage(p);
+		if (current < sortedPictureList.size()-1 && current < MAX_SIZE-1){
+			current++;
+		} else {
+			current = 0;
+		}
+		return currentPic;
+	}
+
+	/*public BufferedImage getCurrentPicture(boolean random) throws IOException{
 		System.out.println("PictureController: getCurrentPicture");
 
 		if (count == 0) {
@@ -60,7 +77,7 @@ public class DisplayController {
 				}
 			}
 		}
-		
+
 		// TODO: Something like this...
 		if ( viewMode == SettingsController.ViewMode.RANDOM ) {
 			shufflePictures(random, po);
@@ -69,8 +86,8 @@ public class DisplayController {
 			currentPicture(po);
 
 		return currentPic;
-	}
-	
+	}*/
+
 	private void currentPicture(ArrayList<BufferedImage> po){
 		if (count < po.size()-1){
 			currentPic = po.get(count);
@@ -80,7 +97,7 @@ public class DisplayController {
 			count = 0;
 		}
 	}
-	
+
 	private BufferedImage getBufImage(PictureData p) throws IOException{
 		//		URL testUrl = new URL("http://pbs.twimg.com/media/BXrietbIgAAiroP.jpg");
 		URL imageUrl = new URL(p.getUrlStd());
@@ -89,7 +106,7 @@ public class DisplayController {
 		in.close();
 		return image;
 	}
-	
+
 	private void shufflePictures(boolean random, ArrayList<BufferedImage> po){
 		if (random = true){
 			Collections.shuffle(po);
