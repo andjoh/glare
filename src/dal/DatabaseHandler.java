@@ -20,6 +20,16 @@ public class DatabaseHandler {
 		
 		session.getTransaction().commit();
 	}
+	public static void addPictureToDBOPT(List<PictureData> picList){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		session.beginTransaction();
+		
+		for(PictureData pd: picList){
+			session.save(pd);
+		}
+		session.getTransaction().commit();
+	}
 	
 	public static List<PictureData> listOfPicturesFromDB(){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -53,6 +63,17 @@ public class DatabaseHandler {
 		session.getTransaction().commit();
 		
 		return result;
+	}
+	
+	public static void removePictureDataFromDB(){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		session.beginTransaction();
+		
+		Query q = session.createSQLQuery("DELETE FROM PictureData");
+		q.executeUpdate();
+		
+		session.getTransaction().commit();
 	}
 	
 	public static void removeHashtagFromDB(String hashName){
