@@ -33,7 +33,7 @@ public class SettingsViewModulDummy{
     BufferedImage tmp=null;
       for (String url1 : urls) {
           
-          url = this.getClass().getResource(url1);
+          url = this.getClass().getResource("/resource/img/" + url1);
           
           try {
              
