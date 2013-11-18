@@ -23,25 +23,6 @@ public class HibernateAddAndListHashtagTest {
 		Hashtag h2 = new Hashtag("summer");
 		Hashtag h3 = new Hashtag("hibernate");
 		
-//		PictureData pic = new PictureData();
-//		pic.setId("1247845_2455");
-//		pic.setUrlStd("www.twitter.com");
-//		pic.setUrlThumb("www.instagram.com");
-//		pic.setCreatedTime(123456);
-//		pic.setRemoveFlag(false);
-//		pic.addHashtag(h1);
-//		pic.addHashtag(h2);
-//		DatabaseHandler.addPictureToDB(pic);
-//
-//		PictureData pic2 = new PictureData();
-//		pic2.setId("1247845_57891A");
-//		pic2.setUrlStd("www.twitter.com");
-//		pic2.setUrlThumb("www.instagram.com");
-//		pic2.setCreatedTime(123456);
-//		pic2.setRemoveFlag(false);
-//		pic2.addHashtag(h2);
-//		DatabaseHandler.addPictureToDB(pic2);
-		
 		DatabaseHandler.addHashtagToDB(h1);
 		DatabaseHandler.addHashtagToDB(h2);
 		DatabaseHandler.addHashtagToDB(h3);

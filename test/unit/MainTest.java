@@ -42,6 +42,7 @@ public class MainTest {
 
 				// Set test data for source and hashtag
 				hashtagsDummy = new HashSet<String>();
+
 				hashtagsDummy.add("twittermotjavatesting");
 				hashtagsDummy.add("raskebriller");
 
@@ -56,6 +57,7 @@ public class MainTest {
 				
 				// REAL CHECK
 //				DisplayController dc = (DisplayController) ClassFactory.getBeanByName("displayController");
+
 
 				try {
 					ShowInterface showInterface = new ShowInterface(dc);

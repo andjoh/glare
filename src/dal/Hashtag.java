@@ -14,7 +14,7 @@ public class Hashtag {
 	private Set<PictureData> pictures;
 	
 	public Hashtag(String hashtag){
-		this.hashtag = hashtag;
+		this.hashtag = hashtag.toLowerCase();
 		pictures = new HashSet<PictureData>();
 	}
 
@@ -44,7 +44,7 @@ public class Hashtag {
 	}
 
 	public void setHashtag(String hashtag) {
-		this.hashtag = hashtag;
+		this.hashtag = hashtag.toLowerCase();
 	}
 
 	@Override

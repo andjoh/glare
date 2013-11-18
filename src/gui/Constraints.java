@@ -43,4 +43,18 @@ public Constraints(){
   anchor= anc;
   
  }
+ public void set(int grx,int gry,int grw,int grh,int ipx,int ipy, double wgx,double wgy, Insets ins,int anc){
+	  gridx=grx;
+	  gridy=gry;
+	  gridwidth=grw;
+	  gridheight=grh;
+	  ipadx=ipx;
+	  weightx=wgx;
+	  weighty=wgy;
+	  ipady=ipy;
+	  insets=ins;
+	  anchor= anc;
+	  
+	 }
+ 
 }
