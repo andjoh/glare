@@ -33,8 +33,11 @@ import javax.swing.JScrollPane;
 
 		private void init() {
 			// thumbnailTable properties
-			thumbnailTable= new ImageTable(10,10);
+			thumbnailTable= new ImageTable(cols,rows);
 			SettingsViewModulDummy setv= new SettingsViewModulDummy();
+			setv.setH(thumbnailTable.getHeight()/rows);
+			setv.setW(thumbnailTable.getWidth()/cols);
+			System.out.println(thumbnailTable.getHeight());
 			TableUpdater update = new TableUpdater(thumbnailTable.getModel(), setv);
 			update.start();
 			// tableScroller properties

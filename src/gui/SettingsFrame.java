@@ -12,11 +12,10 @@ import java.awt.*;
  */
 @SuppressWarnings("serial")
 public class SettingsFrame extends JInternalFrame {
-
-	private static final String UNCHECKED = "unchecked";
-	private static final String UNCHECKED2 = UNCHECKED;
-
-	/**
+private static final Dimension PREFERRED_SIzE= new Dimension(
+		800,600
+);
+/**
 	 * Creates new form SettingsFrame
 	 */
 	public SettingsFrame() {
@@ -24,7 +23,7 @@ public class SettingsFrame extends JInternalFrame {
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		//setResizable(true);
-		setPreferredSize(new Dimension(800,600));
+		setPreferredSize(PREFERRED_SIzE);
 		setDoubleBuffered(true);
 		getContentPane().add(dispset);
 		getContentPane().add(tablepanel);
@@ -56,8 +55,6 @@ public class SettingsFrame extends JInternalFrame {
 		backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
 				"/resource/img/backgr.jpg")));
 		backgroundImageLabel.setIconTextGap(0);
-		backgroundImageLabel.setMaximumSize(new Dimension(8192, 4608));
-		backgroundImageLabel.setMinimumSize(new Dimension(800, 600));
 		backgroundImageLabel.setPreferredSize(new Dimension(2560, 1600));
 		backgroundImageLabel.setBounds(0, 0, 933, 810);
 		
@@ -108,19 +105,7 @@ public class SettingsFrame extends JInternalFrame {
 
 	// Variables 
 	private DisplaySettingsPanel dispset;
-	private DefaultListModel<String> listModel;
-	private JTextField addhashField;
-	private JSpinner delaySpinner;
-
-	private HashtagSettingsPanel hashpan;
-	private JList<String> hashJList;
-	private JLabel hashsignLabel;
-	private JButton removeButton, delhashButton, addhashButton;
-	@SuppressWarnings("rawtypes")
-	private JComboBox viewmodeCombo;
-	private JScrollPane jlistScroller;
-	private JScrollPane tableScroller;
+    private HashtagSettingsPanel hashpan;
 	private TableSettingsPanel tablepanel;
-	private ImageTable thumbnailTable;
-	private JLabel viewdelayLabel, viewmodeLabel, backgroundImageLabel;
+    private JLabel backgroundImageLabel;
 }
