@@ -26,12 +26,12 @@ public class MainTest {
 			@Override
 			public void run() {
 				
-				//MMY CHECK
+				// DUMMY CHECK
 				DatabaseHandler dbHandler           = new DatabaseHandler();
 				DatabaseManagerDummy dbManagerDummy = new DatabaseManagerDummy(dbHandler);
 				PictureController picCtrl           = new PictureController(dbManagerDummy);
 
-				//Do some dummy stuff
+				// Do some dummy stuff
 				List<String> sourcesDummy;
 				Set<String> hashtagsDummy;
 
@@ -41,7 +41,8 @@ public class MainTest {
 				sourcesDummy.add("twitter");
 
 				// Set test data for source and hashtag
-			hashtagsDummy = new HashSet<String>();
+				hashtagsDummy = new HashSet<String>();
+
 				hashtagsDummy.add("twittermotjavatesting");
 				hashtagsDummy.add("raskebriller");
 
@@ -55,8 +56,8 @@ public class MainTest {
 				DisplayController dc = new DisplayController(picCtrl);
 				
 				// REAL CHECK
-			     
-			     				//DisplayController dc = (DisplayController) ClassFactory.getBeanByName("displayController");
+//				DisplayController dc = (DisplayController) ClassFactory.getBeanByName("displayController");
+
 
 				try {
 					ShowInterface showInterface = new ShowInterface(dc);

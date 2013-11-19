@@ -30,7 +30,7 @@ public class SettingsFrame extends JInternalFrame {
 		getContentPane().add(tablepanel);
 		getContentPane().add(hashpan);
 		getContentPane().add(backgroundImageLabel);
-		setFrameIcon(new ImageIcon(getClass().getResource("settings.gif")));
+		setFrameIcon(new ImageIcon(getClass().getResource("/resource/img/settings.gif")));
 		pack();
 		setVisible(true);
 		
@@ -54,7 +54,7 @@ public class SettingsFrame extends JInternalFrame {
 		backgroundImageLabel = new JLabel();
 	
 		backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
-				"backgr.jpg")));
+				"/resource/img/backgr.jpg")));
 		backgroundImageLabel.setIconTextGap(0);
 		backgroundImageLabel.setMaximumSize(new Dimension(8192, 4608));
 		backgroundImageLabel.setMinimumSize(new Dimension(800, 600));

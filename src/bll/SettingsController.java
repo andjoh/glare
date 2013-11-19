@@ -18,8 +18,7 @@ public class SettingsController {
 	
 	private List<SettingsPicture> settingsPictures;
 	private Set<String> hashtags;
-	public static enum ViewMode {SEQUENTIAL, RANDOM};
-	private ViewMode viewMode;
+	private boolean isRandom;
 	private int displayTime;
 
 	
@@ -29,6 +28,14 @@ public class SettingsController {
 		this.dbManager = dbManager;		
 	}
 
+	public boolean isRandom() {
+		return isRandom;
+	}
+
+	public void setIsRandom(boolean isRandom) {
+		this.isRandom = isRandom;
+	}
+	
 	public List<SettingsPicture> getSettingsPictures() throws IOException {			
 			settingsPictures          = new ArrayList<SettingsPicture>();
 			List<PictureData> picData = picCtrl.getCurrentPictureData();
@@ -99,26 +106,6 @@ public class SettingsController {
 		
 		if ( !remHashtags.isEmpty() )
 			dbManager.removeHashtags(remHashtags);
-	}
-
-	public ViewMode getViewMode() {
-		// TODO Get setting from db
-//		String mode = dbManager.getMode();
-//		if ( mode.equalsIgnoreCase(ViewMode.RANDOM.toString()) )
-//			currentMode = ViewMode.RANDOM;
-//		else
-			viewMode = ViewMode.SEQUENTIAL;
-
-		return viewMode;
-	}
-
-	public void setViewMode(ViewMode viewMode) {
-		this.viewMode = viewMode;
-
-		dispCtrl.setViewMode(viewMode);
-		
-		// TODO Save setting in db
-		//dbManager.setMode(currentMode);
 	}
 
 	public int getDisplayTime() {

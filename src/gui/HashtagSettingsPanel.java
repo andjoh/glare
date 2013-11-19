@@ -69,7 +69,7 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,Docum
 			// set addHashButtons properties
 			addhashButton = new JButton();
 			addhashButton.setIcon(new ImageIcon(getClass().getResource(
-					"add.gif")));
+					"/resource/img/add.gif")));
 			addhashButton.setBorderPainted(false);
 			addhashButton.setContentAreaFilled(false);
 			addhashButton.addActionListener(this);
@@ -77,7 +77,7 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,Docum
 			// delHashButton properties
 			delhashButton = new JButton();
 			delhashButton.setIcon(new ImageIcon(getClass().getResource(
-					"del.gif")));
+					"/resource/img/del.gif")));
 			delhashButton.setBorderPainted(false);
 			delhashButton.setContentAreaFilled(false);
 			delhashButton.addActionListener(this); 
