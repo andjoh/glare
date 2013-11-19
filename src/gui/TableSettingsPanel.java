@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 	 */
 	private static final long serialVersionUID = 1L;
 		private Constraints[] gbc;
+		private static int cols=10,rows=10;
 		private JButton removeButton;
 		private JScrollPane tableScroller;
 		private ImageTable thumbnailTable;
