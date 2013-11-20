@@ -100,6 +100,11 @@ public class ViewController {
 	}
 
 	public void setHashtags(Set<String> hashtags) {
+		System.out.println("ViewController: setHashtags");
+		for ( String ht : hashtags ) {
+			System.out.println(ht);
+		}
+		
 		this.hashtags = hashtags;
 	}
 
