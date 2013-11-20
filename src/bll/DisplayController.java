@@ -67,50 +67,18 @@ public class DisplayController {
 			randomPictureList.remove(p);
 		}
 		
-		return getBufImage(p);
-		
-//		PictureData p = sortedPictureList.get(current);
-//		currentPic = getBufImage(p);
-//		if (current < sortedPictureList.size()-1 && current < MAX_SIZE-1){
+//		if (current < MAX_SIZE-1){
 //			current++;
 //		} else {
 //			current = 0;
 //		}
-//		return currentPic;
+		
+		return getBufImage(p);
 	}
 	
 	public List<PictureData> getCurrentPictureData() {
 		return thumbnailPictureList;
 	}
-
-	/*public BufferedImage getCurrentPicture(boolean random) throws IOException{
-		System.out.println("PictureController: getCurrentPicture");
-
-		if (count == 0) {
-			po = new ArrayList<BufferedImage>();
-			sortedPictureList = pictureController.getSortedPictureData();
-
-			int i = 1;
-			for (PictureData p : sortedPictureList){
-				po.add(getBufImage(p));
-				System.out.println(p.getUrlStd());
-				System.out.println(p.getId());
-				i++;
-				if (i > MAX_SIZE){ 
-					break;
-				}
-			}
-		}
-
-		// TODO: Something like this...
-		if ( viewMode == SettingsController.ViewMode.RANDOM ) {
-			shufflePictures(random, po);
-		}
-		else
-			currentPicture(po);
-
-		return currentPic;
-	}*/
 
 	private BufferedImage getBufImage(PictureData p) throws IOException{
 		//		URL testUrl = new URL("http://pbs.twimg.com/media/BXrietbIgAAiroP.jpg");
