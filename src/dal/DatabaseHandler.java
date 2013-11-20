@@ -58,7 +58,6 @@ public class DatabaseHandler {
 		
 		session.beginTransaction();
 		
-		@SuppressWarnings("unchecked")
 		List<String> result = session.createQuery("SELECT hashtag FROM Hashtag").list();
 		
 		session.getTransaction().commit();
