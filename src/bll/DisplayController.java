@@ -26,7 +26,7 @@ public class DisplayController {
 	private List<PictureData> randomPictureList;
 	private List<PictureData> thumbnailPictureList;
 	private PictureController pictureController;
-	private int current = 0;
+	private int count = 0;
 	private final int MAX_SIZE = 100;
 	private boolean isRandom;
 	private int displayTime;
@@ -50,9 +50,10 @@ public class DisplayController {
 	}
 
 	public BufferedImage getCurrentPicture() throws IOException{
-		if ( sortedPictureList.isEmpty() ) {
+		if ( sortedPictureList.isEmpty() || count > MAX_SIZE) {
 			System.out.println("Henter ny liste");
 			getSortedList();
+			count = 0;
 			System.out.println("Ferdig å hente liste");
 		}
 		
@@ -67,11 +68,7 @@ public class DisplayController {
 			randomPictureList.remove(p);
 		}
 		
-//		if (current < MAX_SIZE-1){
-//			current++;
-//		} else {
-//			current = 0;
-//		}
+		count++;
 		
 		return getBufImage(p);
 	}
