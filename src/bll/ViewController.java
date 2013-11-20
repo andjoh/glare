@@ -41,7 +41,6 @@ public class ViewController {
 		displayTime = 100;
 	}
 	
-
 	public BufferedImage getCurrentPicture() throws IOException{
 		if ( sortedPictureList.isEmpty() ) {
 			System.out.println("Henter ny liste");
@@ -79,9 +78,6 @@ public class ViewController {
 		return image;
 	}
 
-
-
-
 	public List<SettingsPicture> getSettingsPictures() throws IOException {
 		System.out.println("ViewController: getSettingsPictures");
 		
@@ -99,7 +95,6 @@ public class ViewController {
 		return settingsPictures;
 	}
 
-
 	public Set<String> getHashtags() {
 		return hashtags;
 	}
@@ -116,7 +111,6 @@ public class ViewController {
 		this.isRandom = isRandom;
 	}
 	
-
 	public int getDisplayTime() {
 		return displayTime;
 	}
