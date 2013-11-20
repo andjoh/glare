@@ -12,7 +12,8 @@ public class PictureController {
 	private DatabaseManager databaseManager;
 	private List<PictureData> pictureDataFromSources;
 	private List<PictureData> currentPictureData;
-	
+
+	private final int MAX_SIZE = 100;
 	
 	public PictureController(DatabaseManager databaseManager) {
 		this.databaseManager = databaseManager;
@@ -116,12 +117,17 @@ public class PictureController {
 	 * @return List of PictureData
 	 */
 	public List<PictureData> getSortedPictureData() {		
-		currentPictureData          = new ArrayList<PictureData>();
+		currentPictureData            = new ArrayList<PictureData>();
 		List<PictureData> pictureData = databaseManager.getPictureDataFromDb();
-
+		
+		int i = 0;
 		for ( PictureData pD : pictureData ) {
-			if ( !pD.isRemoveFlag() )
+			if ( !pD.isRemoveFlag() ) {
 				currentPictureData.add(pD);
+				if (++i >= MAX_SIZE){ 
+					break;
+				}
+			}
 		}
 		
 		currentPictureData = sortPictureData(currentPictureData);
