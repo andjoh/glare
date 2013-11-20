@@ -22,14 +22,11 @@ public class DisplayController {
 	 * Manage list with pictures
 	 */
 
-	private ArrayList<BufferedImage> po;
 	private List<PictureData> sortedPictureList;
 	private List<PictureData> randomPictureList;
 	private List<PictureData> thumbnailPictureList;
 	private PictureController pictureController;
-	private BufferedImage currentPic;
 	private int count = 0;
-	private int current = 0;
 	private final int MAX_SIZE = 100;
 	private boolean isRandom;
 	private int displayTime;
@@ -44,18 +41,19 @@ public class DisplayController {
 	}
 
 	public void getSortedList() {
-		sortedPictureList = pictureController.getSortedPictureData();
-		randomPictureList = new ArrayList<PictureData>(sortedPictureList);
-		thumbnailPictureList = new ArrayList<PictureData>(sortedPictureList);
+		sortedPictureList 		= pictureController.getSortedPictureData();
+		randomPictureList 		= new ArrayList<PictureData>(sortedPictureList);
+		thumbnailPictureList 	= new ArrayList<PictureData>(sortedPictureList);
 		Collections.shuffle(randomPictureList);
 		if (!sortedPictureList.equals(randomPictureList))
 			System.out.println("sorted og random er ikke like");
 	}
 
 	public BufferedImage getCurrentPicture() throws IOException{
-		if ( sortedPictureList.isEmpty() ) {
+		if ( sortedPictureList.isEmpty() || count > MAX_SIZE) {
 			System.out.println("Henter ny liste");
 			getSortedList();
+			count = 0;
 			System.out.println("Ferdig å hente liste");
 		}
 		
@@ -70,59 +68,13 @@ public class DisplayController {
 			randomPictureList.remove(p);
 		}
 		
-		return getBufImage(p);
+		count++;
 		
-//		PictureData p = sortedPictureList.get(current);
-//		currentPic = getBufImage(p);
-//		if (current < sortedPictureList.size()-1 && current < MAX_SIZE-1){
-//			current++;
-//		} else {
-//			current = 0;
-//		}
-//		return currentPic;
+		return getBufImage(p);
 	}
 	
 	public List<PictureData> getCurrentPictureData() {
 		return thumbnailPictureList;
-	}
-
-	/*public BufferedImage getCurrentPicture(boolean random) throws IOException{
-		System.out.println("PictureController: getCurrentPicture");
-
-		if (count == 0) {
-			po = new ArrayList<BufferedImage>();
-			sortedPictureList = pictureController.getSortedPictureData();
-
-			int i = 1;
-			for (PictureData p : sortedPictureList){
-				po.add(getBufImage(p));
-				System.out.println(p.getUrlStd());
-				System.out.println(p.getId());
-				i++;
-				if (i > MAX_SIZE){ 
-					break;
-				}
-			}
-		}
-
-		// TODO: Something like this...
-		if ( viewMode == SettingsController.ViewMode.RANDOM ) {
-			shufflePictures(random, po);
-		}
-		else
-			currentPicture(po);
-
-		return currentPic;
-	}*/
-
-	private void currentPicture(ArrayList<BufferedImage> po){
-		if (count < po.size()-1){
-			currentPic = po.get(count);
-			count++;
-		} else {
-			currentPic = po.get(count);
-			count = 0;
-		}
 	}
 
 	private BufferedImage getBufImage(PictureData p) throws IOException{
@@ -132,12 +84,6 @@ public class DisplayController {
 		BufferedImage image = ImageIO.read(in);
 		in.close();
 		return image;
-	}
-
-	private void shufflePictures(boolean random, ArrayList<BufferedImage> po){
-		if (random = true){
-			Collections.shuffle(po);
-		}
 	}
 
 	public void setIsRandom(boolean isRandom) {

@@ -2,25 +2,25 @@ package bll;
 
 import java.util.ArrayList;
 
+import com.sun.xml.internal.bind.v2.ClassFactory;
+
+import dal.DatabaseHandler;
 import dal.DatabaseManager;
 import dal.PictureData;
 
 public class ThreadScheduler implements Runnable{
-	private ArrayList<String> hashtagList;
-	PictureController pc;
+	private PictureController pc;
 	
-	public ThreadScheduler(ArrayList<String> hashtagList){
-		pc = new PictureController(new DatabaseManager());
-		this.hashtagList = hashtagList;
+	public ThreadScheduler(){
+		pc = (PictureController) glare.ClassFactory.getBeanByName("pictureController");
 	}
 
 	@Override
 	public void run() {
 		try {
 			Thread.sleep(120000);
-			for(int i = 0; i < hashtagList.size(); i++){
-				ArrayList<PictureData> pictureDataFromSource = (ArrayList<PictureData>) pc.getPictureDataFromSources();
-			}
+			pc.searchPictureData();
+			pc.processPictureData();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
