@@ -53,14 +53,11 @@ public class MainTest {
 				// Run test
 				picCtrl.searchPictureData();
 				picCtrl.processPictureData();
-				DisplayController dc = new DisplayController(picCtrl);
+				ViewController vc = new ViewController(picCtrl);
 				
-				// REAL CHECK
-//				DisplayController dc = (DisplayController) ClassFactory.getBeanByName("displayController");
-
 
 				try {
-					ShowInterface showInterface = new ShowInterface(dc);
+					ShowInterface showInterface = new ShowInterface(vc);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
