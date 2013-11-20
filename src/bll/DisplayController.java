@@ -25,6 +25,7 @@ public class DisplayController {
 	private ArrayList<BufferedImage> po;
 	private List<PictureData> sortedPictureList;
 	private List<PictureData> randomPictureList;
+	private List<PictureData> thumbnailPictureList;
 	private PictureController pictureController;
 	private BufferedImage currentPic;
 	private int count = 0;
@@ -45,6 +46,7 @@ public class DisplayController {
 	public void getSortedList() {
 		sortedPictureList = pictureController.getSortedPictureData();
 		randomPictureList = new ArrayList<PictureData>(sortedPictureList);
+		thumbnailPictureList = new ArrayList<PictureData>(sortedPictureList);
 		Collections.shuffle(randomPictureList);
 		if (!sortedPictureList.equals(randomPictureList))
 			System.out.println("sorted og random er ikke like");
@@ -78,6 +80,10 @@ public class DisplayController {
 //			current = 0;
 //		}
 //		return currentPic;
+	}
+	
+	public List<PictureData> getCurrentPictureData() {
+		return thumbnailPictureList;
 	}
 
 	/*public BufferedImage getCurrentPicture(boolean random) throws IOException{
