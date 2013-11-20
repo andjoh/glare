@@ -193,5 +193,8 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,Docum
 		   
 		     
 		  }  
+		public DefaultListModel<String> getListModel(){
+			return listModel;
+		}
 	}
 	

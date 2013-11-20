@@ -1,8 +1,12 @@
 package gui;
 import javax.swing.*;
 
+import bll.ViewController;
+
 import java.awt.event.*;
 import java.awt.*;
+import java.util.HashSet;
+import java.util.Set;
 
 
 
@@ -15,10 +19,13 @@ public class SettingsFrame extends JInternalFrame {
 private static final Dimension PREFERRED_SIzE= new Dimension(
 		800,600
 );
+
+private ViewController viewCtrl;
 /**
 	 * Creates new form SettingsFrame
 	 */
-	public SettingsFrame() {
+	public SettingsFrame(ViewController viewCtrl) {
+		this.viewCtrl = viewCtrl;
 		initComponents();
 		getContentPane().setLayout(null);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -36,6 +43,30 @@ private static final Dimension PREFERRED_SIzE= new Dimension(
 		
 	}
 
+	// Legge til en listener ved close window
+	// Add metoder for mode osv
+	
+	
+	public void CloseWindowListener(){
+		
+		// The window is closed
+		// Send updates 
+	
+	/*
+	 * 
+	 * *	
+	 */
+		
+		Set<String> tmplist =  new HashSet<String>();
+		DefaultListModel<String>  tmpmodel = hashpan.getListModel();
+		for(int i=0; i<tmpmodel.size();i++){
+		tmplist.add(tmpmodel.getElementAt(i));
+		}
+		// Call method to pass tmplist 
+		
+		viewCtrl.setHashtags(tmplist);
+		
+	}
 	/**
 	 
 	 */
@@ -64,44 +95,44 @@ private static final Dimension PREFERRED_SIzE= new Dimension(
 	 * @param args
 	 *            the command line arguments
 	 */
-	public static void main(String args[]) {
-		/*
-		 * Set the Nimbus look and feel
-		 */
-		try {
-			for (UIManager.LookAndFeelInfo info : UIManager
-					.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (ClassNotFoundException ex) {
-			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
-					.log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (InstantiationException ex) {
-			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
-					.log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (IllegalAccessException ex) {
-			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
-					.log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (UnsupportedLookAndFeelException ex) {
-			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
-					.log(java.util.logging.Level.SEVERE, null, ex);
-		}
-
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				SettingsFrame intfr = new SettingsFrame();
-				JFrame fr = new JFrame();
-				fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				fr.getContentPane().add(intfr);
-				fr.pack();
-				fr.setVisible(true);
-
-			}
-		});
-	}
+//	public static void main(String args[]) {
+//		/*
+//		 * Set the Nimbus look and feel
+//		 */
+//		try {
+//			for (UIManager.LookAndFeelInfo info : UIManager
+//					.getInstalledLookAndFeels()) {
+//				if ("Nimbus".equals(info.getName())) {
+//					UIManager.setLookAndFeel(info.getClassName());
+//					break;
+//				}
+//			}
+//		} catch (ClassNotFoundException ex) {
+//			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
+//					.log(java.util.logging.Level.SEVERE, null, ex);
+//		} catch (InstantiationException ex) {
+//			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
+//					.log(java.util.logging.Level.SEVERE, null, ex);
+//		} catch (IllegalAccessException ex) {
+//			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
+//					.log(java.util.logging.Level.SEVERE, null, ex);
+//		} catch (UnsupportedLookAndFeelException ex) {
+//			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
+//					.log(java.util.logging.Level.SEVERE, null, ex);
+//		}
+//
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				SettingsFrame intfr = new SettingsFrame();
+//				JFrame fr = new JFrame();
+//				fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//				fr.getContentPane().add(intfr);
+//				fr.pack();
+//				fr.setVisible(true);
+//
+//			}
+//		});
+//	}
 
 	// Variables 
 	private DisplaySettingsPanel dispset;
