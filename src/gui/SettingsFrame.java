@@ -15,7 +15,7 @@ import java.util.Set;
  * @author Andreas Johnstad
  */
 @SuppressWarnings("serial")
-public class SettingsFrame extends JInternalFrame {
+public class SettingsFrame extends JInternalFrame implements WindowListener {
 private static final Dimension PREFERRED_SIzE= new Dimension(
 		800,600
 );
@@ -43,12 +43,14 @@ private ViewController viewCtrl;
 		
 	}
 
+	
 	// Legge til en listener ved close window
 	// Add metoder for mode osv
 	
 	
-	public void CloseWindowListener(){
-		
+	private void SendHastagUpdate(){
+		System.out.println("SettingsFrame: SendHastagUpdate");
+
 		// The window is closed
 		// Send updates 
 	
@@ -139,4 +141,53 @@ private ViewController viewCtrl;
     private HashtagSettingsPanel hashpan;
 	private TableSettingsPanel tablepanel;
     private JLabel backgroundImageLabel;
+	@Override
+	public void windowActivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowClosed(WindowEvent arg0) {
+		System.out.println("SettingsFrame: windowClosed");
+
+		SendHastagUpdate();		
+	}
+
+
+	@Override
+	public void windowClosing(WindowEvent arg0) {
+		System.out.println("SettingsFrame: windowClosing");
+
+		SendHastagUpdate();			
+	}
+
+
+	@Override
+	public void windowDeactivated(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowDeiconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowIconified(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void windowOpened(WindowEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
 }
