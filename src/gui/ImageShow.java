@@ -7,6 +7,9 @@ import bll.DisplayController;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -45,6 +48,15 @@ public class ImageShow extends JPanel {
 					RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 			g.drawImage(currImg, 0, 0, getWidth(), getHeight(), 0, 0,
 					currImg.getWidth(), currImg.getHeight(), null);
+			
+			KeyListener kl=new KeyAdapter()  {
+				public void keyPressed(KeyEvent evt)  {
+					if(evt.getKeyCode()==KeyEvent.VK_ESCAPE){
+						System.exit(0); 
+					}
+				}
+			};
+			
 			g.dispose();
 		}
 	}
@@ -61,6 +73,6 @@ public class ImageShow extends JPanel {
 	 * 
 	 * */
 	public void moveNext() throws IOException {	
-		currImg = dc.getCurrentPicture(false);
+		currImg = dc.getCurrentPicture();
 	}
 }

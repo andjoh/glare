@@ -17,6 +17,7 @@ import javax.swing.UIManager;
  * @author Andreas J
  */
 public class SettingsViewModulDummy{
+private static int w=30 , h=40;
   private final String[] urls = new String[]{
       "win2.jpg","win3.jpg","win4.jpg","win5.jpg",
       
@@ -27,14 +28,15 @@ public class SettingsViewModulDummy{
   // if List is empty. Refill
   public SettingsViewModulDummy(){
   images=  new ArrayList<ImageIcon>();
+
   }
   public void load(){
   URL url;
     BufferedImage tmp=null;
       for (String url1 : urls) {
           
-          url = this.getClass().getResource(url1);
-          
+          url = this.getClass().getResource("/resource/img/"+url1);
+      
           try {
              
               tmp= ImageIO.read(url);
@@ -51,12 +53,17 @@ public class SettingsViewModulDummy{
         	}
       }
   }
+  public void setW(int w){
+	  SettingsViewModulDummy.w=w;
+  }
+  public void setH(int h){
+	  SettingsViewModulDummy.h=h;
+  }
   // creates ImageIcon scaled to fit the table columns
   // This is just temporary.
   private ImageIcon getScaledIcon(BufferedImage in)
   {
-      int w = 20;
-      int h = 30;
+     ;
       ImageIcon icon = new ImageIcon();
     
           int type = in.getType();
