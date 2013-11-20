@@ -22,13 +22,10 @@ public class DisplayController {
 	 * Manage list with pictures
 	 */
 
-	private ArrayList<BufferedImage> po;
 	private List<PictureData> sortedPictureList;
 	private List<PictureData> randomPictureList;
 	private List<PictureData> thumbnailPictureList;
 	private PictureController pictureController;
-	private BufferedImage currentPic;
-	private int count = 0;
 	private int current = 0;
 	private final int MAX_SIZE = 100;
 	private boolean isRandom;
@@ -44,9 +41,9 @@ public class DisplayController {
 	}
 
 	public void getSortedList() {
-		sortedPictureList = pictureController.getSortedPictureData();
-		randomPictureList = new ArrayList<PictureData>(sortedPictureList);
-		thumbnailPictureList = new ArrayList<PictureData>(sortedPictureList);
+		sortedPictureList 		= pictureController.getSortedPictureData();
+		randomPictureList 		= new ArrayList<PictureData>(sortedPictureList);
+		thumbnailPictureList 	= new ArrayList<PictureData>(sortedPictureList);
 		Collections.shuffle(randomPictureList);
 		if (!sortedPictureList.equals(randomPictureList))
 			System.out.println("sorted og random er ikke like");
@@ -111,16 +108,6 @@ public class DisplayController {
 		return currentPic;
 	}*/
 
-	private void currentPicture(ArrayList<BufferedImage> po){
-		if (count < po.size()-1){
-			currentPic = po.get(count);
-			count++;
-		} else {
-			currentPic = po.get(count);
-			count = 0;
-		}
-	}
-
 	private BufferedImage getBufImage(PictureData p) throws IOException{
 		//		URL testUrl = new URL("http://pbs.twimg.com/media/BXrietbIgAAiroP.jpg");
 		URL imageUrl = new URL(p.getUrlStd());
@@ -128,12 +115,6 @@ public class DisplayController {
 		BufferedImage image = ImageIO.read(in);
 		in.close();
 		return image;
-	}
-
-	private void shufflePictures(boolean random, ArrayList<BufferedImage> po){
-		if (random = true){
-			Collections.shuffle(po);
-		}
 	}
 
 	public void setIsRandom(boolean isRandom) {
