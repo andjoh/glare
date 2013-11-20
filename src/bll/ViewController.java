@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 import dal.*;
 
 /**
- * @author Simen Sollie & Kristine Svaboe
+ * @author Simen Sollie, Kristine Svaboe, Petter Austerheim
  * @since 2013-11-04
  */
 
