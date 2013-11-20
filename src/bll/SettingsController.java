@@ -38,7 +38,7 @@ public class SettingsController {
 	
 	public List<SettingsPicture> getSettingsPictures() throws IOException {			
 			settingsPictures          = new ArrayList<SettingsPicture>();
-			List<PictureData> picData = picCtrl.getCurrentPictureData();
+			List<PictureData> picData = dispCtrl.getCurrentPictureData();
 			String id, url;
 
 			for ( int i = 0; i < MAX_SIZE; i++ ) {

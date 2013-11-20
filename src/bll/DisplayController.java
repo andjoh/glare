@@ -78,6 +78,10 @@ public class DisplayController {
 //		}
 //		return currentPic;
 	}
+	
+	public List<PictureData> getCurrentPictureData() {
+		return thumbnailPictureList;
+	}
 
 	/*public BufferedImage getCurrentPicture(boolean random) throws IOException{
 		System.out.println("PictureController: getCurrentPicture");
