@@ -35,10 +35,6 @@
 		<constructor-arg ref="pictureController" />
 	</bean>
 
-	<bean id="settings" class="gui.Settings">
-		<constructor-arg ref="settingsController" />
-	</bean>
-
 	<bean id="constraints" class="gui.Constraints">
 	</bean>
 
