@@ -32,7 +32,7 @@ public class DisplayControllerTest {
 		pc = new PictureController(dbManagerDummy);
 		
 		dc = new DisplayController(pc);
-		dc.getCurrentPicture(false);
+		dc.getCurrentPicture();
 	}
 	@After
 	public void tearDown(){
