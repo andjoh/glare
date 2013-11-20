@@ -2,7 +2,7 @@ package gui;
 
 import javax.swing.JPanel;
 
-import bll.DisplayController;
+import bll.ViewController;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -21,7 +21,7 @@ public class ImageShow extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private BufferedImage currImg;
-	private DisplayController dc;
+	private ViewController ctrl;
 
 
 
@@ -30,9 +30,9 @@ public class ImageShow extends JPanel {
 	 * Images are drawn to the  screen in this class
 	 * Uses LoadImages to extract images from urls. 
 	 */
-	public ImageShow(DisplayController displayController) throws IOException {
-		dc = displayController;
-//		currImg = dc.getCurrentPicture(false);
+	public ImageShow(ViewController ctrl) throws IOException {
+		this.ctrl = ctrl;
+//		currImg = ctrl.getCurrentPicture(false);
 		currImg = null;
 	}
 
@@ -73,6 +73,6 @@ public class ImageShow extends JPanel {
 	 * 
 	 * */
 	public void moveNext() throws IOException {	
-		currImg = dc.getCurrentPicture();
+		currImg = ctrl.getCurrentPicture();
 	}
 }
