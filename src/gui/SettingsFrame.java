@@ -37,24 +37,18 @@ public class SettingsFrame extends JInternalFrame implements WindowListener, Int
 	public SettingsFrame(ViewController viewCtrl) {
 		this.viewCtrl = viewCtrl;
 		initComponents();
-		getContentPane().setLayout(null);
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		//setResizable(true);
-		setPreferredSize(PREFERRED_SIzE);
-		setDoubleBuffered(true);
-		getContentPane().add(dispset);
-		getContentPane().add(tablepanel);
-		getContentPane().add(hashpan);
-		getContentPane().add(saveButton);
-		getContentPane().add(backgroundImageLabel);
-
-		setFrameIcon(new ImageIcon(getClass().getResource("/resource/img/settings.gif")));
-		pack();
-		setVisible(true);
+		
 
 		// Testing add hashtags to list
-		hashpan.setHashtagList(viewCtrl.getHashtags());
+		hashpan.setHashtagList(viewCtrl.getHashtags());initFrame();
 	}
+	public SettingsFrame() {
+	
+		initComponents();
+		initFrame();
+
+	}
+
 
 	private void SendHastagUpdate(){
 
@@ -74,6 +68,23 @@ public class SettingsFrame extends JInternalFrame implements WindowListener, Int
 	/**
 
 	 */
+	private void initFrame(){
+		getContentPane().setLayout(null);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		//setResizable(true);
+		setPreferredSize(PREFERRED_SIzE);
+		setDoubleBuffered(true);
+		getContentPane().add(dispset);
+		getContentPane().add(tablepanel);
+		getContentPane().add(hashpan);
+		getContentPane().add(saveButton);
+		getContentPane().add(backgroundImageLabel);
+
+		setFrameIcon(new ImageIcon(getClass().getResource("/resource/img/settings.gif")));
+		pack();
+		setVisible(true);
+		
+	}
 	private void initComponents() {
 		// TableSettingsPanel declaration
 		tablepanel = new TableSettingsPanel();
