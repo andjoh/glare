@@ -1,16 +1,11 @@
 package bll;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
-import javax.imageio.ImageIO;
-
+import java.util.*;
 import dal.*;
 
 /**
@@ -24,6 +19,7 @@ public class ViewController {
 	 * Manage list with pictures
 	 */
 	private PictureController picCtrl;
+	private DatabaseManager dbMan;
 
 	private List<PictureData> sortedPictureList;
 	private List<PictureData> randomPictureList;
@@ -32,13 +28,14 @@ public class ViewController {
 	private boolean isRandom;
 	private int displayTime;
 
-	public ViewController(PictureController picCtrl){
+	public ViewController(PictureController picCtrl, DatabaseManager dbMan){
 		this.picCtrl      = picCtrl;
+		this.dbMan        = dbMan;
 		sortedPictureList = new ArrayList<PictureData>();
 		
 		// Default settings
 		isRandom    = false;
-		displayTime = 100;
+		displayTime = 1000;
 	}
 	
 	public BufferedImage getCurrentPicture() throws IOException{
@@ -96,16 +93,42 @@ public class ViewController {
 	}
 
 	public Set<String> getHashtags() {
+		hashtags = dbMan.getHashtags();
 		return hashtags;
 	}
 
-	public void setHashtags(Set<String> hashtags) {
-		System.out.println("ViewController: setHashtags");
+	public void updateHashtags(Set<String> hashtagList) {
+
+		// Check if hashtags have been added
+		Set<String> hashtagAdded   = new HashSet<String>();
+		for ( String ht : hashtagList ) {
+			if ( !hashtags.contains(ht) ) {
+				hashtagAdded.add(ht);
+			}		
+		}
+				
+		// Check if hashtags have been deleted
+		Set<String> hashtagDeleted = new HashSet<String>();
 		for ( String ht : hashtags ) {
-			System.out.println(ht);
+			if ( !hashtagList.contains(ht) ) {
+				hashtagDeleted.add(ht);
+			}		
+		}
+				
+		// Update db regarding hashtags deleted
+		// Delete pictures that are connected to these, and only these, hashtags
+		if ( !hashtagDeleted.isEmpty() ) {
+			dbMan.removeHashtags(hashtagDeleted);
+			dbMan.removePicturesWithoutHashtagFromDB();			
 		}
 		
-		this.hashtags = hashtags;
+		// Update db with new hashtags
+		if ( !hashtagAdded.isEmpty() ) {
+			dbMan.addHashtags(hashtagAdded);
+		}	
+		
+		// Set the new list as current list
+		hashtags = hashtagList;
 	}
 
 	public boolean isRandom() {
@@ -117,10 +140,10 @@ public class ViewController {
 	}
 	
 	public int getDisplayTime() {
-		return displayTime;
+		return displayTime / 1000;
 	}
 
 	public void setDisplayTime(int displayTime) {
-		this.displayTime = displayTime;
+		this.displayTime = displayTime * 1000;
 	}	
 }
