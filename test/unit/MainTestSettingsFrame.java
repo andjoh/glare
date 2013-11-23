@@ -8,7 +8,7 @@ import bll.*;
 
 
 /*
- * Show SettingsFrame and perform tests regarding hashtags, view mode
+ * Show SettingsFrame and perform tests regarding hashtags, view mode and display time
  *    - Using Spring to get objects from BLL and DAL
  *    - Using database
  *    
