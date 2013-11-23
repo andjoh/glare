@@ -52,11 +52,11 @@ public class SettingsFrame extends JInternalFrame implements WindowListener, Int
 		pack();
 		setVisible(true);
 
-
+		// Testing add hashtags to list
+		hashpan.setHashtagList(viewCtrl.getHashtags());
 	}
 
 	private void SendHastagUpdate(){
-		System.out.println("SettingsFrame: SendHastagUpdate");
 
 		// The window is closed
 		// Send updates 
@@ -66,16 +66,11 @@ public class SettingsFrame extends JInternalFrame implements WindowListener, Int
 		 * *	
 		 */
 
-		Set<String> tmplist =  new HashSet<String>();
-		DefaultListModel<String>  tmpmodel = hashpan.getListModel();
-		for(int i=0; i<tmpmodel.size();i++){
-			tmplist.add(tmpmodel.getElementAt(i));
-		}
-		// Call method to pass tmplist 
-
-		viewCtrl.setHashtags(tmplist);
-
+		// Hashtag
+		Set<String>  hashtagList = hashpan.getHashtagList();
+		viewCtrl.updateHashtags(hashtagList);
 	}
+	
 	/**
 
 	 */
@@ -206,8 +201,9 @@ public class SettingsFrame extends JInternalFrame implements WindowListener, Int
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		System.out.println("SettingsFrame: actionPerformed");
 
-//		SendHastagUpdate();			
+		SendHastagUpdate();
+		viewCtrl.setRandom(dispset.getViewMode());
+		viewCtrl.setDisplayTime(dispset.getDelay());
 	}
 }
