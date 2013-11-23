@@ -92,4 +92,18 @@ public class DisplaySettingsPanel extends JPanel implements ActionListener {
 
 	}
 
+	public boolean getViewMode() {
+		if ( viewmodeCombo.getSelectedItem().equals("randomly") ) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	public int getDelay() {
+		int delay = (Integer) delaySpinner.getValue();
+		
+		return delay;
+	}
+	
 }
