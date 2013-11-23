@@ -13,7 +13,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 	 *
 	 * @author Andreas J
 	 */
-	private ViewController ctrl;
+	private ViewController viewCtrl;
 	private final JButton settingsButton;
 
 	private final JPanel panel;
@@ -24,7 +24,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 
 	public ShowInterface(ViewController viewCtrl) throws IOException {
 
-		ctrl = viewCtrl;
+		this.viewCtrl = viewCtrl;
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		settingsButton = new JButton("Test");
 		settingsButton.addActionListener(this);
@@ -33,7 +33,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 		panel.setBackground(Color.BLACK);
 		add(panel, BorderLayout.SOUTH);
 
-		show = new ImageShow(ctrl);
+		show = new ImageShow(viewCtrl);
 		System.out.println("kaller imageshow");
 
 
@@ -101,7 +101,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 				while(true){
 					if (stop != true) {
 						System.out.println("before thread");
-						Thread.sleep(ctrl.getDisplayTime());
+						Thread.sleep(viewCtrl.getDisplayTime());
 						System.out.println("after thread");
 						show.moveNext();
 						repaint();
