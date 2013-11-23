@@ -1,5 +1,7 @@
 package gui;
 import javax.swing.*;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 
 import bll.ViewController;
 
@@ -15,13 +17,21 @@ import java.util.Set;
  * @author Andreas Johnstad
  */
 @SuppressWarnings("serial")
-public class SettingsFrame extends JInternalFrame implements WindowListener {
-private static final Dimension PREFERRED_SIzE= new Dimension(
-		800,600
-);
+public class SettingsFrame extends JInternalFrame implements WindowListener, InternalFrameListener, ActionListener {
 
-private ViewController viewCtrl;
-/**
+	private static final Dimension PREFERRED_SIzE= new Dimension(
+			800,600
+	);
+
+	// Variables 
+	private ViewController viewCtrl;
+	private DisplaySettingsPanel dispset;
+	private HashtagSettingsPanel hashpan;
+	private TableSettingsPanel tablepanel;
+	private JLabel backgroundImageLabel;
+	private JButton saveButton;
+	
+	/**
 	 * Creates new form SettingsFrame
 	 */
 	public SettingsFrame(ViewController viewCtrl) {
@@ -35,116 +45,72 @@ private ViewController viewCtrl;
 		getContentPane().add(dispset);
 		getContentPane().add(tablepanel);
 		getContentPane().add(hashpan);
+		getContentPane().add(saveButton);
 		getContentPane().add(backgroundImageLabel);
+
 		setFrameIcon(new ImageIcon(getClass().getResource("/resource/img/settings.gif")));
 		pack();
 		setVisible(true);
-		
-		
+
+
 	}
 
-	
-	// Legge til en listener ved close window
-	// Add metoder for mode osv
-	
-	
 	private void SendHastagUpdate(){
 		System.out.println("SettingsFrame: SendHastagUpdate");
 
 		// The window is closed
 		// Send updates 
-	
-	/*
-	 * 
-	 * *	
-	 */
-		
+
+		/*
+		 * 
+		 * *	
+		 */
+
 		Set<String> tmplist =  new HashSet<String>();
 		DefaultListModel<String>  tmpmodel = hashpan.getListModel();
 		for(int i=0; i<tmpmodel.size();i++){
-		tmplist.add(tmpmodel.getElementAt(i));
+			tmplist.add(tmpmodel.getElementAt(i));
 		}
 		// Call method to pass tmplist 
-		
+
 		viewCtrl.setHashtags(tmplist);
-		
+
 	}
 	/**
-	 
+
 	 */
 	private void initComponents() {
-        // TableSettingsPanel declaration
+		// TableSettingsPanel declaration
 		tablepanel = new TableSettingsPanel();
 		tablepanel.setBounds(300, 10, 510, 510);
+		
 		// HashSettingsPanel declaration
 		hashpan = new HashtagSettingsPanel();
 		hashpan.setBounds(50, -12, 180, 320);
-	    // DisplaySettingsPanel
+		
+		// DisplaySettingsPanel
 		dispset = new DisplaySettingsPanel();
 		dispset.setBounds(60, 360, 185, 70);
+
+		// Save settings button declaration
+		saveButton = new JButton("Save Settings");
+		saveButton.setBounds(660, 530, 105, 28);
+		saveButton.addActionListener(this);
+		
 		// Background Image declaration
 		backgroundImageLabel = new JLabel();
-	
 		backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
-				"/resource/img/backgr.jpg")));
+		"/resource/img/backgr.jpg")));
 		backgroundImageLabel.setIconTextGap(0);
 		backgroundImageLabel.setPreferredSize(new Dimension(2560, 1600));
 		backgroundImageLabel.setBounds(0, 0, 933, 810);
-		
 	}
 
-	/**
-	 * @param args
-	 *            the command line arguments
-	 */
-//	public static void main(String args[]) {
-//		/*
-//		 * Set the Nimbus look and feel
-//		 */
-//		try {
-//			for (UIManager.LookAndFeelInfo info : UIManager
-//					.getInstalledLookAndFeels()) {
-//				if ("Nimbus".equals(info.getName())) {
-//					UIManager.setLookAndFeel(info.getClassName());
-//					break;
-//				}
-//			}
-//		} catch (ClassNotFoundException ex) {
-//			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
-//					.log(java.util.logging.Level.SEVERE, null, ex);
-//		} catch (InstantiationException ex) {
-//			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
-//					.log(java.util.logging.Level.SEVERE, null, ex);
-//		} catch (IllegalAccessException ex) {
-//			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
-//					.log(java.util.logging.Level.SEVERE, null, ex);
-//		} catch (UnsupportedLookAndFeelException ex) {
-//			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
-//					.log(java.util.logging.Level.SEVERE, null, ex);
-//		}
-//
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				SettingsFrame intfr = new SettingsFrame();
-//				JFrame fr = new JFrame();
-//				fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//				fr.getContentPane().add(intfr);
-//				fr.pack();
-//				fr.setVisible(true);
-//
-//			}
-//		});
-//	}
 
-	// Variables 
-	private DisplaySettingsPanel dispset;
-    private HashtagSettingsPanel hashpan;
-	private TableSettingsPanel tablepanel;
-    private JLabel backgroundImageLabel;
 	@Override
 	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("SettingsFrame: windowActivated");
+
 	}
 
 
@@ -152,7 +118,6 @@ private ViewController viewCtrl;
 	public void windowClosed(WindowEvent arg0) {
 		System.out.println("SettingsFrame: windowClosed");
 
-		SendHastagUpdate();		
 	}
 
 
@@ -160,34 +125,89 @@ private ViewController viewCtrl;
 	public void windowClosing(WindowEvent arg0) {
 		System.out.println("SettingsFrame: windowClosing");
 
-		SendHastagUpdate();			
 	}
 
 
 	@Override
 	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("SettingsFrame: windowDeactivated");
+
 	}
 
 
 	@Override
 	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("SettingsFrame: windowDeiconified");
+
 	}
 
 
 	@Override
 	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("SettingsFrame: windowIconified");
+
 	}
 
 
 	@Override
 	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("SettingsFrame: windowOpened");
+
+	}
+
+
+	@Override
+	public void internalFrameActivated(InternalFrameEvent arg0) {
+		System.out.println("SettingsFrame: internalFrameActivated");		
+	}
+
+
+	@Override
+	public void internalFrameClosed(InternalFrameEvent arg0) {
+		System.out.println("SettingsFrame: internalFrameClosed");		
+
+	}
+
+
+	@Override
+	public void internalFrameClosing(InternalFrameEvent arg0) {
+		System.out.println("SettingsFrame: internalFrameClosing");		
+
+	}
+
+
+	@Override
+	public void internalFrameDeactivated(InternalFrameEvent arg0) {
+		System.out.println("SettingsFrame: internalFrameDeactivated");		
+
+	}
+
+
+	@Override
+	public void internalFrameDeiconified(InternalFrameEvent arg0) {
+		System.out.println("SettingsFrame: internalFrameDeiconified");		
+
+	}
+
+
+	@Override
+	public void internalFrameIconified(InternalFrameEvent arg0) {
+		System.out.println("SettingsFrame: internalFrameIconified");		
+
+	}
+
+
+	@Override
+	public void internalFrameOpened(InternalFrameEvent arg0) {
+		System.out.println("SettingsFrame: internalFrameOpened");		
+
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		System.out.println("SettingsFrame: actionPerformed");
+
+//		SendHastagUpdate();			
 	}
 }
