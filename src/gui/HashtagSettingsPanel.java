@@ -8,6 +8,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -195,6 +198,22 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,Docum
 		  }  
 		public DefaultListModel<String> getListModel(){
 			return listModel;
+		}
+		
+		public Set<String> getHashtagList(){
+			Object[] stringList     = listModel.toArray();
+			Set<String> hashtagList = new HashSet<String>();
+			for ( int i = 0; i < stringList.length; i++ ) {
+				hashtagList.add((String) stringList[i]);
+			}
+					
+			return hashtagList;
+		}
+		
+		public void setHashtagList(Set<String> hashtags) {
+			for ( String ht : hashtags ) {
+				listModel.addElement(ht);
+			}
 		}
 	}
 	
