@@ -2,15 +2,28 @@ package unit;
 
 import glare.ClassFactory;
 import gui.SettingsFrame;
-
 import java.awt.EventQueue;
+import javax.swing.*;
+import bll.*;
 
-import javax.swing.JFrame;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
-import bll.ViewController;
-
+/*
+ * Show SettingsFrame and perform tests regarding hashtags, view mode
+ *    - Using Spring to get objects from BLL and DAL
+ *    - Using database
+ *    
+ * Tests Performed:
+ * 1. No hashtags in db
+ *    a) Add hashtags to db - OK
+ *    b) Remove hashtags from db - OK
+ * 2. Db containing hashtags
+ *    a) Add hashtags to db - OK
+ *    b) Remove hashtags from db - OK
+ * 3. Random set
+ *    a) Set Random true/false - OK
+ * 4. Displaytime set
+ *    a) Set Displaytime - OK    
+ */
 public class MainTestSettingsFrame {
 
 	public static void main(String args[]) {
@@ -44,8 +57,7 @@ public class MainTestSettingsFrame {
 			public void run() {
 
 				ViewController vc = (ViewController) ClassFactory.getBeanByName("viewController");
-
-				
+								
 				SettingsFrame intfr = new SettingsFrame(vc);
 				JFrame fr = new JFrame();
 				fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
