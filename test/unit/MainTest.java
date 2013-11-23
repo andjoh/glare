@@ -27,9 +27,9 @@ public class MainTest {
 			public void run() {
 				
 				// DUMMY CHECK
-				DatabaseHandler dbHandler           = new DatabaseHandler();
-				DatabaseManagerDummy dbManagerDummy = new DatabaseManagerDummy(dbHandler);
-				PictureController picCtrl           = new PictureController(dbManagerDummy);
+				DatabaseHandler dbHandler     = new DatabaseHandler();
+				DatabaseManagerDummy dbManDum = new DatabaseManagerDummy(dbHandler);
+				PictureController picCtrl     = new PictureController(dbManDum);
 
 				// Do some dummy stuff
 				List<String> sourcesDummy;
@@ -47,13 +47,13 @@ public class MainTest {
 				hashtagsDummy.add("raskebriller");
 
 				// Set dummy sources and hashtag
-				dbManagerDummy.setSources(sourcesDummy);
-				dbManagerDummy.setHashtags(hashtagsDummy);
+				dbManDum.setSources(sourcesDummy);
+				dbManDum.setHashtags(hashtagsDummy);
 
 				// Run test
 				picCtrl.searchPictureData();
 				picCtrl.processPictureData();
-				ViewController vc = new ViewController(picCtrl);
+				ViewController vc = new ViewController(picCtrl,dbManDum);
 				
 
 				try {
