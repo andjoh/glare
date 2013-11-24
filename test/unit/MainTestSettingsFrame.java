@@ -59,6 +59,8 @@ public class MainTestSettingsFrame {
 				//ViewController vc = (ViewController) ClassFactory.getBeanByName("viewController");
 								
 				//SettingsFrame intfr = new SettingsFrame(vc);
+				
+
 				SettingsFrame intfr = new SettingsFrame();
 				
 				JFrame fr = new JFrame();

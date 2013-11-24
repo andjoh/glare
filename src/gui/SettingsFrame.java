@@ -1,5 +1,6 @@
 package gui;
 import javax.swing.*;
+import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
@@ -17,10 +18,10 @@ import java.util.Set;
  * @author Andreas Johnstad
  */
 @SuppressWarnings("serial")
-public class SettingsFrame extends JInternalFrame implements WindowListener, InternalFrameListener, ActionListener {
+public class SettingsFrame extends JInternalFrame {
 
 	private static final Dimension PREFERRED_SIzE= new Dimension(
-			800,600
+			300,300
 	);
 
 	// Variables 
@@ -43,7 +44,12 @@ public class SettingsFrame extends JInternalFrame implements WindowListener, Int
 		hashpan.setHashtagList(viewCtrl.getHashtags());initFrame();
 	}
 	public SettingsFrame() {
-	
+		super("Settings" , false, // resizable
+				true, // closable
+				false, // maximizable
+				false);// iconifiable'
+		setJMenuBar(null);
+		getJMenuBar();
 		initComponents();
 		initFrame();
 
@@ -52,17 +58,8 @@ public class SettingsFrame extends JInternalFrame implements WindowListener, Int
 
 	private void SendHastagUpdate(){
 
-		// The window is closed
-		// Send updates 
-
-		/*
-		 * 
-		 * *	
-		 */
-
-		// Hashtag
-		Set<String>  hashtagList = hashpan.getHashtagList();
-		viewCtrl.updateHashtags(hashtagList);
+		
+		;
 	}
 	
 	/**
@@ -73,14 +70,17 @@ public class SettingsFrame extends JInternalFrame implements WindowListener, Int
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		//setResizable(true);
 		setPreferredSize(PREFERRED_SIzE);
+		this.addInternalFrameListener(new closeAndSave());
+
 		setDoubleBuffered(true);
 		getContentPane().add(dispset);
 		getContentPane().add(tablepanel);
 		getContentPane().add(hashpan);
 		getContentPane().add(saveButton);
 		getContentPane().add(backgroundImageLabel);
-
-		setFrameIcon(new ImageIcon(getClass().getResource("/resource/img/settings.gif")));
+		
+		//setFrameIcon(new ImageIcon(getClass().getResource("/resource/img/settings.gif")));
+		setFrameIcon(null);
 		pack();
 		setVisible(true);
 		
@@ -101,7 +101,7 @@ public class SettingsFrame extends JInternalFrame implements WindowListener, Int
 		// Save settings button declaration
 		saveButton = new JButton("Save Settings");
 		saveButton.setBounds(660, 530, 105, 28);
-		saveButton.addActionListener(this);
+		
 		
 		// Background Image declaration
 		backgroundImageLabel = new JLabel();
@@ -112,109 +112,51 @@ public class SettingsFrame extends JInternalFrame implements WindowListener, Int
 		backgroundImageLabel.setBounds(0, 0, 933, 810);
 	}
 
+   // Will be called when the frame is in the process of closing
+   // Will call the necessary methods to update settings
+	class closeAndSave extends InternalFrameAdapter {
+		
 
-	@Override
-	public void windowActivated(WindowEvent arg0) {
-		System.out.println("SettingsFrame: windowActivated");
-
-	}
-
-
-	@Override
-	public void windowClosed(WindowEvent arg0) {
-		System.out.println("SettingsFrame: windowClosed");
-
-	}
-
-
-	@Override
-	public void windowClosing(WindowEvent arg0) {
-		System.out.println("SettingsFrame: windowClosing");
-
-	}
-
-
-	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-		System.out.println("SettingsFrame: windowDeactivated");
-
-	}
+		  public void internalFrameClosing(InternalFrameEvent internalFrameEvent) {
+		 /*
+		  *  update,set displaysettings here
+		  *  
+		  *   Call:  updateDisplaySettings()
+		  */
+		
+	    /*
+	     *  update,set hashtags here 
+	     *  
+	     *  Call: updateHashtags
+			  
+	     */ 
+	    /*
+	     *  update thumnails   
+	     *  
+	     *  
+	     */
+		  }
+		}
 
 
-	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-		System.out.println("SettingsFrame: windowDeiconified");
-
-	}
-
-
-	@Override
-	public void windowIconified(WindowEvent arg0) {
-		System.out.println("SettingsFrame: windowIconified");
-
-	}
-
-
-	@Override
-	public void windowOpened(WindowEvent arg0) {
-		System.out.println("SettingsFrame: windowOpened");
+/// send updated display settings 
+  
+    // get updated displaysettings  and set them
+    public void updateDisplaySettings(){
+    	
+    	viewCtrl.setRandom(dispset.getViewMode());
+		viewCtrl.setDisplayTime(dispset.getViewDelay());
+    	
+    }
+    //  send updated hashtags to ViewCtrl
+	public void updateHashtags() {
+		Set<String>  hashtagList = hashpan.getHashtagList();
+		viewCtrl.updateHashtags(hashtagList);
 
 	}
-
-
-	@Override
-	public void internalFrameActivated(InternalFrameEvent arg0) {
-		System.out.println("SettingsFrame: internalFrameActivated");		
-	}
-
-
-	@Override
-	public void internalFrameClosed(InternalFrameEvent arg0) {
-		System.out.println("SettingsFrame: internalFrameClosed");		
-
-	}
-
-
-	@Override
-	public void internalFrameClosing(InternalFrameEvent arg0) {
-		System.out.println("SettingsFrame: internalFrameClosing");		
-
-	}
-
-
-	@Override
-	public void internalFrameDeactivated(InternalFrameEvent arg0) {
-		System.out.println("SettingsFrame: internalFrameDeactivated");		
-
-	}
-
-
-	@Override
-	public void internalFrameDeiconified(InternalFrameEvent arg0) {
-		System.out.println("SettingsFrame: internalFrameDeiconified");		
-
-	}
-
-
-	@Override
-	public void internalFrameIconified(InternalFrameEvent arg0) {
-		System.out.println("SettingsFrame: internalFrameIconified");		
-
-	}
-
-
-	@Override
-	public void internalFrameOpened(InternalFrameEvent arg0) {
-		System.out.println("SettingsFrame: internalFrameOpened");		
-
-	}
-
-
-	@Override
-	public void actionPerformed(ActionEvent arg0) {
-
-		SendHastagUpdate();
-		viewCtrl.setRandom(dispset.getViewMode());
-		viewCtrl.setDisplayTime(dispset.getDelay());
+	//Get hashtags from DB to show on start up.
+	public void getHashTags(){
+		
+		
 	}
 }

@@ -1,5 +1,6 @@
 package gui;
 import java.awt.Color;
+import java.awt.Dimension;
 
 import javax.swing.*;
 import javax.swing.event.TableModelListener;
@@ -23,13 +24,19 @@ public class ImageTable extends JTable implements TableModelListener {
 		setOpaque(false);
 		getModel().addTableModelListener(this);
 		addColumns(cols);
+		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		addRows(rows);
 		setRenderer();
-		setRowHeight(30);
+		setRowHeight(50);
 		setTableHeader(null);
 		setSelectionBackground (Color.blue);
 		setSelectionMode (ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		setColumnSelectionAllowed(true);
+		setIntercellSpacing(new Dimension(0,0));
+		setBorder(null);
+		setDragEnabled(false);
+
+	this.setShowGrid(false);
 		// ColumnsAutoResizer s;    - to be implemented
 	}
 
@@ -43,6 +50,8 @@ public class ImageTable extends JTable implements TableModelListener {
 		
 		for (int c= 0; c< cols; c++) {
 			model.addColumn(new String(""));
+		
+			
 		}
 		;
 	}
@@ -51,6 +60,8 @@ public class ImageTable extends JTable implements TableModelListener {
 		TableColumn col;
 		for (int c = 0; c < getColumnCount(); c++) {
 			col = getColumnModel().getColumn(c);
+			//col.sizeColumnsToFit();
+			col.sizeWidthToFit();
 			col.setCellRenderer(new IconRenderer());
 		}
 		;
