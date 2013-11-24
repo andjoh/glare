@@ -91,6 +91,10 @@ public class ViewController {
 		
 		return settingsPictures;
 	}
+	
+	public void removePictures(List<String> pictureIds) {
+		//TODO Flag pictures in db and from current pictures
+	}
 
 	public Set<String> getHashtags() {
 		hashtags = dbMan.getHashtags();
