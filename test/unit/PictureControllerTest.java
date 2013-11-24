@@ -76,7 +76,15 @@ public class PictureControllerTest {
 		pictureDataFromDbDummy = null;
 	}
 	
+
+	@Test
+	public void ProcessPictureData_UsingDummyHashtags_UsingDummyPictureData_NoHashtags_WhenCalled_ReturnsNotSuccess() {
 		
+		boolean success = picCtrl.searchPictureData();
+		
+		assertThat(success,is(false));
+	}
+	
 	@Test
 	public void SearchPictureData_UsingDummyHashtags_UsingDummyPictureData_WhenCalled_ReturnsListOfPictureData() {
 		
@@ -109,9 +117,7 @@ public class PictureControllerTest {
 		dbManagerDummy.setHashtags(hashtagsDummy);
 		
 		// Run test
-		picCtrl.searchPictureData();
-
-		picCtrl.processPictureData();		
+		picCtrl.getNewPictureData();	
 		
 		List<PictureData> pictureDataAll = dbManagerDummy.getPictureDataFromDb();
 
@@ -125,17 +131,7 @@ public class PictureControllerTest {
 			
 		assertThat(pictureDataAll.size() == 5,is(true));
 	}
-	
-
-	@Test
-	public void ProcessPictureData_UsingDummyHashtags_UsingDummyPictureData_NoHashtags_WhenCalled_ReturnsNotSuccess() {
 		
-		boolean success = picCtrl.searchPictureData();
-		
-		assertThat(success,is(false));
-	}
-	
-	
 	@Test
 	public void ProcessPictureData_UsingDummyHashtags_UsingDummyPictureData_WhenCalled_Returns6PictureDataInOrder() {
 
@@ -145,9 +141,7 @@ public class PictureControllerTest {
 		dbManagerDummy.setPictureDataFromDb(pictureDataFromDbDummy);
 		
 		// Run test
-		picCtrl.searchPictureData();
-
-		picCtrl.processPictureData();		
+		picCtrl.getNewPictureData();			
 		
 		List<PictureData> pictureDataAll = dbManagerDummy.getPictureDataFromDb();
 
@@ -165,7 +159,6 @@ public class PictureControllerTest {
 		assertThat(pictureDataAll.size() == 6,is(true));
 	}
 	
-
 	@Test
 	public void SearchPictureData_Instagram_And_Twitter_WhenCalled_ReturnsListOfPictureData() {
 
@@ -178,11 +171,7 @@ public class PictureControllerTest {
 		dbManagerDummy.setHashtags(hashtagsDummy);
 		
 		// Run test
-		boolean success = picCtrl.searchPictureData();
-
-		assertThat(success,is(true));
-		
-		picCtrl.processPictureData();
+		picCtrl.getNewPictureData();
 		
 		List<PictureData> pictureData = dbManagerDummy.getPictureDataFromDb();
 
@@ -192,6 +181,9 @@ public class PictureControllerTest {
 		{
 			System.out.println(pd.getId());
 			System.out.println(pd.getUrlStd());
+			for ( Hashtag ht : pd.getHashtags() ) {
+				System.out.println(" - " + ht.getHashtag());
+			}			
 		}
 		System.out.println("");
 		
