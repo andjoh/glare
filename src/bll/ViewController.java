@@ -136,6 +136,7 @@ public class ViewController {
 	}
 
 	public void setRandom(boolean isRandom) {
+		System.out.println("Random is " + isRandom);
 		this.isRandom = isRandom;
 	}
 	
@@ -144,6 +145,7 @@ public class ViewController {
 	}
 
 	public void setDisplayTime(int displayTime) {
+		System.out.println("Set DisplayTime: " + displayTime);
 		this.displayTime = displayTime * 1000;
 	}	
 }
