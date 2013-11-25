@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 public class SettingsPicture {
 	private String id;
+	private boolean isFlagged=false;
 	private BufferedImage image;
 	
 	public SettingsPicture(String id, BufferedImage image) {
@@ -17,5 +18,11 @@ public class SettingsPicture {
 
 	public BufferedImage getImage() {
 		return image;
+	}
+	public void setIsFlagged(boolean isFlagged){
+		this.isFlagged=isFlagged;
+	}
+	public boolean getIsFlagged(){
+		return isFlagged;
 	}
 }
