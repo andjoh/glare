@@ -7,6 +7,8 @@ import java.util.List;
  */
 
 
+import java.util.Set;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -16,28 +18,79 @@ import org.hibernate.exception.ConstraintViolationException;
 public class DatabaseHandler {
 
 	public static void addPictureToDB(PictureData pic){
+		List<PictureData> result = null;
 		Transaction tx = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
 
-			session.save(pic);
+			result = DatabaseHandler.returnPictureIfAlreadyExists(pic);
+			if(result.size() == 1){
+				Set<Hashtag> hashtagsFromDB = result.get(0).getHashtags();
+				Set<Hashtag> newHashSet = pic.getHashtags();
+				newHashSet.addAll(hashtagsFromDB);
+				pic.setHashtags(newHashSet);
+			}
+			session.saveOrUpdate(pic);
 
 			session.getTransaction().commit();
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
 			e.printStackTrace();
+		} finally{
+			session.close();
 		}
 	}
+	
+	public static List<PictureData> returnPictureIfAlreadyExists(PictureData pic){
+		List<PictureData> result = null;
+		Transaction tx = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+
+		try{
+			tx = session.beginTransaction();
+
+			result = session.createQuery("from PictureData where id=\'" + pic.getId() + "\'").list();
+			session.getTransaction().commit();
+		} catch(HibernateException e){
+			if (tx!=null) 
+				tx.rollback();
+			e.printStackTrace();
+//		} finally{
+//			session.close();
+		}
+		return result;
+	}
+
+//	public static void updatePictureToDB(PictureData pic)
+//	{
+//		Session session = HibernateUtil.getSessionFactory().openSession();
+//		Transaction tx = null;
+//		try {
+//			tx = session.beginTransaction();
+//
+//			String pic_id = pic.getId();
+//			PictureData picture = (PictureData)session.get(PictureData.class, pic_id);
+//			picture.setHashtags(pic.getHashtags());
+//			session.merge(picture);
+//			tx.commit();
+//		} catch (HibernateException e) {
+//			if(tx!=null)
+//				tx.rollback();
+//			e.printStackTrace();
+//		} finally{
+//			session.close();
+//		}
+//	}
 
 
 	public static List<PictureData> listOfPicturesFromDB(){
 		Transaction tx = null;
 		List<PictureData> result = null;
 
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
@@ -48,25 +101,29 @@ public class DatabaseHandler {
 		} catch(HibernateException e){
 			if (tx!= null)
 				tx.rollback();
-			e.printStackTrace();
-		} 
+			//e.printStackTrace();
+		} finally{
+			session.close();
+		}
 		return result;
 	}
 
 	public static void addHashtagToDB(Hashtag hash){
 		Transaction tx = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
 
-			session.save(hash);
+			session.saveOrUpdate(hash);
 
 			session.getTransaction().commit();
 		} catch(ConstraintViolationException e){
 			if(tx != null)
 				tx.rollback();
-			e.printStackTrace();
+			//e.printStackTrace();
+		} finally{
+			session.close();
 		}
 	}
 
@@ -74,7 +131,7 @@ public class DatabaseHandler {
 		Transaction tx = null;
 		List<String> result = null;
 
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
@@ -85,7 +142,9 @@ public class DatabaseHandler {
 		} catch(HibernateException e){
 			if(tx != null)
 				tx.rollback();
-			e.printStackTrace();
+			//e.printStackTrace();
+		} finally{
+			session.close();
 		}
 
 		return result;
@@ -93,7 +152,7 @@ public class DatabaseHandler {
 
 	public static void removePictureDataFromDB(){
 		Transaction tx = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
@@ -105,13 +164,15 @@ public class DatabaseHandler {
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
-			e.printStackTrace();
+			//e.printStackTrace();
+		} finally{
+			session.close();
 		}
 	}
 
 	public static void removeHashtagFromDB(String hashName){
 		Transaction tx = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
@@ -125,13 +186,15 @@ public class DatabaseHandler {
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
-			e.printStackTrace();
+			//e.printStackTrace();
+		} finally{
+			session.close();
 		}
 	}
 
 	public static void removePicturesWithoutHashTagFromDB(){
 		Transaction tx = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
@@ -151,12 +214,14 @@ public class DatabaseHandler {
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
-			e.printStackTrace();
+			//e.printStackTrace();
+		} finally{
+			session.close();
 		}
 	}
 	public static void setRemoveFlag(String picID){
 		Transaction tx = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
@@ -172,7 +237,9 @@ public class DatabaseHandler {
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
-			e.printStackTrace();
+			//e.printStackTrace();
+		} finally{
+			session.close();
 		}
 	}
 }

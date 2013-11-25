@@ -13,6 +13,10 @@ public class Hashtag {
 	
 	private Set<PictureData> pictures;
 	
+	public Hashtag(){
+		pictures = new HashSet<PictureData>();
+	}
+	
 	public Hashtag(String hashtag){
 		this.hashtag = hashtag.toLowerCase();
 		pictures = new HashSet<PictureData>();
@@ -60,5 +64,11 @@ public class Hashtag {
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return "Hashtag [hashtag=" + hashtag + "]";
+	}
+
 	
 }

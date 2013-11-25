@@ -83,4 +83,18 @@ public class PictureData {
 	public void remHashtag(Hashtag ht) {
 		hashtags.remove(ht);
 	}
+	
+	@Override
+	public int hashCode() {
+		return id.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if(o instanceof PictureData){
+			PictureData p = (PictureData)o;
+			if(p.id.equals(id)) return true;
+		}
+		return false;
+	}
 }
