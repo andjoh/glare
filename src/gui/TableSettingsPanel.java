@@ -12,13 +12,16 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import resources.ViewControllerDummy;
+
 public class TableSettingsPanel extends JPanel implements ActionListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private Constraints[] gbc;
-	private static int cols = 10, rows = 10;
+	private final static int COLS = 10, ROWS = 10;
+	private ImageTableModel tablemodel;
 	private JButton removeButton;
 	private JScrollPane tableScroller;
 	private ImageTable thumbnailTable;
@@ -34,8 +37,10 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 
 	private void init() {
 		// thumbnailTable properties
-		thumbnailTable = new ImageTable(cols, rows);
-		SettingsViewModulDummy setv = new SettingsViewModulDummy();
+		ViewControllerDummy setv = new ViewControllerDummy(null,null);
+		tablemodel= new ImageTableModel(setv.getSettingsPicturesAs2DList());
+		thumbnailTable = new ImageTable(tablemodel,COLS, ROWS);
+		
 		// setv.setH(thumbnailTable.getHeight()/rows);
 		// setv.setW(thumbnailTable.getWidth()/cols);
 		System.out.println(thumbnailTable.getHeight());
@@ -66,6 +71,6 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
+    
 	}
 }

@@ -1,7 +1,14 @@
 package gui;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 import javax.swing.table.TableModel;
+
+import bll.SettingsPicture;
+
+import resources.ViewControllerDummy;
 /*
  * @author Andreas J
  * 
@@ -15,13 +22,24 @@ class TableUpdater extends Thread {
 	 * with new data
 	 * 
 	 */
-	private static TableModel model;
-	private SettingsViewModulDummy setview;
-	private static boolean threadIsActive, shouldUpdate;
+	private  TableModel model;
+	private ImageTableModel imgmodel;
+	private ArrayList<ImageIcon> images;
+	private ViewControllerDummy setview;
+	private  boolean threadIsActive, shouldUpdate;
 
-	public TableUpdater(TableModel model, SettingsViewModulDummy setview) {
+	public TableUpdater(TableModel model, ViewControllerDummy setview) {
+	
         super();
 		this.model = model;
+		this.setview = setview;
+		threadIsActive=true;
+		shouldUpdate=true;
+	}
+	public TableUpdater(ImageTableModel imgmodel, ViewControllerDummy setview) {
+		
+        super();
+		this.imgmodel = imgmodel;
 		this.setview = setview;
 		threadIsActive=true;
 		shouldUpdate=true;
@@ -62,8 +80,10 @@ class TableUpdater extends Thread {
 
 						@Override
 						public void run() {
-							ImageIcon ic = setview.getThumbnail();
-							model.setValueAt(ic, rind, cind);
+							SettingsPicture pic;
+							pic=imgmodel.getTableSettingsPicture(rind,cind);
+							BufferedImage bimg= pic.getImage();
+							model.setValueAt(bimg, rind, cind);
 						}
 					});
 				

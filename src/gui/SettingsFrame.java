@@ -21,7 +21,7 @@ import java.util.Set;
 public class SettingsFrame extends JInternalFrame {
 
 	private static final Dimension PREFERRED_SIzE= new Dimension(
-			300,300
+			800,600
 	);
 
 	// Variables 
@@ -59,7 +59,7 @@ public class SettingsFrame extends JInternalFrame {
 	private void SendHastagUpdate(){
 
 		
-		;
+		
 	}
 	
 	/**
