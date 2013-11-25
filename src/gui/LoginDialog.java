@@ -13,6 +13,7 @@ public class LoginDialog extends JDialog implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private JFrame jf;
 	private LoginPanel panel;
 
 	private Constraints gbc;
@@ -23,14 +24,19 @@ public class LoginDialog extends JDialog implements ActionListener {
 	private JLabel usernameLabel, passwordLabel;
 	private boolean succeeded;
 
-	public LoginDialog() {
-
-
+	public LoginDialog(JFrame jf) {
+		this.jf = jf;
+		setModal(true);
+		setSize(200, 400);
+		
+		
 		init();
 		add(panel, BorderLayout.CENTER);
 	    add(buttonPanel, BorderLayout.PAGE_END);
-		//pack();
-	
+         pack();
+         setAlwaysOnTop(true);
+ 		setLocationRelativeTo(jf);
+ 		setVisible(true);
 	
 	}
 	/*Declares GUI objects.
@@ -96,6 +102,10 @@ public class LoginDialog extends JDialog implements ActionListener {
 			succeeded = false;
 
 		}
+	}
+	
+	public boolean getSucceeded() {
+		return succeeded;
 	}
 
 	/* GUI for Login Panel.

@@ -1,5 +1,7 @@
 package gui;
 
+import glare.ClassFactory;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
@@ -15,7 +17,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 	 */
 	private ViewController viewCtrl;
 	private final JButton settingsButton;
-
+	private LoginDialog ld;
 	private final JPanel panel;
 	Constraints gbc;
 	private final ImageShow show;
@@ -35,8 +37,8 @@ public class ShowInterface extends JFrame implements ActionListener {
 
 		show = new ImageShow(viewCtrl);
 		System.out.println("kaller imageshow");
-
-
+        setPreferredSize(new Dimension(1024,800));
+   
 		add(show, BorderLayout.CENTER);
 		//this.setUndecorated(true);
 		setVisible(true);
@@ -44,11 +46,12 @@ public class ShowInterface extends JFrame implements ActionListener {
 
 
 
-		GraphicsEnvironment.getLocalGraphicsEnvironment().
-		getDefaultScreenDevice().setFullScreenWindow(this);
+		//GraphicsEnvironment.getLocalGraphicsEnvironment().
+		//getDefaultScreenDevice().setFullScreenWindow(this);
 		System.out.println("graphicsEnvironment");
 		startClick();
 		System.out.println("kaller startClick() / slider");
+		pack();
 	}
 
 
@@ -58,7 +61,6 @@ public class ShowInterface extends JFrame implements ActionListener {
 			stopClick();
 			openLoginBox();
 		}
-
 	}
 
 	private void startClick() {
@@ -75,11 +77,20 @@ public class ShowInterface extends JFrame implements ActionListener {
 	}
 
 	public void openLoginBox() {
-		LoginDialog ld = new LoginDialog();
-		ld.setLocationRelativeTo(null);
-		ld.setSize(400, 500);
-		ld.pack();
-		ld.setVisible(true);
+		
+		boolean loggedIn= new LoginDialog(this).getSucceeded();
+		System.out.println("Login return equals"+loggedIn);
+		if(loggedIn)openSettingsFrame();
+	}
+	
+	private void openSettingsFrame() {
+		System.out.println("Tries to open settingsframe");
+		
+		
+		SettingsFrame intfr = new SettingsFrame(viewCtrl);
+		getContentPane().add(intfr);
+		//pack();
+		
 	}
 
 
@@ -96,7 +107,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 		@Override
 		public void run() {
 			System.out.println("run()");
-			int i;
+		
 			try {
 				while(true){
 					if (stop != true) {

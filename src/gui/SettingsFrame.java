@@ -36,8 +36,17 @@ public class SettingsFrame extends JInternalFrame {
 	 * Creates new form SettingsFrame
 	 */
 	public SettingsFrame(ViewController viewCtrl) {
+		super("Settings" , false, // resizable
+				true, // closable
+				false, // maximizable
+				false);// iconifiable'
+		
 		this.viewCtrl = viewCtrl;
+
+		setJMenuBar(null);
+		getJMenuBar();
 		initComponents();
+		initFrame();
 		
 
 		// Testing add hashtags to list
@@ -81,7 +90,7 @@ public class SettingsFrame extends JInternalFrame {
 		
 		//setFrameIcon(new ImageIcon(getClass().getResource("/resource/img/settings.gif")));
 		setFrameIcon(null);
-		pack();
+		//pack();
 		setVisible(true);
 		
 	}
@@ -115,21 +124,22 @@ public class SettingsFrame extends JInternalFrame {
    // Will be called when the frame is in the process of closing
    // Will call the necessary methods to update settings
 	class closeAndSave extends InternalFrameAdapter {
-		
 
 		  public void internalFrameClosing(InternalFrameEvent internalFrameEvent) {
-		 /*
+		 System.out.println("internalFrameClosing");
+			  /*
 		  *  update,set displaysettings here
 		  *  
 		  *   Call:  updateDisplaySettings()
 		  */
-		
+			  updateDisplaySettings();
 	    /*
 	     *  update,set hashtags here 
 	     *  
 	     *  Call: updateHashtags
 			  
 	     */ 
+			  updateHashtags();
 	    /*
 	     *  update thumnails   
 	     *  
@@ -152,7 +162,6 @@ public class SettingsFrame extends JInternalFrame {
 	public void updateHashtags() {
 		Set<String>  hashtagList = hashpan.getHashtagList();
 		viewCtrl.updateHashtags(hashtagList);
-
 	}
 	//Get hashtags from DB to show on start up.
 	public void getHashTags(){
