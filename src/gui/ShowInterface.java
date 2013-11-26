@@ -80,7 +80,7 @@ public class ShowInterface extends JFrame implements KeyListener {
 			getActionMap().put("doEscapeAction", escapeAction);
 			setDoubleBuffered(true);
 			setFocusable(true);
-			setBackground(Color.blue);
+			setBackground(new Color(223,219,218));
 			init();
 			setLayout(null);
 			
@@ -102,14 +102,7 @@ public class ShowInterface extends JFrame implements KeyListener {
 			add(settingsButton);
 			
 			// 
-			backgroundImageLabel= new JLabel();
-			
-			backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
-					"/resource/img/glare.jpg")));;
-			backgroundImageLabel.setIconTextGap(0);
-			//backgroundImageLabel.setPreferredSize(dim);
-			backgroundImageLabel.setBounds(0, 0,(int) dim.getWidth(), (int)dim.getHeight());
-			add(backgroundImageLabel);
+	
 			start();
 
 		}
@@ -126,6 +119,7 @@ public class ShowInterface extends JFrame implements KeyListener {
             super.paintComponent(g);
             if (show != null) {
 				show.paint(g);
+		
 			}
          
         }

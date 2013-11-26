@@ -1,5 +1,6 @@
 package gui;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
@@ -18,6 +19,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class ImageShow extends JPanel {
@@ -26,7 +28,7 @@ public class ImageShow extends JPanel {
 	 * @author Andreas J
 	 */
 	private static final long serialVersionUID = 1L;
-	private BufferedImage currImg;
+	private BufferedImage currImg, backgroundImage;
 	private static int SCREEN_W, SCREEN_H, SCALE_FACTOR;
 	private ViewController ctrl;
 
@@ -34,13 +36,23 @@ public class ImageShow extends JPanel {
 	 * Class to shuffle trough images in the slideshow. Images are drawn to the
 	 * screen in this class Uses LoadImages to extract images from urls.
 	 */
-	public ImageShow(ViewController ctrl,int w, int h) throws IOException {
+	public ImageShow(ViewController ctrl, int w, int h) throws IOException {
 		this.ctrl = ctrl;
-		 SCREEN_W=w;
-		 SCREEN_H=h; 
-		 SCALE_FACTOR=2;
+		SCREEN_W = w;
+		SCREEN_H = h;
+		SCALE_FACTOR = 2;
 		// currImg = ctrl.getCurrentPicture(false);
 		currImg = null;
+		backgroundImage = loadBackground();
+	}
+
+	public BufferedImage loadBackground() throws IOException {
+		URL url = this.getClass().getResource("/resource/img/glare.png");
+		backgroundImage = ImageIO.read(url);
+		backgroundImage = Thumbnails.of(backgroundImage).size(SCREEN_W, SCREEN_H)
+				.asBufferedImage();
+		return backgroundImage;
+
 	}
 
 	@Override
@@ -48,16 +60,21 @@ public class ImageShow extends JPanel {
 	// object
 	//
 	public void paint(Graphics g) {
+		int w = 0, h = 0;
 		Graphics2D g2 = (Graphics2D) g;
 		if (currImg != null) {
-			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-			int w = (SCREEN_W - currImg.getWidth()) / 2, h = (SCREEN_H - currImg
+			
+			 w = (SCREEN_W - currImg.getWidth()) / 2;
+			 h = (SCREEN_H - currImg
 					.getHeight()) / 2;
-			g2.drawImage(currImg, w, h, null);
-			g2.dispose();
 
+		} else {
+			currImg = backgroundImage;
 		}
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+		g2.drawImage(currImg, w, h, null);
+		g2.dispose();
 	}
 
 	@Override
@@ -71,9 +88,9 @@ public class ImageShow extends JPanel {
 	 */
 	public void moveNext() throws IOException {
 		BufferedImage bf = ctrl.getCurrentPicture();
-		
+
 		if (bf != null)
-			currImg = Thumbnails.of(bf).scale( SCALE_FACTOR).asBufferedImage();
-		
+			currImg = Thumbnails.of(bf).scale(SCALE_FACTOR).asBufferedImage();
+
 	}
 }
