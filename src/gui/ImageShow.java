@@ -53,7 +53,7 @@ public class ImageShow extends JPanel {
 			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 			g2.setPaint(UIManager.getColor("Table.background"));
-			
+			System.out.println("kkdff"+SCREEN_W);
 			int w = (SCREEN_W - currImg.getWidth()) / 2, h = (SCREEN_H - currImg
 					.getHeight()) / 2;
 			g2.drawImage(currImg, w, h, null);
@@ -73,7 +73,9 @@ public class ImageShow extends JPanel {
 	 */
 	public void moveNext() throws IOException {
 		BufferedImage bf = ctrl.getCurrentPicture();
+		
 		if (bf != null)
 			currImg = Thumbnails.of(bf).scale( SCALE_FACTOR).asBufferedImage();
+		
 	}
 }

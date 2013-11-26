@@ -28,14 +28,12 @@ public class LoginDialog extends JDialog implements ActionListener {
 		this.jf = jf;
 		setModal(true);
 		setSize(200, 400);
-		
-		
 		init();
 		add(panel, BorderLayout.CENTER);
 	    add(buttonPanel, BorderLayout.PAGE_END);
          pack();
          setAlwaysOnTop(true);
- 		setLocationRelativeTo(jf);
+ 		setLocationRelativeTo(null);
  		setVisible(true);
 	
 	}

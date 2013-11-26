@@ -39,7 +39,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 		System.out.println("kaller imageshow");
         setPreferredSize(new Dimension(1024,800));
    
-		add(show, BorderLayout.CENTER);
+		
 		//this.setUndecorated(true);
 		addKeyListener(new keyInputAdapter());
 		setVisible(true);
@@ -49,11 +49,12 @@ public class ShowInterface extends JFrame implements ActionListener {
 
 		setFullScreen();
 		System.out.println("graphicsEnvironment");
-		startClick();
+		
 		System.out.println("kaller startClick() / slider");
 		pack();
 		Dimension d=this.getSize();
 		show = new ImageShow(viewCtrl,(int)d.getWidth(),(int)d.getHeight());
+		startClick();
 	}
 	private void setFullScreen(){
 		GraphicsEnvironment.getLocalGraphicsEnvironment().
@@ -70,7 +71,6 @@ public class ShowInterface extends JFrame implements ActionListener {
 	}
 
 	private void startClick() {
-		settingsButton.setIcon(new ImageIcon("/img/pause.png"));
 		stop = false;
 		slider = new ImageSlider();
 		slider.start();
