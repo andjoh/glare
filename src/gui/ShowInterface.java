@@ -35,7 +35,7 @@ public class ShowInterface extends JFrame implements ActionListener {
 		panel.setBackground(Color.BLACK);
 		add(panel, BorderLayout.SOUTH);
        
-		show = new ImageShow(viewCtrl);
+		
 		System.out.println("kaller imageshow");
         setPreferredSize(new Dimension(1024,800));
    
@@ -52,6 +52,8 @@ public class ShowInterface extends JFrame implements ActionListener {
 		startClick();
 		System.out.println("kaller startClick() / slider");
 		pack();
+		Dimension d=this.getSize();
+		show = new ImageShow(viewCtrl,(int)d.getWidth(),(int)d.getHeight());
 	}
 	private void setFullScreen(){
 		GraphicsEnvironment.getLocalGraphicsEnvironment().

@@ -1,7 +1,10 @@
 package gui;
 
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+
+import net.coobird.thumbnailator.Thumbnails;
 
 import bll.ViewController;
 
@@ -24,41 +27,40 @@ public class ImageShow extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private BufferedImage currImg;
+	private static int SCREEN_W, SCREEN_H, SCALE_FACTOR;
 	private ViewController ctrl;
 
-
-
 	/*
-	 * Class to shuffle trough images in the slideshow. 
-	 * Images are drawn to the  screen in this class
-	 * Uses LoadImages to extract images from urls. 
+	 * Class to shuffle trough images in the slideshow. Images are drawn to the
+	 * screen in this class Uses LoadImages to extract images from urls.
 	 */
-	public ImageShow(ViewController ctrl) throws IOException {
+	public ImageShow(ViewController ctrl,int w, int h) throws IOException {
 		this.ctrl = ctrl;
-//		currImg = ctrl.getCurrentPicture(false);
+		 SCREEN_W=w;
+		 SCREEN_H=h; 
+		 SCALE_FACTOR=2;
+		// currImg = ctrl.getCurrentPicture(false);
 		currImg = null;
 	}
 
 	@Override
-	//  Resizes currImage,  adds rendering hints, draws and dispose of Graphics object
-	//  
+	// Resizes currImage, adds rendering hints, draws and dispose of Graphics
+	// object
+	//
 	public void paint(Graphics g) {
+		Graphics2D g2 = (Graphics2D) g;
 		if (currImg != null) {
+			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			g2.setPaint(UIManager.getColor("Table.background"));
 			
-			
-			BufferedImage before = currImg;
-			int w = before.getWidth();
-			int h = before.getHeight();
-			BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-			AffineTransform at = new AffineTransform();
-			at.scale(2.0, 2.0);
-			AffineTransformOp scaleOp = 
-			   new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
-			after = scaleOp.filter(before, after);
-			g.drawImage(after, 0, 0, null);
+			int w = (SCREEN_W - currImg.getWidth()) / 2, h = (SCREEN_H - currImg
+					.getHeight()) / 2;
+			g2.drawImage(currImg, w, h, null);
+			g2.dispose();
+
+		}
 	}
-	}
-    
 
 	@Override
 	public void update(Graphics g) {
@@ -66,12 +68,12 @@ public class ImageShow extends JPanel {
 	}
 
 	/*
-	 * Changes currImage to the next Image in the list.
-	 * Only if the list contains images and that that the
-	 * 
-	 * 
-	 * */
-	public void moveNext() throws IOException {	
-		currImg = ctrl.getCurrentPicture();
+	 * Changes currImage to the next Image in the list. Only if the list
+	 * contains images and that that the
+	 */
+	public void moveNext() throws IOException {
+		BufferedImage bf = ctrl.getCurrentPicture();
+		if (bf != null)
+			currImg = Thumbnails.of(bf).scale( SCALE_FACTOR).asBufferedImage();
 	}
 }
