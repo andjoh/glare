@@ -6,17 +6,25 @@ package gui;
  * TableDemo.java requires no other files.
  */
  
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
 import javax.swing.table.AbstractTableModel;
 
 import bll.SettingsPicture;
 
 import java.awt.Dimension;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 public class ImageTableModel extends AbstractTableModel {
@@ -78,5 +86,54 @@ public class ImageTableModel extends AbstractTableModel {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	 public ImageIcon get(){
+                 ImageIcon ic=null;
+		         BufferedImage tmp=null;
+		        URL  url = this.getClass().getResource("resource/img/del.gif");
+		      
+		          try {
+		             
+		              tmp= ImageIO.read(url);
+		              
+		              
+		          } catch (IOException ex) {
+		           
+		          }   
+		        if(tmp!=null)
+		        	{
+		        	 ic=getScaledIcon(tmp);
+		        	
+		        	
+		        	}
+				return ic;
+		   }
+	
+	 private ImageIcon getScaledIcon(BufferedImage in)
+	  {
+	    int w=50,h=50;
+	      ImageIcon icon = new ImageIcon();
+	    
+	          int type = in.getType();
+	                     
+	          BufferedImage bi = new BufferedImage(w, h, type);
+	          Graphics2D g2 = bi.createGraphics();
+	          g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+	                              RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+	          g2.setPaint(UIManager.getColor("Table.background"));
+	          g2.fillRect(0,0,w,h);
+	          double xScale = (double)w / in.getWidth();
+	          double yScale = (double)h / in.getHeight();
+	          double scale = Math.min(xScale, yScale);   
+	          double x = (w - scale*in.getWidth());
+	          double y = (h - scale*in.getHeight());
+	          AffineTransform at = AffineTransform.getTranslateInstance(x,y);
+	          at.scale(scale, scale);
+	          g2.drawRenderedImage(in, at);
+	          g2.dispose();
+	          icon = new ImageIcon(bi);
+	     
+	      return icon;
+	  }
 
 }

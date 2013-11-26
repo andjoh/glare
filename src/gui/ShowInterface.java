@@ -34,24 +34,28 @@ public class ShowInterface extends JFrame implements ActionListener {
 		panel.add(settingsButton);
 		panel.setBackground(Color.BLACK);
 		add(panel, BorderLayout.SOUTH);
-
+       
 		show = new ImageShow(viewCtrl);
 		System.out.println("kaller imageshow");
         setPreferredSize(new Dimension(1024,800));
    
 		add(show, BorderLayout.CENTER);
 		//this.setUndecorated(true);
+		addKeyListener(new keyInputAdapter());
 		setVisible(true);
 		System.out.println("setVIsible");
 
 
 
-		//GraphicsEnvironment.getLocalGraphicsEnvironment().
-		//getDefaultScreenDevice().setFullScreenWindow(this);
+		setFullScreen();
 		System.out.println("graphicsEnvironment");
 		startClick();
 		System.out.println("kaller startClick() / slider");
 		pack();
+	}
+	private void setFullScreen(){
+		GraphicsEnvironment.getLocalGraphicsEnvironment().
+		getDefaultScreenDevice().setFullScreenWindow(this);
 	}
 
 
@@ -92,7 +96,13 @@ public class ShowInterface extends JFrame implements ActionListener {
 		//pack();
 		
 	}
-
+	class keyInputAdapter extends KeyAdapter{
+		public void keyPressed(KeyEvent evt)  {
+			if(evt.getKeyCode()==KeyEvent.VK_ESCAPE){
+				System.exit(0); 
+			}
+		}
+	}
 
 	class ImageSlider extends Thread {
 
@@ -140,5 +150,6 @@ public class ShowInterface extends JFrame implements ActionListener {
 			show.paint(g);
 		}
 
-	}
+	
+	
 }

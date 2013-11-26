@@ -1,6 +1,7 @@
 package gui;
 
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 
 import bll.ViewController;
 
@@ -10,6 +11,7 @@ import java.awt.RenderingHints;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,17 +51,13 @@ public class ImageShow extends JPanel {
 			g.drawImage(currImg, 0, 0, getWidth(), getHeight(), 0, 0,
 					currImg.getWidth(), currImg.getHeight(), null);
 			
-			KeyListener kl=new KeyAdapter()  {
-				public void keyPressed(KeyEvent evt)  {
-					if(evt.getKeyCode()==KeyEvent.VK_ESCAPE){
-						System.exit(0); 
-					}
-				}
-			};
+			
 			
 			g.dispose();
 		}
 	}
+
+    
 
 	@Override
 	public void update(Graphics g) {
