@@ -30,11 +30,10 @@ public class ImageTable extends JTable implements TableModelListener {
 		
 		model=imgm;
 		setOpaque(false);
-		addColumns(cols);
-		//this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		addRows(rows);
-		setRenderer();
-		setRowHeight(50);
+		
+	//.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		
+	
 		setTableHeader(null);
 		setSelectionBackground (Color.blue);
 		setSelectionMode (ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -70,7 +69,7 @@ public class ImageTable extends JTable implements TableModelListener {
 			col = getColumnModel().getColumn(c);
 			//col.sizeColumnsToFit();
 			col.sizeWidthToFit();
-			col.setCellRenderer(new IconRenderer());
+			//col.setCellRenderer(new IconRenderer());
 		}
 		;
 	}

@@ -10,7 +10,7 @@ import javax.swing.*;
 
 import bll.*;
 
-public class ShowInterface extends JFrame implements KeyListener {
+public class ShowInterface extends JFrame {
 	/**
 	 * 
 	 * @author Andreas J
@@ -37,7 +37,6 @@ public class ShowInterface extends JFrame implements KeyListener {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setAlwaysOnTop(true);
 		setAutoRequestFocus(true);
-		addKeyListener(this);
 		getContentPane().add(slider);
 		setUndecorated(true);
 		setVisible(true);
@@ -202,24 +201,5 @@ public class ShowInterface extends JFrame implements KeyListener {
 
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-	if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
-		
-		System.exit(1);
-	}
-		
-	}
 
-	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 }

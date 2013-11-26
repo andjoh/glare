@@ -35,6 +35,7 @@ public class ViewControllerDummy {
 	private List<PictureData> randomPictureList;
 	private List<PictureData> pictureDataList;
 	private Set<String> hashtags;
+	private int row=5,col=20;
 	private boolean isRandom;
 	private int displayTime;
 	private String[] urls = new String[]{};
@@ -97,11 +98,11 @@ public class ViewControllerDummy {
 
 		String id, url;
 
-		for (int i=0;i<100;i++) {
+		for (int i=0;i<row*col;i++) {
 			
 			id  = Integer.toString(Integer.valueOf((int)Math.random()*98111+33311));
-			url ="/resource/img/"+ i%10+".png";
-			System.out.println("URL : "+url);
+			url ="/resource/img/"+ i%5+".png";
+			
 			try {
 				settingsPictures.add(new SettingsPicture(id, getBufImage(url)));
 			} catch (IOException e) {
@@ -117,15 +118,16 @@ public class ViewControllerDummy {
 	
 		List<SettingsPicture> df=getSettingsPictures();
 		List<List<SettingsPicture>> settingsPictures =new ArrayList<List<SettingsPicture>>();
-         System.out.println("Size: "+df.size());
 			int startindex=0;
-			for (int col=0;col<100;col+=10){
-			settingsPictures.add(col%10,new ArrayList<SettingsPicture>(df.subList(startindex,col%10)));
-			
-			
+			for (int c=0;c<100;c+=5){
+				
+			settingsPictures.add(c/5,new ArrayList<SettingsPicture>(df.subList(c,c+5)));
+			System.out.println("Rad: "+c/row+"startindex: "+startindex+"stopindex"+c/5+5);
+			startindex+=5;
 			}
 		return settingsPictures;
 	}
+	
 
 
 

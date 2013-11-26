@@ -20,7 +20,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Constraints[] gbc;
-	private final static int COLS = 10, ROWS = 10;
+	//private final static int COLS = 10, ROWS = 10;
 	private ImageTableModel tablemodel;
 	private JButton removeButton;
 	private JScrollPane tableScroller;
@@ -39,13 +39,13 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 		// thumbnailTable properties
 		ViewControllerDummy setv = new ViewControllerDummy(null,null);
 		tablemodel= new ImageTableModel(setv.getSettingsPicturesAs2DList());
-		thumbnailTable = new ImageTable(tablemodel,COLS, ROWS);
+		thumbnailTable = new ImageTable(tablemodel,10, 10);
 		
 		// setv.setH(thumbnailTable.getHeight()/rows);
 		// setv.setW(thumbnailTable.getWidth()/cols);
 		System.out.println(thumbnailTable.getHeight());
-		TableUpdater update = new TableUpdater(thumbnailTable.getModel(), setv);
-		update.start();
+		//TableUpdater update = new TableUpdater(thumbnailTable.getModel(), setv);
+		//update.start();
 		// tableScroller properties
 		tableScroller = new JScrollPane();
 		tableScroller.setOpaque(false);

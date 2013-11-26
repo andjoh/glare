@@ -132,14 +132,14 @@ public class SettingsFrame extends JInternalFrame {
 		  *  
 		  *   Call:  updateDisplaySettings()
 		  */
-			//  updateDisplaySettings();
+			  updateDisplaySettings();
 	    /*
 	     *  update,set hashtags here 
 	     *  
 	     *  Call: updateHashtags
 			  
 	     */ 
-			 //updateHashtags();
+			 updateHashtags();
 	    /*
 	     *  update thumnails   
 	     *  
