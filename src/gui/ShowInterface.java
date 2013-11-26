@@ -45,13 +45,13 @@ public class ShowInterface extends JFrame implements ActionListener {
 		setVisible(true);
 		System.out.println("setVIsible");
 
-
+	pack();
 
 		setFullScreen();
 		System.out.println("graphicsEnvironment");
 		
 		System.out.println("kaller startClick() / slider");
-		pack();
+	
 		Dimension d=this.getSize();
 		show = new ImageShow(viewCtrl,(int)d.getWidth(),(int)d.getHeight());
 		startClick();

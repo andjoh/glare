@@ -32,8 +32,8 @@ public class LoginDialog extends JDialog implements ActionListener {
 		add(panel, BorderLayout.CENTER);
 	    add(buttonPanel, BorderLayout.PAGE_END);
          pack();
-         setAlwaysOnTop(true);
- 		setLocationRelativeTo(null);
+         //setAlwaysOnTop(true);
+ 		setLocationRelativeTo(jf);
  		setVisible(true);
 	
 	}
