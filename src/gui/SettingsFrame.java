@@ -76,7 +76,7 @@ public class SettingsFrame extends JInternalFrame {
 	 */
 	private void initFrame(){
 		getContentPane().setLayout(null);
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		//setResizable(true);
 		setPreferredSize(PREFERRED_SIzE);
 		this.addInternalFrameListener(new closeAndSave());
@@ -132,14 +132,14 @@ public class SettingsFrame extends JInternalFrame {
 		  *  
 		  *   Call:  updateDisplaySettings()
 		  */
-			  updateDisplaySettings();
+			//  updateDisplaySettings();
 	    /*
 	     *  update,set hashtags here 
 	     *  
 	     *  Call: updateHashtags
 			  
 	     */ 
-			  updateHashtags();
+			 //updateHashtags();
 	    /*
 	     *  update thumnails   
 	     *  
