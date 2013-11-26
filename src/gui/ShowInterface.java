@@ -10,126 +10,140 @@ import javax.swing.*;
 
 import bll.*;
 
-public class ShowInterface extends JFrame implements ActionListener {
+public class ShowInterface extends JFrame implements KeyListener {
 	/**
-	 *
+	 * 
 	 * @author Andreas J
 	 */
 	private ViewController viewCtrl;
-	private final JButton settingsButton;
-	private LoginDialog ld;
-	private final JPanel panel;
-	Constraints gbc;
-	private final ImageShow show;
-	private boolean stop = true;
+	private JButton settingsButton;
+	private LoginDialog ld = null;
+	private Dimension dim=null;
 	private ImageSlider slider;
+	private JFrame fr = null;
+	private ImageShow show;
+	private Constraints gbc = null;
+	private GraphicsDevice device;
+
+	// private final ImageShow show;
 
 	public ShowInterface(ViewController viewCtrl) throws IOException {
-
+		
+		fr = this;
 		this.viewCtrl = viewCtrl;
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		settingsButton = new JButton("Test");
-		settingsButton.addActionListener(this);
-		panel = new JPanel();
-		panel.add(settingsButton);
-		panel.setBackground(Color.BLACK);
-		add(panel, BorderLayout.SOUTH);
-       
 		
-		System.out.println("kaller imageshow");
-        setPreferredSize(new Dimension(1024,800));
-   
-		
-		//this.setUndecorated(true);
-		addKeyListener(new keyInputAdapter());
-		setVisible(true);
-		System.out.println("setVIsible");
 
-	pack();
-
-		setFullScreen();
-		System.out.println("graphicsEnvironment");
-		
-		System.out.println("kaller startClick() / slider");
-	
-		Dimension d=this.getSize();
-		show = new ImageShow(viewCtrl,(int)d.getWidth(),(int)d.getHeight());
-		startClick();
-	}
-	private void setFullScreen(){
-		GraphicsEnvironment.getLocalGraphicsEnvironment().
-		getDefaultScreenDevice().setFullScreenWindow(this);
-	}
-
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(settingsButton)) {
-			stopClick();
-			openLoginBox();
-		}
-	}
-
-	private void startClick() {
-		stop = false;
 		slider = new ImageSlider();
-		slider.start();
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setAlwaysOnTop(true);
+		setAutoRequestFocus(true);
+		addKeyListener(this);
+		getContentPane().add(slider);
+		setUndecorated(true);
+		setVisible(true);
+		pack();
+		setFullScreen();
+		
 	}
 
-	public void stopClick() {
-		settingsButton.setIcon(new ImageIcon("/img/play.png"));
-		stop = true;
-		slider.stopShow();
+	private void setFullScreen() {
+		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
+				.getLocalGraphicsEnvironment();
+		device = graphicsEnvironment.getDefaultScreenDevice();
+		if (device.isFullScreenSupported()) {
+			device.setFullScreenWindow(this);
+			this.validate();
+		}
 	}
 
-	public void openLoginBox() {
+	class ImageSlider extends JPanel implements ActionListener, Runnable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1;
+		boolean stop = false;
+		private Thread th;
+		private JLabel backgroundImageLabel;
+		private ImageIcon icon;
+		private Action escapeAction;
+
+		public ImageSlider() throws IOException {
+			dim =Toolkit.getDefaultToolkit().getScreenSize();
 		
-		boolean loggedIn= new LoginDialog(this).getSucceeded();
-		System.out.println("Login return equals"+loggedIn);
-		if(loggedIn)openSettingsFrame();
-	}
-	
-	private void openSettingsFrame() {
-		System.out.println("Tries to open settingsframe");
+			show = new ImageShow(viewCtrl, (int) dim.getWidth(),
+					(int) dim.getHeight());
+			escapeAction = new EscapeAction();
+			setPreferredSize(new Dimension(dim.width, dim.height));
+			getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),
+					"doEscapeAction");
+
+			getActionMap().put("doEscapeAction", escapeAction);
+			setDoubleBuffered(true);
+			setFocusable(true);
+			setBackground(Color.blue);
+			init();
+			setLayout(null);
+			
+
+		}
+
+		private void init() {
+
+		// set settingsButton properties
+			settingsButton = new JButton();
+			settingsButton.setIcon(new ImageIcon(getClass().getResource(
+					"/resource/img/settings.gif")));
+			settingsButton.setBorderPainted(false);
+			settingsButton.setContentAreaFilled(false);
+			settingsButton.addActionListener(this); 
+			int w=150,h=150;
+			System.out.println(getSize().getHeight());
+			settingsButton.setBounds(0, (int) (dim.getHeight()-h), w,h);
+			add(settingsButton);
+			
+			// 
+			backgroundImageLabel= new JLabel();
+			
+			backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
+					"/resource/img/glare.jpg")));;
+			backgroundImageLabel.setIconTextGap(0);
+			//backgroundImageLabel.setPreferredSize(dim);
+			backgroundImageLabel.setBounds(0, 0,(int) dim.getWidth(), (int)dim.getHeight());
+			add(backgroundImageLabel);
+
+		}
+		public void start(){
+			th= new Thread(this);
+			th.start();
+			
+		}
+
 		
-		
-		SettingsFrame intfr = new SettingsFrame(viewCtrl);
-		getContentPane().add(intfr);
-		//pack();
-		
-	}
-	class keyInputAdapter extends KeyAdapter{
-		public void keyPressed(KeyEvent evt)  {
-			if(evt.getKeyCode()==KeyEvent.VK_ESCAPE){
-				System.exit(0); 
+
+		@Override
+		public void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            if (show != null) {
+				show.paint(g);
 			}
-		}
-	}
-
-	class ImageSlider extends Thread {
-
-		boolean started;
-		int size;
-		ImageSlider() {
-			System.out.println("imageSlider");
-			started = true;
-//			run();
-		}
+         
+        }
+	
 
 		@Override
 		public void run() {
 			System.out.println("run()");
-		
+
 			try {
-				while(true){
-					if (stop != true) {
+				while (stop!=true) {
+				
 						System.out.println("before thread");
 						Thread.sleep(viewCtrl.getDisplayTime());
 						System.out.println("after thread");
 						show.moveNext();
 						repaint();
 						System.out.println("ShowINterface, kaller moveNext()");
-					}
+					
 
 				}
 			} catch (InterruptedException ie) {
@@ -138,20 +152,79 @@ public class ShowInterface extends JFrame implements ActionListener {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			try {
+				th.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+		}
+	   public void stopClick() {
+			stop = true;
+
 		}
 
-		public void stopShow() {
-			started = false;
+		private void openLoginBox() {
+
+			boolean loggedIn = new LoginDialog(fr).getSucceeded();
+			System.out.println("Login return equals" + loggedIn);
+			if (loggedIn)
+				openSettingsFrame();
+		}
+
+		private void openSettingsFrame() {
+			System.out.println("Tries to open settingsframe");
+
+			SettingsFrame intfr = new SettingsFrame(viewCtrl);
+			getContentPane().add(intfr);
+			pack();
+			repaint();
+
+		}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource().equals(settingsButton)) {
+				stopClick();
+				openLoginBox();
+
+			}
+			repaint();
+
+		}
+
+		class EscapeAction extends AbstractAction {
+			public void actionPerformed(ActionEvent tf) {
+			
+			 System.exit(1);
+
+				
+				System.out.println("Escape");
+
+			} // end method actionPerformed()
+
 		}
 
 	}
 
 	@Override
-	public void paintComponents(Graphics g) {
-		if (show != null) {
-			show.paint(g);
-		}
+	public void keyPressed(KeyEvent e) {
+	if(e.getKeyCode()==KeyEvent.VK_ESCAPE){
+		
+		System.exit(1);
+	}
+		
+	}
 
-	
-	
-}}
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+}

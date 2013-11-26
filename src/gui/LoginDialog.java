@@ -5,95 +5,112 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class LoginDialog extends JDialog implements ActionListener {
+public class LoginDialog extends JDialog {
 
 	/**
-	 *
+	 * 
 	 * @author Andreas J.
 	 */
 	private static final long serialVersionUID = 1L;
 
 	private JFrame jf;
-	private LoginPanel panel;
-
-	private Constraints gbc;
-	private JPanel buttonPanel;
+	private LoginDialogPanel inputpanel;
+	private ButtonPanel buttonPanel;
 	private JButton okButton, cancelButton;
 	private JPasswordField passwordInputField;
 	private JTextField usernameInputField;
+	private Dimension dim, totalsize;
 	private JLabel usernameLabel, passwordLabel;
 	private boolean succeeded;
 
 	public LoginDialog(JFrame jf) {
+		super(jf, "", true);
 		this.jf = jf;
-		setModal(true);
-		setSize(200, 400);
+		// setModal(true);
+		dim= Toolkit.getDefaultToolkit().getScreenSize();
+		totalsize= new Dimension((int)(dim.getWidth()/4),(int)dim.getHeight()/7);
 		init();
-		add(panel, BorderLayout.CENTER);
-	    add(buttonPanel, BorderLayout.PAGE_END);
-         pack();
-         //setAlwaysOnTop(true);
- 		setLocationRelativeTo(jf);
- 		setVisible(true);
+		setLayout(new BorderLayout());
+		add(inputpanel, BorderLayout.CENTER);
+		add(buttonPanel, BorderLayout.PAGE_END);
 	
-	}
-	/*Declares GUI objects.
-	 * 
-	 *  
-	 */
-	public void init(){
-		panel = new LoginPanel();
-		buttonPanel = new JPanel();
-		okButton = new JButton("Login");
-
-		okButton.addActionListener(this);
-		cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(this);
-		buttonPanel = new JPanel();
-		buttonPanel.add(okButton);
-		buttonPanel.add(cancelButton);
-
+		pack();
+		//setResizable(false);
+		setAlwaysOnTop(succeeded);
+		requestFocusInWindow();
+		setLocationRelativeTo(jf);
+		setVisible(true);
 
 	}
+
 	/*
-	 * Returns username typed by user (without spaces)
+	 * Declares GUI objects.
 	 */
-	public String getUsername() {
-		return usernameInputField.getText().trim();
+	public void init() {
+		usernameLabel = new JLabel("Username: ");
+		passwordLabel = new JLabel("Password: ");
+		usernameInputField = new JTextField(20);
+		passwordInputField = new JPasswordField(20);
+		inputpanel = new LoginDialogPanel(usernameInputField, usernameLabel,
+				passwordLabel, passwordInputField,new Dimension((int)totalsize.getWidth(),(int)totalsize.getHeight()*2/3));
+		// ButtonPanel properties
+
+		buttonPanel = new ButtonPanel(new Dimension((int)totalsize.getWidth(),(int)totalsize.getHeight()*1/3));
+		// ok butto
+		
+
 	}
 
-	public String getPassword() {
-		return new String(passwordInputField.getPassword());
-	}
-	/*
-	 * 
-	 */
-	public boolean isSucceeded() {
+	
+	
+
+	public boolean getSucceeded() {
 		return succeeded;
 	}
-	/*
-	 *  If user has clicked cancel: close Dialog.
-	 *  If user has clicked OK: call class to check info
-	 * */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object jc= e.getSource();
-		if (jc.equals(okButton))tryToLogin();
-		else if (jc.equals(cancelButton))setVisible(false);
-	}
-	/* Calls method to compare provided login information with the hardcoded values.
-	 * If correct: closes dialog box. 
-	 * If fail: opens up a messageDialog with error message.
-	 * 
-	 */
-	public void tryToLogin() {
+	class ButtonPanel extends JPanel implements ActionListener{
+		private Dimension dim;
+		 /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private  Action enterAction;
+		
+		public ButtonPanel(Dimension dim){
+			setBackground(Color.green);
+			//setLayout(new FlowLayout());
+			this.dim=dim;
+			setPreferredSize(dim);
+	    setFocusable(true);
+		getInputMap().put( KeyStroke.getKeyStroke( "ENTER" ),
+		                "doEnterAction" );
+		getActionMap().put( "doEnterAction", enterAction );
+		 init();
+			
+		}
+		private void init(){
+			okButton = new JButton("Login");
+			okButton.addActionListener(this);
 
-		if (LoginData.authenticate(getUsername(), getPassword())) {
+			cancelButton = new JButton("Cancel");
+			cancelButton.addActionListener(this);
+			
+		add(okButton);
+			add(cancelButton);
+			enterAction= new EnterAction();
+			
+		}
+		
+		
+		
+		private void tryToLogin() {
+
+		if (LoginData.authenticate(inputpanel.getUsername(),
+				inputpanel.getPassword())) {
 			succeeded = true;
 			setVisible(false);
 		} else {
-			JOptionPane.showMessageDialog(LoginDialog.this,
-					"Wrong credentials", "Login", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(LoginDialog.this, "Wrong credentials", "Login",
+					JOptionPane.ERROR_MESSAGE);
 
 			usernameInputField.setText("");
 			passwordInputField.setText("");
@@ -101,55 +118,35 @@ public class LoginDialog extends JDialog implements ActionListener {
 
 		}
 	}
-	
-	public boolean getSucceeded() {
-		return succeeded;
+		
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			Object jc = e.getSource();
+			if (jc.equals(okButton)){
+				tryToLogin();
+				 System.out.println( "The Enter key has been pressed." );
+			}
+			else if (jc.equals(cancelButton))
+				dispose();
+		}
+	      class EnterAction extends AbstractAction
+		    {
+		        public void actionPerformed( ActionEvent tf )
+		        {
+		            
+		           
+		        	 System.out.println( "The Enter key has been pressed." );
+		        
+		           okButton.doClick();
+		            
+		        } 
+		        
+		    }
+
+		
+		
+		
 	}
 
-	/* GUI for Login Panel.
-	 * The Text and Password fields. 
-	 * 
-	 * 
-	 */
-	class LoginPanel extends JPanel {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public LoginPanel() {
-
-			setLayout(new GridBagLayout());
-			setBorder(new LineBorder(Color.GRAY));
-			init();
-			setConstraints();
-
-		}
-
-		private void init() {
-			gbc = new Constraints();
-			gbc.fill = GridBagConstraints.HORIZONTAL;
-			usernameLabel = new JLabel("Username: ");
-			passwordLabel = new JLabel("Password: ");
-			usernameInputField = new JTextField(20);
-			passwordInputField = new JPasswordField(20);
-		}
-		/*
-		 * Sets GUI objects with GB Layout using the Constraint class 
-		 * 
-		 */
-		private void setConstraints() {
-                        
-			gbc.set(0, 0, 1, 1,0,0);
-			add(usernameLabel, gbc);
-			gbc.set(1, 0, 2, 1,0,0);
-			add(usernameInputField, gbc);
-			gbc.set(0, 1, 1, 1,0,0);
-			add(passwordLabel, gbc);
-			gbc.set(1, 1, 2, 1,0,0);
-			add(passwordInputField, gbc);
-		}
-
-	}
 }

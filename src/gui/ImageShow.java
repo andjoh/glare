@@ -56,7 +56,7 @@ public class ImageShow extends JPanel {
 			System.out.println("kkdff"+SCREEN_W);
 			int w = (SCREEN_W - currImg.getWidth()) / 2, h = (SCREEN_H - currImg
 					.getHeight()) / 2;
-			g2.drawImage(currImg, w, h, null);
+			g2.drawImage(currImg, 50, 50, null);
 			g2.dispose();
 
 		}
