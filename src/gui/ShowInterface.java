@@ -110,6 +110,7 @@ public class ShowInterface extends JFrame implements KeyListener {
 			//backgroundImageLabel.setPreferredSize(dim);
 			backgroundImageLabel.setBounds(0, 0,(int) dim.getWidth(), (int)dim.getHeight());
 			add(backgroundImageLabel);
+			start();
 
 		}
 		public void start(){
