@@ -38,7 +38,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	private void init() {
 		// thumbnailTable properties
 		ViewControllerDummy setv = new ViewControllerDummy(null,null);
-		tablemodel= new ImageTableModel(setv.getSettingsPicturesAs2DList());
+		tablemodel= new ImageTableModel(setv.getSettingsPictures(5,20));
 		thumbnailTable = new ImageTable(tablemodel,10, 10);
 		
 		// setv.setH(thumbnailTable.getHeight()/rows);

@@ -9,6 +9,7 @@ import javax.swing.ImageIcon;
 
 import net.coobird.thumbnailator.Thumbnails;
 
+
 public class SettingsPicture {
 	private String id;
 	private boolean isFlagged=false;

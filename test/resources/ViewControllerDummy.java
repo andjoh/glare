@@ -35,7 +35,6 @@ public class ViewControllerDummy {
 	private List<PictureData> randomPictureList;
 	private List<PictureData> pictureDataList;
 	private Set<String> hashtags;
-	private int row=5,col=20;
 	private boolean isRandom;
 	private int displayTime;
 	private String[] urls = new String[]{};
@@ -78,7 +77,7 @@ public class ViewControllerDummy {
 		Collections.shuffle(randomPictureList);
 	}
 	
-	private BufferedImage getBufImage(String path) throws IOException{
+	private BufferedImage getBufImage(String path){
 		URL url = this.getClass().getResource(path);
           BufferedImage tmp = null;
 		try {
@@ -90,44 +89,40 @@ public class ViewControllerDummy {
 		}
 		return tmp;
 	}
- 
-	public List<SettingsPicture> getSettingsPictures() {
-		System.out.println("ViewController: getSettingsPictures");
-		
-		List<SettingsPicture> settingsPictures = new ArrayList<SettingsPicture>();
 
-		String id, url;
+	public  List<List<SettingsPicture>> getSettingsPictures(int rows,int cols)  {
+		List<List<SettingsPicture>> settingsPictures=null;
+		List<PictureData> picd=null;
+		if(rows*cols==100){
+		picd=getPictureData(rows,cols) ;
+		settingsPictures =new ArrayList<List<SettingsPicture>>();
 
-		for (int i=0;i<row*col;i++) {
-			
-			id  = Integer.toString(Integer.valueOf((int)Math.random()*98111+33311));
-			url ="/resource/img/"+ i%5+".png";
-			
-			try {
-				settingsPictures.add(new SettingsPicture(id, getBufImage(url)));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}	
 		
-		return settingsPictures;
-	}
-	
-	public  List<List<SettingsPicture>> getSettingsPicturesAs2DList()  {
-	
-		List<SettingsPicture> df=getSettingsPictures();
-		List<List<SettingsPicture>> settingsPictures =new ArrayList<List<SettingsPicture>>();
-			int startindex=0;
-			for (int c=0;c<100;c+=5){
+			PictureData pic=null;
+			String id="",url;
+			
+		   for (int r=0;r<100;r+=cols){
+			   List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
+			   for (int c=0;c<cols;c++){
+				   pic=picd.get(5*r+c);
+				   url=pic.getUrlThumb();
+				   id=pic.getId();
+				   tmp.add(new SettingsPicture(id,this.getBufImage(url)));
+			   }
+			   settingsPictures.add(tmp);
 				
-			settingsPictures.add(c/5,new ArrayList<SettingsPicture>(df.subList(c,c+5)));
-			System.out.println("Rad: "+c/row+"startindex: "+startindex+"stopindex"+c/5+5);
-			startindex+=5;
 			}
+	}
 		return settingsPictures;
 	}
-	
+	public List<PictureData>getPictureData(int row, int col){
+		List<PictureData> picd = new ArrayList<PictureData>();
+		for(int r=0;r<row*col;r++){
+			picd.add(new PictureData("idnum"+r,"/resource/img/settings.gif","/resource/img/settings.gif",12345,false));
+		}
+		return pictureDataList;
+		
+	}
 
 
 
