@@ -5,6 +5,9 @@ import glare.ClassFactory;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.io.IOException;
 import java.net.URL;
 
@@ -23,6 +26,7 @@ public class ShowInterface extends JFrame {
 	private LoginDialog ld = null;
 	private Dimension dim = null;
 	private ImageSlider slider;
+	JDesktopPane desktopPane;
 	private SettingsFrame settingsFrame;
 	private JFrame parent = null;
 	private ImageShow show;
@@ -37,12 +41,15 @@ public class ShowInterface extends JFrame {
 		this.viewCtrl = viewCtrl;
 		settingsFrame = null;
 		slider = new ImageSlider();
-		setLayout(null);
+		//setLayout(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setAlwaysOnTop(true);
 		setAutoRequestFocus(true);
+		//desktopPane= new JDesktopPane();
 		
-		
+		setContentPane(slider);
+		//getContentPane().add(settingsButton);
+		//getContentPane().add(slider);
 		setLocationByPlatform(true);
 		setUndecorated(true);
 		pack();
@@ -58,8 +65,8 @@ public class ShowInterface extends JFrame {
 			}
 		};
 		addWindowListener(exitListener);
-		setContentPane(slider);
-
+		
+		openSettingsFrame();
 	}
 
 	
@@ -73,20 +80,33 @@ public class ShowInterface extends JFrame {
 			this.validate();
 		}
 	}
+	//opens SettingsFrame
 
 	public void openSettingsFrame() {
 		System.out.println("Tries to open settingsframe");
+		 SettingsFrame settingsFrame = new  SettingsFrame(viewCtrl);
 
-		settingsFrame = new SettingsFrame(viewCtrl, null);
-		//settingsFrame.pack();
-		slider.setOpaque(false);
-		slider.add(settingsFrame);
-		parent.setGlassPane(slider);
-		//add(settingsFrame);
-		//parent.pack();
+		  slider.add(settingsFrame);
+		  settingsFrame.setSize(800, 600);
+		  settingsFrame.setLocation(50, 50);
+		  settingsFrame.setVisible(true);
+		  setVisible(true);
+
+		  // To avoid events from being fired outside the SettingsFrame
+		  JPanel gp = new JPanel();
+		  gp.setSize(400, 300);
+		  gp.setOpaque(true);
+		  gp.setVisible(true);
+		  gp.setBackground(java.awt.Color.RED);
+		  settingsFrame.setGlassPane(gp);
+
+		  // Veto Listener to prevent selection of other components
+		
+
 		repaint();
 
 	}
+	// opens Dialog Box for login and waits for return value.
 
 	public void openLoginBox() {
 		hideComponent(settingsButton);
@@ -106,7 +126,7 @@ public class ShowInterface extends JFrame {
 		c.setEnabled(true);
 	}
 
-	class ImageSlider extends JPanel implements Runnable, ActionListener {
+	class ImageSlider extends JComponent implements Runnable, ActionListener {
 		/**
 		 * 
 		 */
@@ -121,8 +141,9 @@ public class ShowInterface extends JFrame {
 			show = new ImageShow(viewCtrl, (int) dim.getWidth(),
 					(int) dim.getHeight());
 			escapeAction = new EscapeAction();
-			setLayout(null);
 			
+			
+			System.out.println("Widht ImageSlider: "+dim.width+"Height ImageSlider: "+dim.height);
 			setPreferredSize(new Dimension(dim.width, dim.height));
 			getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),
 					"doEscapeAction");
@@ -148,8 +169,8 @@ public class ShowInterface extends JFrame {
 			settingsButton.addActionListener(this);
 			int w = 150, h = 150;
 			System.out.println(getSize().getHeight());
-			settingsButton.setBounds(600, 500, w, h);
-			add(settingsButton);
+			settingsButton.setBounds(0,dim.height-h, w, h);
+			
 
 		}
 
@@ -160,14 +181,15 @@ public class ShowInterface extends JFrame {
 		}
 
 		@Override
-		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
-			if (show != null) {
+		public void paintComponents(Graphics g)
+	    {
+	      super.paintComponent(g);
+	        if (show != null) {
 				show.paint(g);
 
 			};
-
-		}
+	    }
+		
 
 		@Override
 		public void run() {
@@ -176,12 +198,12 @@ public class ShowInterface extends JFrame {
 			try {
 				while (stop != true) {
 
-					System.out.println("before thread");
+					//System.out.println("before thread");
 					Thread.sleep(viewCtrl.getDisplayTime());
-					System.out.println("after thread");
+					//System.out.println("after thread");
 					show.moveNext();
 					repaint();
-					System.out.println("ShowINterface, kaller moveNext()");
+					//System.out.println("ShowINterface, kaller moveNext()");
 
 				}
 			} catch (InterruptedException ie) {
@@ -222,6 +244,9 @@ public class ShowInterface extends JFrame {
 
 	}
 	}
+
+
+
 
 
 

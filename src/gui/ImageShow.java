@@ -29,7 +29,8 @@ public class ImageShow extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 	private BufferedImage currImg, backgroundImage;
-	private static int SCREEN_W, SCREEN_H, SCALE_FACTOR;
+	private static int SCREEN_W, SCREEN_H;
+	private static double SCALE_FACTOR;
 	private ViewController ctrl;
 
 	/*
@@ -40,7 +41,7 @@ public class ImageShow extends JPanel {
 		this.ctrl = ctrl;
 		SCREEN_W = w;
 		SCREEN_H = h;
-		SCALE_FACTOR = 2;
+		SCALE_FACTOR = 1.4;
 		// currImg = ctrl.getCurrentPicture(false);
 		currImg = null;
 		backgroundImage = loadBackground();
@@ -59,12 +60,11 @@ public class ImageShow extends JPanel {
 	// object
 	//
 
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+	public void paint(Graphics g) {
 		int w = 0, h = 0;
 		Graphics2D g2 = (Graphics2D) g;
 		if (currImg != null) {
-
+           
 			w = (SCREEN_W - currImg.getWidth()) / 2;
 			h = (SCREEN_H - currImg.getHeight()) / 2;
 

@@ -58,7 +58,7 @@ public class MainTestSettingsFrameUsingSpringAndDb {
 
 				ViewController vc = (ViewController) ClassFactory.getBeanByName("viewController");
 								
-				SettingsFrame intfr = new SettingsFrame();
+				SettingsFrame intfr = new SettingsFrame(vc);
 				
 				
 
