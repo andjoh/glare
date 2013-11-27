@@ -58,13 +58,9 @@ public class MainTestSettingsFrameUsingSpringAndDb {
 
 				ViewController vc = (ViewController) ClassFactory.getBeanByName("viewController");
 								
-				SettingsFrame intfr = new SettingsFrame(vc);
+				SettingsFrame intfr = new SettingsFrame();
 				
-				JFrame fr = new JFrame();
-				fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				fr.getContentPane().add(intfr);
-				fr.pack();
-				fr.setVisible(true);
+				
 
 			}
 		});

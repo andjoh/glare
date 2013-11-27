@@ -19,7 +19,7 @@ import java.util.*;
 import dal.*;
 
 /**
- * @author Simen Sollie, Kristine Svaboe, Petter Austerheim
+ * @author Andreas J, Simen Sollie, Kristine Svaboe, Petter Austerheim
  * @since 2013-11-04
  */
 
@@ -37,7 +37,6 @@ public class ViewControllerDummy {
 	private Set<String> hashtags;
 	private boolean isRandom;
 	private int displayTime;
-	private String[] urls = new String[]{};
 
 	public ViewControllerDummy(PictureController picCtrl, DatabaseManager dbMan){
 		
@@ -100,14 +99,16 @@ public class ViewControllerDummy {
 		
 			PictureData pic=null;
 			String id="",url;
-			
-		   for (int r=0;r<100;r+=cols){
+			 int s=0;
+		   for (int r=0;r<100/cols;r++){
 			   List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
 			   for (int c=0;c<cols;c++){
-				   pic=picd.get(5*r+c);
+				  
+				   pic=picd.get(s);
 				   url=pic.getUrlThumb();
 				   id=pic.getId();
-				   tmp.add(new SettingsPicture(id,this.getBufImage(url)));
+				   tmp.add(new SettingsPicture(id,this.getBufImage(url))); 
+				   s++;
 			   }
 			   settingsPictures.add(tmp);
 				
@@ -117,10 +118,11 @@ public class ViewControllerDummy {
 	}
 	public List<PictureData>getPictureData(int row, int col){
 		List<PictureData> picd = new ArrayList<PictureData>();
-		for(int r=0;r<row*col;r++){
-			picd.add(new PictureData("idnum"+r,"/resource/img/settings.gif","/resource/img/settings.gif",12345,false));
+		for(int r=0;r<100;r++){
+		    
+			picd.add(new PictureData("idnum"+r,"/resource/img/"+r%10+".png","/resource/img/"+r%10+".png",12345,false));
 		}
-		return pictureDataList;
+		return picd;
 		
 	}
 

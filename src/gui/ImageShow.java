@@ -49,24 +49,24 @@ public class ImageShow extends JPanel {
 	public BufferedImage loadBackground() throws IOException {
 		URL url = this.getClass().getResource("/resource/img/glare.png");
 		backgroundImage = ImageIO.read(url);
-		backgroundImage = Thumbnails.of(backgroundImage).size(SCREEN_W, SCREEN_H)
-				.asBufferedImage();
+		backgroundImage = Thumbnails.of(backgroundImage)
+				.size(SCREEN_W, SCREEN_H).asBufferedImage();
 		return backgroundImage;
 
 	}
 
-	@Override
 	// Resizes currImage, adds rendering hints, draws and dispose of Graphics
 	// object
 	//
-	public void paint(Graphics g) {
+
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		int w = 0, h = 0;
 		Graphics2D g2 = (Graphics2D) g;
 		if (currImg != null) {
-			
-			 w = (SCREEN_W - currImg.getWidth()) / 2;
-			 h = (SCREEN_H - currImg
-					.getHeight()) / 2;
+
+			w = (SCREEN_W - currImg.getWidth()) / 2;
+			h = (SCREEN_H - currImg.getHeight()) / 2;
 
 		} else {
 			currImg = backgroundImage;

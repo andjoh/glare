@@ -49,7 +49,13 @@ ImageTableModel( List<List<SettingsPicture>> data){
  }
 
  public Object getValueAt(int row, int column) {
-   return data.get(column).get(row).getIconTest();
+   return data.get(row).get(column).getIconTest();
+ }
+ public void flagPicture(int row, int column){
+	 data.get(row).get(column).setIsFlagged(true);
+ }
+ public List<List<SettingsPicture>> getTableModelData(){
+	 return data;
  }
 
  public Class getColumnClass(int column) {

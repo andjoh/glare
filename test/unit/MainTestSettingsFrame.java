@@ -4,8 +4,8 @@ import glare.ClassFactory;
 import gui.SettingsFrame;
 import java.awt.EventQueue;
 import javax.swing.*;
-import bll.*;
 
+import bll.*;
 
 /*
  * Show SettingsFrame and perform tests regarding hashtags, view mode and display time
@@ -24,7 +24,27 @@ import bll.*;
  * 4. Displaytime set
  *    a) Set Displaytime - OK    
  */
-public class MainTestSettingsFrame {
+public class MainTestSettingsFrame extends JFrame {
+	public MainTestSettingsFrame() {
+
+		JPanel panel = new JPanel();
+		SettingsFrame settingsFrame = new SettingsFrame(panel);
+		panel.setOpaque(false);
+		panel.add(settingsFrame);
+		setGlassPane(panel);
+		panel.setVisible(true);
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+getContentPane().add(settingsFrame);
+		pack();
+
+		settingsFrame.pack();
+		
+		settingsFrame.setVisible(true);
+		getContentPane().add(settingsFrame);
+		pack();
+		setVisible(true);
+
+	}
 
 	public static void main(String args[]) {
 		/*
@@ -51,28 +71,18 @@ public class MainTestSettingsFrame {
 			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
 					.log(java.util.logging.Level.SEVERE, null, ex);
 		}
-		
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 
-				//ViewController vc = (ViewController) ClassFactory.getBeanByName("viewController");
-								
-				//SettingsFrame intfr = new SettingsFrame(vc);
-				
+				// ViewController vc = (ViewController)
+				// ClassFactory.getBeanByName("viewController");
 
-				SettingsFrame intfr = new SettingsFrame();
-				
-				JFrame fr = new JFrame();
-				fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				fr.getContentPane().add(intfr);
-				fr.pack();
-				fr.setVisible(true);
+				// SettingsFrame intfr = new SettingsFrame(vc);
+			 new MainTestSettingsFrame();
 
 			}
 		});
 	}
-	
-	
-	
+
 }

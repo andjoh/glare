@@ -80,10 +80,7 @@ class TableUpdater extends Thread {
 
 						@Override
 						public void run() {
-							SettingsPicture pic;
-							pic=imgmodel.getTableSettingsPicture(rind,cind);
-							BufferedImage bimg= pic.getImage();
-							model.setValueAt(bimg, rind, cind);
+				
 						}
 					});
 				

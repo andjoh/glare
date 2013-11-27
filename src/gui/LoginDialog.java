@@ -34,11 +34,13 @@ public class LoginDialog extends JDialog {
 		add(inputpanel, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.PAGE_END);
 	
-		pack();
+		
 		//setResizable(false);
 		setAlwaysOnTop(succeeded);
 		requestFocusInWindow();
 		setLocationRelativeTo(jf);
+		pack();
+		jf.pack();
 		setVisible(true);
 
 	}

@@ -4,8 +4,11 @@ import glare.ClassFactory;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import bll.*;
@@ -18,32 +21,48 @@ public class ShowInterface extends JFrame {
 	private ViewController viewCtrl;
 	private JButton settingsButton;
 	private LoginDialog ld = null;
-	private Dimension dim=null;
+	private Dimension dim = null;
 	private ImageSlider slider;
-	private JFrame fr = null;
+	private SettingsFrame settingsFrame;
+	private JFrame parent = null;
 	private ImageShow show;
-	private Constraints gbc = null;
+	// private Constraints gbc = null;
 	private GraphicsDevice device;
 
 	// private final ImageShow show;
 
 	public ShowInterface(ViewController viewCtrl) throws IOException {
-		
-		fr = this;
-		this.viewCtrl = viewCtrl;
-		
 
+		this.parent = this;
+		this.viewCtrl = viewCtrl;
+		settingsFrame = null;
 		slider = new ImageSlider();
+		setLayout(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setAlwaysOnTop(true);
 		setAutoRequestFocus(true);
-		getContentPane().add(slider);
-		setUndecorated(true);
-		setVisible(true);
-		pack();
-		setFullScreen();
 		
+		
+		setLocationByPlatform(true);
+		setUndecorated(true);
+		pack();
+		setVisible(true);
+		setFullScreen();
+		WindowListener exitListener = new WindowAdapter() {
+
+			@Override
+			public void windowClosing(WindowEvent e) {
+
+				System.exit(1);
+
+			}
+		};
+		addWindowListener(exitListener);
+		setContentPane(slider);
+
 	}
+
+	
 
 	private void setFullScreen() {
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
@@ -55,23 +74,55 @@ public class ShowInterface extends JFrame {
 		}
 	}
 
-	class ImageSlider extends JPanel implements ActionListener, Runnable {
+	public void openSettingsFrame() {
+		System.out.println("Tries to open settingsframe");
+
+		settingsFrame = new SettingsFrame(viewCtrl, null);
+		//settingsFrame.pack();
+		slider.setOpaque(false);
+		slider.add(settingsFrame);
+		parent.setGlassPane(slider);
+		//add(settingsFrame);
+		//parent.pack();
+		repaint();
+
+	}
+
+	public void openLoginBox() {
+		hideComponent(settingsButton);
+		boolean loggedIn = new LoginDialog(parent).getSucceeded();
+		System.out.println("Login return equals" + loggedIn);
+		if (loggedIn)openSettingsFrame();
+
+	}
+
+	private void hideComponent(Component c) {
+		c.setVisible(false);
+		c.setEnabled(false);
+	}
+
+	private void unhideComponent(Component c) {
+		c.setVisible(true);
+		c.setEnabled(true);
+	}
+
+	class ImageSlider extends JPanel implements Runnable, ActionListener {
 		/**
 		 * 
 		 */
 		private static final long serialVersionUID = 1;
 		boolean stop = false;
 		private Thread th;
-		private JLabel backgroundImageLabel;
-		private ImageIcon icon;
+
 		private Action escapeAction;
 
 		public ImageSlider() throws IOException {
-			dim =Toolkit.getDefaultToolkit().getScreenSize();
-		
+			dim = Toolkit.getDefaultToolkit().getScreenSize();
 			show = new ImageShow(viewCtrl, (int) dim.getWidth(),
 					(int) dim.getHeight());
 			escapeAction = new EscapeAction();
+			setLayout(null);
+			
 			setPreferredSize(new Dimension(dim.width, dim.height));
 			getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),
 					"doEscapeAction");
@@ -79,65 +130,58 @@ public class ShowInterface extends JFrame {
 			getActionMap().put("doEscapeAction", escapeAction);
 			setDoubleBuffered(true);
 			setFocusable(true);
-			setBackground(new Color(223,219,218));
+			setBackground(new Color(223, 219, 218));
 			init();
-			setLayout(null);
-			
+			 
+			start();
 
 		}
 
 		private void init() {
 
-		// set settingsButton properties
 			settingsButton = new JButton();
+			settingsButton.addActionListener(this);
 			settingsButton.setIcon(new ImageIcon(getClass().getResource(
 					"/resource/img/settings.gif")));
 			settingsButton.setBorderPainted(false);
 			settingsButton.setContentAreaFilled(false);
-			settingsButton.addActionListener(this); 
-			int w=150,h=150;
+			settingsButton.addActionListener(this);
+			int w = 150, h = 150;
 			System.out.println(getSize().getHeight());
-			settingsButton.setBounds(0, (int) (dim.getHeight()-h), w,h);
+			settingsButton.setBounds(600, 500, w, h);
 			add(settingsButton);
-			
-			// 
-	
-			start();
 
 		}
-		public void start(){
-			th= new Thread(this);
+
+		public void start() {
+			th = new Thread(this);
 			th.start();
-			
-		}
 
-		
+		}
 
 		@Override
 		public void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            if (show != null) {
+			super.paintComponent(g);
+			if (show != null) {
 				show.paint(g);
-		
-			}
-         
-        }
-	
+
+			};
+
+		}
 
 		@Override
 		public void run() {
 			System.out.println("run()");
 
 			try {
-				while (stop!=true) {
-				
-						System.out.println("before thread");
-						Thread.sleep(viewCtrl.getDisplayTime());
-						System.out.println("after thread");
-						show.moveNext();
-						repaint();
-						System.out.println("ShowINterface, kaller moveNext()");
-					
+				while (stop != true) {
+
+					System.out.println("before thread");
+					Thread.sleep(viewCtrl.getDisplayTime());
+					System.out.println("after thread");
+					show.moveNext();
+					repaint();
+					System.out.println("ShowINterface, kaller moveNext()");
 
 				}
 			} catch (InterruptedException ie) {
@@ -146,60 +190,39 @@ public class ShowInterface extends JFrame {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			try {
-				th.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			
 
 		}
-	   public void stopClick() {
+
+		public void stopClick() {
 			stop = true;
-
-		}
-
-		private void openLoginBox() {
-
-			boolean loggedIn = new LoginDialog(fr).getSucceeded();
-			System.out.println("Login return equals" + loggedIn);
-			if (loggedIn)
-				openSettingsFrame();
-		}
-
-		private void openSettingsFrame() {
-			System.out.println("Tries to open settingsframe");
-
-			SettingsFrame intfr = new SettingsFrame(viewCtrl);
-			getContentPane().add(intfr);
-			pack();
-			repaint();
-
-		}
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource().equals(settingsButton)) {
-				stopClick();
-				openLoginBox();
-
-			}
-			repaint();
 
 		}
 
 		class EscapeAction extends AbstractAction {
 			public void actionPerformed(ActionEvent tf) {
-			
-			 System.exit(1);
+				stopClick();
+				System.exit(1);
 
-				
 				System.out.println("Escape");
 
-			} // end method actionPerformed()
+			}
 
 		}
 
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource().equals(settingsButton)) {
+				slider.stopClick();
+				openSettingsFrame();
+				System.out.println("Check modal");
+				//openLoginBox();
+			}
+
+
 	}
+	}
+
 
 
 }

@@ -104,30 +104,33 @@ public class ViewController {
 	 * 
 	 * return settingsPictures; }
 	 */
-	public List<List<SettingsPicture>> getSettingsPictures(int rows, int cols) {
-		List<List<SettingsPicture>> settingsPictures = null;
+	public List<List<SettingsPicture>> getSettingsPictures(int rows, int cols) 
+	{
+			List<List<SettingsPicture>> settingsPictures=null;
+		
+			if(rows*cols==100){
+			
+			settingsPictures =new ArrayList<List<SettingsPicture>>();
 
-		if (rows * cols == 100) {
-
-			settingsPictures = new ArrayList<List<SettingsPicture>>();
-
-			PictureData pic = null;
-			String id = "", url;
-
-			for (int r = 0; r < 100; r += cols) {
-				List<SettingsPicture> tmp = new ArrayList<SettingsPicture>();
-				for (int c = 0; c < cols; c++) {
-					pic = pictureDataList.get(5 * r + c);
-					url = pic.getUrlThumb();
-					id = pic.getId();
-					tmp.add(new SettingsPicture(id, this.getBufImage(url)));
+			
+				PictureData pic=null;
+				String id="",url;
+				 int s=0;
+			   for (int r=0;r<100/cols;r++){
+				   List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
+				   for (int c=0;c<cols;c++){
+					   s++;
+					   pic=pictureDataList.get(s);
+					   url=pic.getUrlThumb();
+					   id=pic.getId();
+					   tmp.add(new SettingsPicture(id,this.getBufImage(url)));
+				   }
+				   settingsPictures.add(tmp);
+					
 				}
-				settingsPictures.add(tmp);
-
-			}
 		}
-		return settingsPictures;
-	}
+			return settingsPictures;
+		}
 
 	public void removePictures(List<String> pictureIds) {
 		// TODO Flag pictures in db and from current pictures

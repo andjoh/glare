@@ -40,6 +40,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 		ViewControllerDummy setv = new ViewControllerDummy(null,null);
 		tablemodel= new ImageTableModel(setv.getSettingsPictures(5,20));
 		thumbnailTable = new ImageTable(tablemodel,10, 10);
+
 		
 		// setv.setH(thumbnailTable.getHeight()/rows);
 		// setv.setW(thumbnailTable.getWidth()/cols);
@@ -68,9 +69,12 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 				GridBagConstraints.NORTHWEST);
 		add(removeButton, gbc[1]);
 	}
-
+		
 	@Override
 	public void actionPerformed(ActionEvent e) {
     
+	}
+	public ImageTableModel getImageTableModel(){
+			return tablemodel;
 	}
 }
