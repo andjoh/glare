@@ -38,12 +38,12 @@ public class PictureController {
 
 			List<PictureData> pictureDataToSave = new ArrayList<PictureData>();
 			
-			if ( !pictureDataNew.isEmpty() ) {			
+			if ( !pictureDataNew.isEmpty() || !pictureDataModified.isEmpty() ) {			
 
-				pictureDataToSave.addAll(pictureDataNew);
+				pictureDataToSave.addAll(pictureDataExisting);
 				
 				System.out.println("");				
-				System.out.println("PictureController, getNewPictureData: New PictureData before save to db");
+				System.out.println("PictureController, getNewPictureData: All PictureData before save to db");
 				for ( PictureData pd : pictureDataNew ) {
 					System.out.println(pd.getId());
 				}
@@ -51,18 +51,18 @@ public class PictureController {
 
 			}			
 						
-			if ( !pictureDataModified.isEmpty() ) {			
-
-				pictureDataToSave.addAll(pictureDataModified);
-				
-				System.out.println("");				
-				System.out.println("PictureController, getNewPictureData: Modified PictureData before save to db");
-				for ( PictureData pd : pictureDataModified ) {
-					System.out.println(pd.getId());
-				}
-				System.out.println("");				
-
-			}				
+//			if ( !pictureDataModified.isEmpty() ) {			
+//
+//				pictureDataToSave.addAll(pictureDataModified);
+//				
+//				System.out.println("");				
+//				System.out.println("PictureController, getNewPictureData: Modified PictureData before save to db");
+//				for ( PictureData pd : pictureDataModified ) {
+//					System.out.println(pd.getId());
+//				}
+//				System.out.println("");				
+//
+//			}				
 			
 			if ( !pictureDataToSave.isEmpty() ) {
 				databaseManager.savePictureDataToDb(pictureDataToSave);
@@ -282,5 +282,17 @@ public class PictureController {
 
 	public List<PictureData> getPictureDataFromSources() {
 		return pictureDataFromSources;
+	}
+
+	public List<PictureData> getPictureDataExisting() {
+		return pictureDataExisting;
+	}
+
+	public List<PictureData> getPictureDataNew() {
+		return pictureDataNew;
+	}
+
+	public List<PictureData> getPictureDataModified() {
+		return pictureDataModified;
 	}
 }
