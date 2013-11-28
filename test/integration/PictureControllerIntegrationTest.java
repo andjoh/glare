@@ -71,6 +71,7 @@ public class PictureControllerIntegrationTest {
 	@After
 	public void tearDown() {
 		picCtrl                = null;
+		dbManager              = null;
 		dbManagerDummy         = null;
 		sourcesDummy           = null;
 		hashtagsDummy          = null;
