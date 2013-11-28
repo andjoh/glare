@@ -19,8 +19,7 @@ public class ThreadScheduler implements Runnable{
 	public void run() {
 		try {
 			Thread.sleep(120000);
-			pc.searchPictureData();
-			pc.processPictureData();
+			pc.getNewPictureData();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

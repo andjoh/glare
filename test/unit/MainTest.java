@@ -76,8 +76,7 @@ public class MainTest {
 				dbManDum.setHashtags(hashtagsDummy);
 
 				// Run test
-				picCtrl.searchPictureData();
-				picCtrl.processPictureData();
+				picCtrl.getNewPictureData();
 				ViewController vc = new ViewController(picCtrl,dbManDum);
 				ShowInterface showInterface =null;
 
