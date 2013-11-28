@@ -49,6 +49,8 @@ public class ViewController {
 			System.out.println("Ferdig å hente liste");
 		}
 
+		System.out.println("PictureData left in sorted list: " + sortedPictureList.size());
+		
 		PictureData p;
 
 		if (isRandom) {
@@ -64,9 +66,16 @@ public class ViewController {
 
 	public void getSortedList() {
 		pictureDataList = picCtrl.getSortedPictureData();
+
+		System.out.println("");
+		System.out.println("List fra PictureController");
+		for ( PictureData pd : pictureDataList)
+			System.out.println(pd.getId());
+		System.out.println("");
+		
+		
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);
 		randomPictureList = new ArrayList<PictureData>(sortedPictureList);
-		pictureDataList = new ArrayList<PictureData>(sortedPictureList);
 		Collections.shuffle(randomPictureList);
 	}
 
