@@ -142,7 +142,17 @@ public class ViewController {
 	}
 
 	public void updateHashtags(Set<String> hashtagList) {
-
+		System.out.println("Hashtag i viewCtrl fra gui");
+		for ( String ht : hashtagList ) {
+			System.out.println(ht);
+		}
+		System.out.println("");
+		System.out.println("Hashtag vi har fra før i viewCtrl");
+		for ( String ht : hashtags ) {
+			System.out.println(ht);
+		}
+		System.out.println("");
+		
 		// Check if hashtags have been added
 		Set<String> hashtagAdded = new HashSet<String>();
 		for (String ht : hashtagList) {
@@ -151,6 +161,11 @@ public class ViewController {
 			}
 		}
 
+		System.out.println("hashtagAdded");
+		for ( String ht : hashtagAdded ) {
+			System.out.println(ht);
+		}
+		
 		// Check if hashtags have been deleted
 		Set<String> hashtagDeleted = new HashSet<String>();
 		for (String ht : hashtags) {
@@ -159,6 +174,11 @@ public class ViewController {
 			}
 		}
 
+		System.out.println("hashtagDeleted");
+		for ( String ht : hashtagDeleted ) {
+			System.out.println(ht);
+		}
+		
 		// Update db regarding hashtags deleted
 		// Delete pictures that are connected to these, and only these, hashtags
 		if (!hashtagDeleted.isEmpty()) {
