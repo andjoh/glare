@@ -65,7 +65,6 @@ public class PictureControllerTest {
 		p.addHashtag(new Hashtag("hashtag 4"));
 		pictureDataFromDbDummy.add(p);			
 	}
-	
 
 	@After
 	public void tearDown() {
@@ -75,7 +74,6 @@ public class PictureControllerTest {
 		hashtagsDummy          = null;
 		pictureDataFromDbDummy = null;
 	}
-	
 	
 	@Test
 	public void SearchPictureData_UsingDummyHashtags_UsingDummyPictureData_WhenCalled_ReturnsListOfPictureData() {
@@ -101,10 +99,9 @@ public class PictureControllerTest {
 		
 		assertThat(pictureData.isEmpty(),is(false));
 	}	
-
 	
 	@Test
-	public void GetNewPictureData_UsingDummyHashtags_UsingDummyPictureData_NoPictureDataFromDb_WhenCalled_ReturnsListOfPictureData() {
+	public void GetNewPictureData_UsingDummyHashtags_UsingDummyPictureData_NoPictureDataFromDb_WhenCalled_5PictureDataAreSavedToDb() {
 		
 		// Set dummy sources and hashtag
 		dbManagerDummy.setSources(sourcesDummy);
@@ -127,7 +124,33 @@ public class PictureControllerTest {
 			
 		assertThat(pictureData.size() == 5,is(true));
 	}
+	
+	@Test
+	public void GetNewPictureData_UsingDummyHashtags_UsingDummyPictureData_DummyPictureDataFromDb_WhenCalled_TotalNumberPictureDataIs6() {
 
+		// Set dummy sources, hashtag and picturedata
+		dbManagerDummy.setSources(sourcesDummy);
+		dbManagerDummy.setHashtags(hashtagsDummy);
+		dbManagerDummy.setPictureDataFromDb(pictureDataFromDbDummy);
+		
+		// Run test
+		picCtrl.getNewPictureData();			
+		
+		List<PictureData> pictureData = picCtrl.getPictureDataExisting();
+
+		// Additional output
+		System.out.println("All available PictureData after get from sources and db");
+		for ( PictureData pd : pictureData ) {
+			System.out.println(pd.getId());
+			for ( Hashtag ht : pd.getHashtags() ) {
+				System.out.println(" - " + ht.getHashtag());
+			}
+		}
+		System.out.println("");
+		
+		assertThat(pictureData.size() == 6,is(true));
+	}
+	
 	@Test
 	public void GetNewPictureData_NoSources_NoHashtags_WhenCalled_ReturnsNotSuccess() {
 		
@@ -155,64 +178,5 @@ public class PictureControllerTest {
 		boolean success = picCtrl.getNewPictureData();
 		
 		assertThat(success,is(false));
-	}
-	
-	@Test
-	public void GetNewPictureData_UsingDummyHashtags_UsingDummyPictureData_DummyPictureDataFromDb_WhenCalled_Returns5PictureData() {
-
-		// Set dummy sources, hashtag and picturedata
-		dbManagerDummy.setSources(sourcesDummy);
-		dbManagerDummy.setHashtags(hashtagsDummy);
-		dbManagerDummy.setPictureDataFromDb(pictureDataFromDbDummy);
-		
-		// Run test
-		picCtrl.getNewPictureData();			
-		
-		List<PictureData> pictureData = dbManagerDummy.getPictureDataFromDb();
-
-		// Additional output
-		System.out.println("PictureData saved to db");
-		for ( PictureData pd : pictureData ) {
-			System.out.println(pd.getId());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}
-		}
-		System.out.println("");
-		
-		assertThat(pictureData.size() == 5,is(true));
-	}
-	
-	@Test
-	public void SearchPictureData_Instagram_And_Twitter_WhenCalled_ReturnsListOfPictureData() {
-		// Using dummy DatabaseManager
-		picCtrl = new PictureController(dbManagerDummy);
-
-		// Set real sources and add to dummy DatabaseManager
-		ArrayList<String> sources = new ArrayList<String>();
-		//sources.add("instagram");
-		sources.add("twitter");
-		dbManagerDummy.setSources(sources);
-
-		dbManagerDummy.setHashtags(hashtagsDummy);
-		
-		// Run test
-		picCtrl.getNewPictureData();
-		
-		List<PictureData> pictureData = dbManagerDummy.getPictureDataFromDb();
-
-		// Additional output
-		System.out.println("PictureData from Instagram and Twitter");
-		for ( PictureData pd : pictureData )
-		{
-			System.out.println(pd.getId());
-			System.out.println(pd.getUrlStd());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}			
-		}
-		System.out.println("");
-		
-		assertThat(pictureData.isEmpty(),is(false));
 	}
 }
