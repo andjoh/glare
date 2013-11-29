@@ -156,6 +156,7 @@ public class ViewController {
 			}
 			
 		}
+		dbMan.setRemoveFlag(flaggedList);
 	}
 
 	public Set<String> getHashtags() {

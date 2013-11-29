@@ -37,9 +37,9 @@ import bll.*;
 public class MainTestSettingsFrame extends JFrame  {
 	 SettingsFrame settingsFrame;
 	public MainTestSettingsFrame() {
-		SettingsFrame dialog = new SettingsFrame(null, this);
-
-		boolean suc = dialog.validationExit();
+		 ViewController vc = (ViewController)ClassFactory.getBeanByName("viewController");
+		SettingsFrame dialog = new SettingsFrame(vc, this);
+		boolean b = dialog.validationExit();
 		
 
 	}
@@ -73,11 +73,6 @@ public class MainTestSettingsFrame extends JFrame  {
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-
-				// ViewController vc = (ViewController)
-				// ClassFactory.getBeanByName("viewController");
-
-				// SettingsFrame intfr = new SettingsFrame(vc);
 			 new MainTestSettingsFrame();
 
 			}

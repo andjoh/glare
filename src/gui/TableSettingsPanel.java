@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
+import bll.ViewController;
+
 import resources.ViewControllerDummy;
 
 public class TableSettingsPanel extends JPanel implements ActionListener {
@@ -28,11 +30,13 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	private ImageTableModel tablemodel;
 	private JButton removeButton;
 	private Dimension dim;
+	private ViewController viewCtrl;
 	private JScrollPane tableScroller;
 	private ImageTable thumbnailTable;
 
-	public TableSettingsPanel(Dimension dim) {
+	public TableSettingsPanel(ViewController viewCtrl,Dimension dim) {
 		this.dim=dim;
+		this.viewCtrl = viewCtrl;
 		setOpaque(false);
 		setLayout(new GridBagLayout());
 		gbc = new Constraints[] { new Constraints(), new Constraints() };
@@ -43,14 +47,9 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 
 	private void init() {
 		// thumbnailTable properties
-		ViewControllerDummy setv = new ViewControllerDummy(null, null);
-		List<String> str = new ArrayList<String>();
 	
-		tablemodel = new ImageTableModel(setv.getSettingsPictures(ROWS, COLS) );
+		tablemodel = new ImageTableModel(viewCtrl.getSettingsPictures(ROWS, COLS) );
 		thumbnailTable = new ImageTable(tablemodel,dim);
-		// TableUpdater update = new TableUpdater(thumbnailTable.getModel(),
-		// setv);
-		// update.start();
 		// tableScroller properties
 		tableScroller = new JScrollPane();
 		tableScroller.setOpaque(false);

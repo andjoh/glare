@@ -18,11 +18,15 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import bll.ViewController;
+
 public class DisplaySettingsPanel extends JPanel implements ActionListener {
 	/**
 		 * 
 		 */
 	private JSpinner delaySpinner;
+	private ViewController viewCtrl;
+	private Dimension dim;
 	private JComboBox<String> viewmodeCombo;
 	private JLabel viewdelayLabel, viewmodeLabel;
 	private static final long serialVersionUID = 1L;
@@ -31,8 +35,9 @@ public class DisplaySettingsPanel extends JPanel implements ActionListener {
 	private Constraints[] gbcs = new Constraints[] { new Constraints(),
 			new Constraints(), new Constraints(), new Constraints() };
 
-	public DisplaySettingsPanel() {
-
+	public DisplaySettingsPanel(ViewController viewCtrl, Dimension dim) {
+		this.viewCtrl=viewCtrl;
+        this.dim=dim;
 		setMaximumSize(new Dimension(10800, 9720));
 		setOpaque(false);
 		setLayout(new GridBagLayout());

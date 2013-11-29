@@ -42,8 +42,7 @@ final public class SettingsFrame extends JDialog {
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		//setSize(dim.width * 2 / 3, dim.width * 2 / 4);
 		setModal(true);
-		contp = new SettingsContentPanel(dim, hashpan, dispset, tablepanel);  
-		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		contp = new SettingsContentPanel(viewCtrl, dim, hashpan, dispset, tablepanel);  
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		getContentPane().add(contp);
 		setLocationRelativeTo(parent);
@@ -68,7 +67,7 @@ final public class SettingsFrame extends JDialog {
 		// This can be done here for test purposes
 		// f.ex we want to flag picture in row 4 column 4:
 		imtabmod.flagPicture(4, 4);
-
+		imtabmod.flagPicture(3, 4);
 		// here is the data to send, picture in row 4 colum 4 should be
 		// flagged
 
@@ -94,10 +93,8 @@ final public class SettingsFrame extends JDialog {
 
 	// get updated displaysettings and set them
 	public void updateDisplaySettings() {
-
 		viewCtrl.setRandom(dispset.getViewMode());
 		viewCtrl.setDisplayTime(dispset.getViewDelay());
-
 	}
 
 	// send updated hashtags to ViewCtrl
@@ -105,7 +102,4 @@ final public class SettingsFrame extends JDialog {
 		Set<String> hashtagList = hashpan.getHashtagList();
 		viewCtrl.updateHashtags(hashtagList);
 	}
-
-
-
 }

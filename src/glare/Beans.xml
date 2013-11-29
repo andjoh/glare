@@ -25,12 +25,6 @@
 		<constructor-arg ref="pictureController" />
 		<constructor-arg ref="databaseManager" />		
 	</bean>
-	
-	<bean id="settingsController" class="bll.SettingsController">
-		<constructor-arg ref="pictureController" />
-		<constructor-arg ref="displayController" />
-		<constructor-arg ref="databaseManager" />
-	</bean>
 
 	<bean id="displayController" class="bll.DisplayController">
 		<constructor-arg ref="pictureController" />
