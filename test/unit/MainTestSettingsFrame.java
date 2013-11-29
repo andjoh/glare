@@ -38,7 +38,9 @@ public class MainTestSettingsFrame extends JFrame  {
 	 SettingsFrame settingsFrame;
 	public MainTestSettingsFrame() {
 		 ViewController vc = (ViewController)ClassFactory.getBeanByName("viewController");
-		SettingsFrame dialog = new SettingsFrame(vc, this);
+		 
+		 vc.getSortedList();
+		 SettingsFrame dialog = new SettingsFrame(vc, this);
 		boolean b = dialog.validationExit();
 		
 
