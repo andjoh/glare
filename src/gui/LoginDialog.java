@@ -28,14 +28,14 @@ public class LoginDialog extends JDialog {
 		totalsize = new Dimension((int) (dim.getWidth() / 4),
 				(int) dim.getHeight() / 7);
 		init();
+		setSize(totalsize);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModal(true);
-		setResizable(false);
 		setAlwaysOnTop(true);
 		requestFocusInWindow();
 		setLocationRelativeTo(this.jf);
-		pack();
-		jf.pack();
+		//pack();
+		////////////jf.pack();
 		setVisible(true);
 
 		this.addWindowListener(new WindowAdapter() {
@@ -52,14 +52,13 @@ public class LoginDialog extends JDialog {
 	 * Declares GUI objects.
 	 */
 	public void init() {
-		inputpanel = new LoginInputPanel(1);
-		inputpanel.setPreferredSize(new Dimension(totalsize.width,
+		inputpanel = new LoginInputPanel(new Dimension(totalsize.width,
 				totalsize.height * 2 / 3));
 		// ButtonPanel properties
 
 		buttonPanel = new ButtonPanel(logd, inputpanel);
-		buttonPanel.setPreferredSize(new Dimension(totalsize.width,
-				totalsize.height * 1 / 3));
+		buttonPanel.setPreferredSize(new Dimension(new Dimension(totalsize.width,
+				totalsize.height * 1 / 3)));
 
 		// add both panels to a panel
 
@@ -67,7 +66,7 @@ public class LoginDialog extends JDialog {
 		jp.setPreferredSize(totalsize);
 		jp.setLayout(new BorderLayout());
 		jp.add(inputpanel, BorderLayout.CENTER);
-		jp.add(buttonPanel, BorderLayout.PAGE_END);
+		jp.add(buttonPanel, BorderLayout.SOUTH);
 		setContentPane(jp);
 	}
 

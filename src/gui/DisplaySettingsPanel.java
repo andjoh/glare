@@ -38,7 +38,6 @@ public class DisplaySettingsPanel extends JPanel implements ActionListener {
 	public DisplaySettingsPanel(ViewController viewCtrl, Dimension dim) {
 		this.viewCtrl=viewCtrl;
         this.dim=dim;
-		setMaximumSize(new Dimension(10800, 9720));
 		setOpaque(false);
 		setLayout(new GridBagLayout());
 		init();
@@ -115,6 +114,7 @@ public class DisplaySettingsPanel extends JPanel implements ActionListener {
 	public void setViewDelay(int delay) {
 		if (delay >= SPINNER_MINIMUM && delay <= SPINNER_MINIMUM) {
 			delaySpinner.setValue(new Integer(delay));
+			SPINNER_DEFAULT=delay;
 		}
 	}
 

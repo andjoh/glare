@@ -104,7 +104,7 @@ public class ViewController {
 
 		List<List<SettingsPicture>> settingsPictures=null;
 
-		if(rows*cols==100){
+	
 
 			settingsPictures =new ArrayList<List<SettingsPicture>>();
 
@@ -124,7 +124,8 @@ public class ViewController {
 				}
 				settingsPictures.add(tmp);				
 			}
-		}
+			
+		if(settingsPictures==null)System.out.println("settingsPictures is null");
 		return settingsPictures;
 	}
 

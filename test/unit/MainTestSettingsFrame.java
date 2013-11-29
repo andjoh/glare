@@ -31,7 +31,7 @@ import bll.*;
  * 4. Displaytime set
  *    a) Set Displaytime 
  */
-public class MainTestSettingsFrame extends JFrame  {
+public class MainTestSettingsFrame  {
 	 SettingsFrame settingsFrame;
 	public MainTestSettingsFrame() {
 
@@ -62,10 +62,11 @@ public class MainTestSettingsFrame extends JFrame  {
 		// Run test
 		picCtrl.getNewPictureData();
 		ViewController vc = new ViewController(dbManDum);
-		
+		if( vc==null)
+		System.out.println("Vctrl is null");
 		 vc.getSortedList();
-		 SettingsFrame dialog = new SettingsFrame(vc, this);
-		boolean b = dialog.validationExit();
+		 settingsFrame = new SettingsFrame(vc);
+		boolean b = settingsFrame.validationExit();
 		
 
 	}
