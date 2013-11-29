@@ -9,10 +9,11 @@ import java.util.*;
 public class PictureController {
 	private DatabaseManager databaseManager;
 
-	private List<PictureData> pictureDataExisting;     // Contains all pictureData from db. New will be added to complete list 
-	private List<PictureData> pictureDataFromSources;  // PictureData from Instagram etc.
-	private List<PictureData> pictureDataNew;          // PictureData not already in db
-	private List<PictureData> pictureDataModified;     // Existing pictureData which contains new- in addition to existing hashtags
+	private List<PictureData> pictureDataExisting;              // Contains all pictureData from db. New will be added to complete list 
+	private List<PictureData> pictureDataFromSources;           // PictureData from Instagram etc.
+	private List<PictureData> pictureDataNew;                   // PictureData not already in db
+	private List<PictureData> pictureDataModified;              // Existing pictureData which contains new- in addition to existing hashtags
+	private List<PictureIdHashtags> existingPicIdNewHashtags;   // List of objects containing existing pictureId and new hashtags
 
 	private final int MAX_SIZE = 100;
 
@@ -23,7 +24,7 @@ public class PictureController {
 	/**
 	 * This is the method that the service/server application should call
 	 * This method will use internal methods to retrieve pictureData
-	 * from sources, process the data, and save to database
+	 * from sources, process the data, and save to database.
 	 * 
 	 * @return - True if new or modified picture data are saved to db
 	 */
@@ -66,15 +67,27 @@ public class PictureController {
 			
 			if ( !pictureDataToSave.isEmpty() ) {
 				databaseManager.savePictureDataToDb(pictureDataToSave);
-				return true;
+				success = true;
 			}
+			
+			// If new hashtags on existing pictureData: Save to db
+			//if ( !existingPicIdNewHashtags.isEmpty() ) {				
+			//	databaseManager.saveHashtagsToExistingPictureData(existingPicIdNewHashtags);
+			//  success = true;
+			//}	
 			
 			return false;
 		}
 
-		return false;
+		return success;
 	}
 
+	/**
+	 * Search for picture data on sources with given hashtags
+	 * Save list, without duplicates, to class variable pictureDataFromSources.
+	 * 
+	 * @return - True if new picture data are found
+	 */
 	public boolean searchPictureData() {	
 		List<PictureData> pictureData = new ArrayList<PictureData>();
 
@@ -127,7 +140,7 @@ public class PictureController {
 	}
 
 	/**
-	 * 
+	 * Search picture data for a specific source and hashtag
 	 * @param reader
 	 * @param hashtag
 	 * @return
@@ -215,6 +228,10 @@ public class PictureController {
 							pdExisting.addHashtag(new Hashtag(ht));
 						}
 						pictureDataModified.add(pdExisting);
+						
+						// Create object holding existing pictureId and new hashtags
+						PictureIdHashtags idHash = new PictureIdHashtags(pdExisting.getId(), newHashtags);
+						existingPicIdNewHashtags.add(idHash);	
 					}
 
 					break;
