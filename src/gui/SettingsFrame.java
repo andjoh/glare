@@ -62,7 +62,7 @@ final public class SettingsFrame extends JDialog {
 				
 				System.out.println("SettingsFrame is closing");
 				
-				
+				contp.saveBeforeExit();
 				
 			}
 			/*
