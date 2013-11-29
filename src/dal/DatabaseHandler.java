@@ -9,6 +9,7 @@ import java.util.List;
 
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -29,9 +30,13 @@ public class DatabaseHandler {
 			Set<Hashtag> newHashSet = pic.getHashtags();
 			for(Hashtag h : newHashSet){
 				resultHash = DatabaseHandler.returnHashtagIfAlreadyExists(h);
+//				Hibernate.initialize(resultHash.get(0).getPictures());
 				if(resultHash.size() == 1){
+					System.out.println("HAAAALLLOOOOOOO" + resultHash.get(0));
 					pic.remHashtag(h);
-					pic.addHashtag(resultHash.get(0));
+//					pic.addHashtag(resultHash.get(0));
+					resultHash.get(0).addPicToHashtag(pic);
+					session.saveOrUpdate(resultHash);
 				}
 			}
 
@@ -127,6 +132,7 @@ public class DatabaseHandler {
 			tx = session.beginTransaction();
 
 			result = session.createQuery("from Hashtag where hashtag=\'" + h.getHashtag() + "\'").list();
+
 			tx.commit();
 		} catch(HibernateException e){
 			if (tx!=null) 

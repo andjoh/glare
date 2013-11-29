@@ -20,6 +20,7 @@ public class HibernateAddPicAndUpdatePicTest {
 	@Test
 	public void AddPictureToDB_UpdatePicture_ReturnListOfPictures() {
 		Hashtag h1 = new Hashtag("winter");
+		Hashtag h2 = new Hashtag("summer");
 		//DatabaseHandler.addHashtagToDB(h1);
 		
 		PictureData pic = new PictureData();
@@ -29,13 +30,13 @@ public class HibernateAddPicAndUpdatePicTest {
 		pic.setCreatedTime(123456);
 		pic.setRemoveFlag(false);
 		pic.addHashtag(h1);
+		pic.addHashtag(h2);
 		DatabaseHandler.addPictureToDB(pic);
 		
-		Hashtag h2 = new Hashtag("summer");
 //		DatabaseHandler.addHashtagToDB(h2);
 		
 		Hashtag h3 = new Hashtag("winter");
-		DatabaseHandler.addHashtagToDB(h3);
+//		DatabaseHandler.addHashtagToDB(h3);
 		
 		PictureData pic2 = new PictureData();
 		pic2.setId("1247845_2455");
@@ -44,6 +45,7 @@ public class HibernateAddPicAndUpdatePicTest {
 		pic2.setCreatedTime(123456);
 		pic2.setRemoveFlag(false);
 		pic2.addHashtag(h2);
+		pic2.addHashtag(h3);
 		DatabaseHandler.addPictureToDB(pic2);
 		
 		pictures = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();
