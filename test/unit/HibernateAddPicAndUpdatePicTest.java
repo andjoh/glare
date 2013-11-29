@@ -32,7 +32,10 @@ public class HibernateAddPicAndUpdatePicTest {
 		DatabaseHandler.addPictureToDB(pic);
 		
 		Hashtag h2 = new Hashtag("summer");
-		DatabaseHandler.addHashtagToDB(h2);
+//		DatabaseHandler.addHashtagToDB(h2);
+		
+		Hashtag h3 = new Hashtag("winter");
+		DatabaseHandler.addHashtagToDB(h3);
 		
 		PictureData pic2 = new PictureData();
 		pic2.setId("1247845_2455");

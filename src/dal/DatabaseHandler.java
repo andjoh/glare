@@ -64,28 +64,6 @@ public class DatabaseHandler {
 		return result;
 	}
 
-//	public static void updatePictureToDB(PictureData pic)
-//	{
-//		Session session = HibernateUtil.getSessionFactory().openSession();
-//		Transaction tx = null;
-//		try {
-//			tx = session.beginTransaction();
-//
-//			String pic_id = pic.getId();
-//			PictureData picture = (PictureData)session.get(PictureData.class, pic_id);
-//			picture.setHashtags(pic.getHashtags());
-//			session.merge(picture);
-//			tx.commit();
-//		} catch (HibernateException e) {
-//			if(tx!=null)
-//				tx.rollback();
-//			e.printStackTrace();
-//		} finally{
-//			session.close();
-//		}
-//	}
-
-
 	public static List<PictureData> listOfPicturesFromDB(){
 		Transaction tx = null;
 		List<PictureData> result = null;
@@ -109,13 +87,17 @@ public class DatabaseHandler {
 	}
 
 	public static void addHashtagToDB(Hashtag hash){
+		List<Hashtag> result = null;
 		Transaction tx = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
-
-			session.saveOrUpdate(hash);
+			
+			result = DatabaseHandler.returnHashtagIfAlreadyExists(hash);
+			if(result.size() == 0){
+				session.saveOrUpdate(hash);
+			}
 
 			session.getTransaction().commit();
 		} catch(ConstraintViolationException e){
@@ -125,6 +107,26 @@ public class DatabaseHandler {
 		} finally{
 			session.close();
 		}
+	}
+	
+	public static List<Hashtag> returnHashtagIfAlreadyExists(Hashtag h){
+		List<Hashtag> result = null;
+		Transaction tx = null;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+
+		try{
+			tx = session.beginTransaction();
+
+			result = session.createQuery("from Hashtag where hashtag=\'" + h.getHashtag() + "\'").list();
+			session.getTransaction().commit();
+		} catch(HibernateException e){
+			if (tx!=null) 
+				tx.rollback();
+			e.printStackTrace();
+//		} finally{
+//			session.close();
+		}
+		return result;
 	}
 
 	public static List<String> listOfHashtagsFromDB() {
