@@ -3,42 +3,66 @@ package unit;
 import glare.ClassFactory;
 import gui.SettingsFrame;
 
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.*;
+
+import resources.DatabaseManagerDummy;
+import dal.DatabaseHandler;
 
 import bll.*;
 
 /*
  * Show SettingsFrame and perform tests regarding hashtags, view mode and display time
- *    - Using Spring to get objects from BLL and DAL
- *    - Using database
  *    
  * Tests Performed:
  * 1. No hashtags in db
- *    a) Add hashtags to db - OK
- *    b) Remove hashtags from db - OK
+ *    a) Add hashtags to db
+ *    b) Remove hashtags from db
  * 2. Db containing hashtags
- *    a) Add hashtags to db - OK
- *    b) Remove hashtags from db - OK
+ *    a) Add hashtags to db
+ *    b) Remove hashtags from db
  * 3. Random set
- *    a) Set Random true/false - OK
+ *    a) Set Random true/false
  * 4. Displaytime set
- *    a) Set Displaytime - OK    
+ *    a) Set Displaytime 
  */
 public class MainTestSettingsFrame extends JFrame  {
 	 SettingsFrame settingsFrame;
 	public MainTestSettingsFrame() {
-		 ViewController vc = (ViewController)ClassFactory.getBeanByName("viewController");
-		 
+
+		// DUMMY CHECK
+		DatabaseHandler dbHandler     = new DatabaseHandler();
+		DatabaseManagerDummy dbManDum = new DatabaseManagerDummy(dbHandler);
+		PictureController picCtrl     = new PictureController(dbManDum);
+
+		// Do some dummy stuff
+		List<String> sourcesDummy;
+		Set<String> hashtagsDummy;
+
+		// Set dummy sources
+		sourcesDummy = new ArrayList<String>();
+		sourcesDummy.add("instagram");
+		sourcesDummy.add("twitter");
+
+		// Set test data for source and hashtag
+		hashtagsDummy = new HashSet<String>();
+
+		hashtagsDummy.add("winter");
+		hashtagsDummy.add("raskebriller");
+
+		// Set dummy sources and hashtag
+		dbManDum.setSources(sourcesDummy);
+		dbManDum.setHashtags(hashtagsDummy);
+
+		// Run test
+		picCtrl.getNewPictureData();
+		ViewController vc = new ViewController(picCtrl,dbManDum);
+		
 		 vc.getSortedList();
 		 SettingsFrame dialog = new SettingsFrame(vc, this);
 		boolean b = dialog.validationExit();
