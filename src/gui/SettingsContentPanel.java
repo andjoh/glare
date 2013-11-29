@@ -79,6 +79,7 @@ public class SettingsContentPanel extends JPanel  {
 	public void saveBeforeExit(){
 		updateDisplaySettings();
 		updateHashtags();
+		updateTableSettings();
 	}
 	public void updateTableSettings() {
 		ImageTableModel imtabmod = tablepanel.getImageTableModel();
@@ -92,7 +93,7 @@ public class SettingsContentPanel extends JPanel  {
 		// flagged
 
 		List<List<SettingsPicture>> datatosend = imtabmod.getTableModelData();
-
+         viewCtrl.removePictures(datatosend);
 		// TODO: iterate through the data
 		// can be done with enchanced for loop, like this:
 		/*
