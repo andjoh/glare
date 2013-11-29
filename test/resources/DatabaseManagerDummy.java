@@ -2,14 +2,17 @@ package resources;
 
 import java.util.*;
 
-import dal.*;
+import bll.PictureDataComparator;
 
+import dal.*;
 
 public class DatabaseManagerDummy extends DatabaseManager {
 	private List<PictureData> pictureDataFromDb;
 	private List<String> sources;
 	private Set<String> hashtags;
-	
+
+	private final int MAX_SIZE = 100;
+
 	public DatabaseManagerDummy(DatabaseHandler databaseHandler) {
 		super(databaseHandler);
 		pictureDataFromDb = new ArrayList<PictureData>();
@@ -17,6 +20,28 @@ public class DatabaseManagerDummy extends DatabaseManager {
 		hashtags          = new HashSet<String>();
 	}
 
+	/**
+	 * Return sorted List of PictureData objects that can be displayed, i.e. no inappropriate.
+	 * @return List of PictureData
+	 */
+	public List<PictureData> getSortedPictureData() {		
+		List<PictureData> pictureData = new ArrayList<PictureData>();
+
+		int i = 0;
+		for ( PictureData pD : pictureDataFromDb ) {
+			if ( !pD.isRemoveFlag() ) {
+				pictureData.add(pD);
+				if (++i >= MAX_SIZE){ 
+					break;
+				}
+			}
+		}
+
+		Collections.sort(pictureData, new PictureDataComparator());
+
+		return pictureData;
+	}
+	
 	public List<PictureData> getPictureDataFromDb() {
 		return pictureDataFromDb;
 	}
