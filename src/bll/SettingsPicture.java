@@ -28,14 +28,15 @@ public class SettingsPicture {
 		return image;
 	}
 	public ImageIcon getIcon(int w, int h) {
+		BufferedImage img=null;
 		try {
-			BufferedImage img=Thumbnails.of(image).size(w, h)
+			 img=Thumbnails.of(image).size(w, h)
 			.asBufferedImage();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return new ImageIcon("img");
+		return new ImageIcon(img);
 	}
 	public ImageIcon getIconTest(){
 		

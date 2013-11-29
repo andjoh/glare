@@ -34,65 +34,18 @@ import bll.*;
  * 4. Displaytime set
  *    a) Set Displaytime - OK    
  */
-public class MainTestSettingsFrame extends JFrame implements VetoableChangeListener {
+public class MainTestSettingsFrame extends JFrame  {
 	 SettingsFrame settingsFrame;
 	public MainTestSettingsFrame() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(1024,800));
-		JButton button = new JButton("Open SettingsFrame");
-		button.setBounds(200,300,200,150);
-	    button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               openSettings();
-            }
-        });
-	    //setLayout(null);
-	    getContentPane().add(button);
-	    pack();
-        setVisible(true);
-       SettingsFrame settingsFrame = new SettingsFrame();
+		 ViewController vc = (ViewController)ClassFactory.getBeanByName("viewController");
 		 
-		  JDesktopPane desktopPane = new JDesktopPane();
-		  getContentPane().add(desktopPane);
-		  desktopPane.add(settingsFrame);
-	
-		  settingsFrame.setSize(800, 600);
-		  settingsFrame.setLocation(50, 50);
-		  
-		  settingsFrame.setVisible(true);
-		 
-		  JPanel gp = new JPanel();
-		  gp.setSize(800, 600);
-		  gp.setOpaque(true);
-		  gp.setVisible(true);
-		  gp.setBackground(java.awt.Color.BLUE);
-		  settingsFrame.setGlassPane(gp);
-		  settingsFrame.addVetoableChangeListener(this);
-		 
+		 vc.getSortedList();
+		 SettingsFrame dialog = new SettingsFrame(vc, this);
+		boolean b = dialog.validationExit();
+		
 
 	}
-	public void openSettings(){
-		  settingsFrame = new SettingsFrame();
-			 
-		  JDesktopPane desktopPane = new JDesktopPane();
-		  getContentPane().add(desktopPane);
-		  desktopPane.add(settingsFrame);
-	
-		  settingsFrame.setSize(800, 600);
-		  settingsFrame.setLocation(50, 50);
-		  
-		  settingsFrame.setVisible(true);
-		 
-		  JPanel gp = new JPanel();
-		  gp.setSize(800, 600);
-		  gp.setOpaque(true);
-		  gp.setVisible(true);
-		  gp.setBackground(java.awt.Color.BLUE);
-		  settingsFrame.setGlassPane(gp);
-		  settingsFrame.addVetoableChangeListener(this);
-		 
-	}
+
 
 	public static void main(String args[]) {
 		/*
@@ -122,27 +75,11 @@ public class MainTestSettingsFrame extends JFrame implements VetoableChangeListe
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-
-				// ViewController vc = (ViewController)
-				// ClassFactory.getBeanByName("viewController");
-
-				// SettingsFrame intfr = new SettingsFrame(vc);
 			 new MainTestSettingsFrame();
 
 			}
 		});
 	}
 
-	@Override
-	 public void vetoableChange(PropertyChangeEvent evt)
-			  throws PropertyVetoException
-			 {
-			  if(evt.getPropertyName().equals(JInternalFrame.IS_SELECTED_PROPERTY))
-			  {
-			   System.err.println("SELECTED");
-			   throw new PropertyVetoException("Selected", null);
-			  }
-
-			 }
 
 }

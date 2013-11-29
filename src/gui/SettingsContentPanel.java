@@ -15,14 +15,15 @@ public class SettingsContentPanel extends JPanel {
 	private JLabel backgroundImageLabel;
 	private TableSettingsPanel tablepanel ;
 	private  DisplaySettingsPanel dispset;
-	public SettingsContentPanel(Dimension dim, HashtagSettingsPanel hashpan, DisplaySettingsPanel dispset, TableSettingsPanel tablepanel) {
+	public SettingsContentPanel(ViewController viewCtrl,Dimension dim, HashtagSettingsPanel hashpan, DisplaySettingsPanel dispset, TableSettingsPanel tablepanel) {
+		this.viewCtrl=viewCtrl;
 		this.dim=new Dimension(dim.width * 2 / 3,
-				dim.height * 2 / 4);
+				dim.height * 2 / 3);
 		this.hashpan=hashpan;
 		this.dispset=dispset;
 		this.tablepanel=tablepanel;
-		setPreferredSize(new Dimension(dim.width * 2 / 3,
-				dim.height * 2 / 4));
+		//setPreferredSize(dim);
+		setPreferredSize(new Dimension(800,600));
 		setDoubleBuffered(true);
 		initComponents();
 		addComponents();
@@ -40,13 +41,13 @@ public class SettingsContentPanel extends JPanel {
 
 	private void initComponents() {
 		// TableSettingsPanel declaration
-		tablepanel = new TableSettingsPanel(dim);
+		tablepanel = new TableSettingsPanel(viewCtrl,dim);
 		tablepanel.setBounds(300, 10, 510, 510);
 		// HashSettingsPanel declaration
-		hashpan = new HashtagSettingsPanel();
+		hashpan = new HashtagSettingsPanel(viewCtrl,dim);
 		hashpan.setBounds(50, -12, 180, 320);
 		// DisplaySettingsPanel
-		dispset = new DisplaySettingsPanel();
+		dispset = new DisplaySettingsPanel(viewCtrl,dim);
 		dispset.setBounds(60, 360, 185, 70);
 		// Background Image declaration
 		backgroundImageLabel = new JLabel();
@@ -54,10 +55,9 @@ public class SettingsContentPanel extends JPanel {
 		backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
 				"/resource/img/backgr.jpg")));
 		backgroundImageLabel.setIconTextGap(0);
-		backgroundImageLabel.setPreferredSize(dim);
-		backgroundImageLabel.setBounds(0, 0,
-				dim.width,dim.height);
-
+		//backgroundImageLabel.setPreferredSize(dim);
+		///backgroundImageLabel.setBounds(0, 0,dim.width,dim.height);
+		backgroundImageLabel.setBounds(0, 0,800,600);
 	}
 
 }

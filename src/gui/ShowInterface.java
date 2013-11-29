@@ -161,7 +161,7 @@ public class ShowInterface extends JFrame {
 		public void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			if (show != null) {
-				show.paint(g);
+				//show.paint(g);
 
 			}
 			;

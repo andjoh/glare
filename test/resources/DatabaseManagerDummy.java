@@ -20,7 +20,12 @@ public class DatabaseManagerDummy extends DatabaseManager {
 	public List<PictureData> getPictureDataFromDb() {
 		return pictureDataFromDb;
 	}
-	
+	public void setRemoveFlag(Set<String> pictureDataId) {
+		for (String s: pictureDataId){
+			DatabaseHandler.setRemoveFlag(s);
+			System.out.println("setRemoveflag, ID: "+s);
+		}
+	}
 	public void setPictureDataFromDb(List<PictureData> pictureData) {
 		this.pictureDataFromDb = pictureData;
 	}
