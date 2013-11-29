@@ -68,7 +68,7 @@ public class ViewController {
 		pictureDataList = picCtrl.getSortedPictureData();
 
 		System.out.println("");
-		System.out.println("List fra PictureController");
+		System.out.println("ViewController: getSortedList from PictureController");
 		for ( PictureData pd : pictureDataList)
 			System.out.println(pd.getId());
 		System.out.println("");
@@ -115,7 +115,15 @@ public class ViewController {
 	 */
 	public List<List<SettingsPicture>> getSettingsPictures(int rows, int cols) 
 	{
-			List<List<SettingsPicture>> settingsPictures=null;
+		System.out.println("");
+		System.out.println("ViewController: getSettingsPictures. Print pictureDataList");
+		System.out.println("Size: " + pictureDataList.size());
+
+		for ( PictureData pd : pictureDataList)
+			System.out.println(pd.getId());
+		System.out.println("");
+		
+		List<List<SettingsPicture>> settingsPictures=null;
 		
 			if(rows*cols==100){
 			
@@ -125,17 +133,17 @@ public class ViewController {
 				PictureData pic=null;
 				String id="",url;
 				 int s=0;
-			   for (int r=0;r<100/cols;r++){
+			   for (int r=0;r < pictureDataList.size()/cols; r++){
 				   List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
 				   for (int c=0;c<cols;c++){
-					   s++;
 					   pic=pictureDataList.get(s);
 					   url=pic.getUrlThumb();
 					   id=pic.getId();
 					   tmp.add(new SettingsPicture(id,this.getBufImage(url)));
+					   System.out.println("index s is: " + s);
+					   s++;
 				   }
-				   settingsPictures.add(tmp);
-					
+				   settingsPictures.add(tmp);				
 				}
 		}
 			return settingsPictures;
