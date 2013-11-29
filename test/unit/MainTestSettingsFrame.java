@@ -61,7 +61,7 @@ public class MainTestSettingsFrame extends JFrame  {
 
 		// Run test
 		picCtrl.getNewPictureData();
-		ViewController vc = new ViewController(picCtrl,dbManDum);
+		ViewController vc = new ViewController(dbManDum);
 		
 		 vc.getSortedList();
 		 SettingsFrame dialog = new SettingsFrame(vc, this);

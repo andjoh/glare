@@ -1,8 +1,6 @@
 package bll;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +20,6 @@ public class ViewController {
 	/**
 	 * Manage list with pictures
 	 */
-	private PictureController picCtrl;
 	private DatabaseManager dbMan;
 
 	private List<PictureData> sortedPictureList;
@@ -32,8 +29,7 @@ public class ViewController {
 	private boolean isRandom;
 	private int displayTime;
 
-	public ViewController(PictureController picCtrl, DatabaseManager dbMan) {
-		this.picCtrl = picCtrl;
+	public ViewController(DatabaseManager dbMan) {
 		this.dbMan = dbMan;
 		sortedPictureList = new ArrayList<PictureData>();
 
@@ -65,7 +61,7 @@ public class ViewController {
 	}
 
 	public void getSortedList() {
-		pictureDataList = picCtrl.getSortedPictureData();
+		pictureDataList = dbMan.getSortedPictureData();
 
 		System.out.println("");
 		System.out.println("ViewController: getSortedList from PictureController");
