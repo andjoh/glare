@@ -68,7 +68,7 @@ public class MainTest {
 				// Set test data for source and hashtag
 				hashtagsDummy = new HashSet<String>();
 
-				hashtagsDummy.add("twittermotjavatesting");
+				hashtagsDummy.add("winter");
 				hashtagsDummy.add("raskebriller");
 
 				// Set dummy sources and hashtag
