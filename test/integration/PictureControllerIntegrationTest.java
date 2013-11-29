@@ -44,7 +44,7 @@ public class PictureControllerIntegrationTest {
 		
 		// Set dummy hashtag
 		hashtagsDummy = new HashSet<String>();
-		hashtagsDummy.add("twittermotjavatesting");
+		hashtagsDummy.add("winter");
 		hashtagsDummy.add("raskebriller");
 					
 		// Set dummy picturedata from db
