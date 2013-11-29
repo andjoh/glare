@@ -2,11 +2,37 @@ package dal;
 
 import java.util.*;
 
+import bll.PictureDataComparator;
+
 public class DatabaseManager {
+	private final int MAX_SIZE = 100;
 
 	public DatabaseManager(DatabaseHandler databaseHandler){	
 	}
 
+	/**
+	 * Return sorted List of PictureData objects that can be displayed, i.e. no inappropriate.
+	 * @return List of PictureData
+	 */
+	public List<PictureData> getSortedPictureData() {		
+		List<PictureData> pictureData = new ArrayList<PictureData>();
+		List<PictureData> pictureDataFromDb = DatabaseHandler.listOfPicturesFromDB();
+
+		int i = 0;
+		for ( PictureData pD : pictureDataFromDb ) {
+			if ( !pD.isRemoveFlag() ) {
+				pictureData.add(pD);
+				if (++i >= MAX_SIZE){ 
+					break;
+				}
+			}
+		}
+
+		Collections.sort(pictureData, new PictureDataComparator());
+
+		return pictureData;
+	}
+	
 	public List<PictureData> getPictureDataFromDb() {
 		return DatabaseHandler.listOfPicturesFromDB();
 	}

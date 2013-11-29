@@ -15,7 +15,6 @@ public class PictureController {
 	private List<PictureData> pictureDataModified;              // Existing pictureData which contains new- in addition to existing hashtags
 	private List<PictureIdHashtags> existingPicIdNewHashtags;   // List of objects containing existing pictureId and new hashtags
 
-	private final int MAX_SIZE = 100;
 
 	public PictureController(DatabaseManager databaseManager) {
 		this.databaseManager = databaseManager;
@@ -201,12 +200,13 @@ public class PictureController {
 	 */		
 	public void processPictureData() {
 		// Get pictureData from db. Assume no duplicates.
-		pictureDataExisting = databaseManager.getPictureDataFromDb();
+		pictureDataExisting      = databaseManager.getPictureDataFromDb();
 
-		// Init pictureData lists
-		pictureDataNew      = new ArrayList<PictureData>();
-		pictureDataModified = new ArrayList<PictureData>();
-
+		// Init lists
+		pictureDataNew           = new ArrayList<PictureData>();
+		pictureDataModified      = new ArrayList<PictureData>();
+		existingPicIdNewHashtags = new ArrayList<PictureIdHashtags>();
+		
 		// Iterate over picture data from sources
 		boolean pictureDataExists;
 		for ( PictureData pdPossibleNew : pictureDataFromSources ) {
@@ -272,29 +272,6 @@ public class PictureController {
 		}
 
 		return newHashtags;
-	}
-
-	/**
-	 * Return sorted List of PictureData objects that can be displayed, i.e. no inappropriate.
-	 * @return List of PictureData
-	 */
-	public List<PictureData> getSortedPictureData() {		
-		List<PictureData> pictureData = new ArrayList<PictureData>();
-		List<PictureData> pictureDataFromDb = databaseManager.getPictureDataFromDb();
-
-		int i = 0;
-		for ( PictureData pD : pictureDataFromDb ) {
-			if ( !pD.isRemoveFlag() ) {
-				pictureData.add(pD);
-				if (++i >= MAX_SIZE){ 
-					break;
-				}
-			}
-		}
-
-		Collections.sort(pictureData, new PictureDataComparator());
-
-		return pictureData;
 	}
 
 	public List<PictureData> getPictureDataFromSources() {
