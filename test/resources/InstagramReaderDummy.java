@@ -41,8 +41,6 @@ public class InstagramReaderDummy implements IReader{
 		p.addHashtag(new Hashtag(searchTag));
 		pictureData.add(p);
 		
-		System.out.println("pictureData size " + pictureData.size());
-
 		return pictureData;
 	}
 }

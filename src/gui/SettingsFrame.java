@@ -1,162 +1,112 @@
 package gui;
+
 import javax.swing.*;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
+import javax.swing.event.MouseInputAdapter;
 
+import bll.SettingsPicture;
 import bll.ViewController;
 
 import java.awt.event.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-
-
 
 /**
  * 
  * @author Andreas Johnstad
  */
 @SuppressWarnings("serial")
-public class SettingsFrame extends JInternalFrame {
+final public class SettingsFrame extends JDialog {
 
-	private static final Dimension PREFERRED_SIzE= new Dimension(
-			800,600
-	);
+	private static final Dimension PREFERRED_SIZE = new Dimension(800, 600);
 
-	// Variables 
+	// Variables
 	private ViewController viewCtrl;
+	private SettingsContentPanel contp;
 	private DisplaySettingsPanel dispset;
 	private HashtagSettingsPanel hashpan;
 	private TableSettingsPanel tablepanel;
-	private JLabel backgroundImageLabel;
-	private JButton saveButton;
-	
-	/**
-	 * Creates new form SettingsFrame
-	 */
-	public SettingsFrame(ViewController viewCtrl) {
+	private JFrame parent;
+	private Dimension dim;
+
+	public SettingsFrame(ViewController viewCtrl, JFrame parent) {
+		this.parent = parent;
 		this.viewCtrl = viewCtrl;
-		initComponents();
-		
-
-		// Testing add hashtags to list
-		hashpan.setHashtagList(viewCtrl.getHashtags());initFrame();
-	}
-	public SettingsFrame() {
-		super("Settings" , false, // resizable
-				true, // closable
-				false, // maximizable
-				false);// iconifiable'
-		setJMenuBar(null);
-		getJMenuBar();
-		initComponents();
-		initFrame();
-
-	}
-
-
-	private void SendHastagUpdate(){
-
-		
-		
-	}
-	
-	/**
-
-	 */
-	private void initFrame(){
-		getContentPane().setLayout(null);
-		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		//setResizable(true);
-		setPreferredSize(PREFERRED_SIzE);
-		this.addInternalFrameListener(new closeAndSave());
-
-		setDoubleBuffered(true);
-		getContentPane().add(dispset);
-		getContentPane().add(tablepanel);
-		getContentPane().add(hashpan);
-		getContentPane().add(saveButton);
-		getContentPane().add(backgroundImageLabel);
-		
-		//setFrameIcon(new ImageIcon(getClass().getResource("/resource/img/settings.gif")));
-		setFrameIcon(null);
+		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		setSize(dim.width * 2 / 3, dim.width * 2 / 4);
+		setModal(true);
+		contp = new SettingsContentPanel(dim, hashpan, dispset, tablepanel);  
+		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		getContentPane().add(contp);
+		setLocationRelativeTo(parent);
 		pack();
+		setResizable(false);
+		setAlwaysOnTop(true);
+		requestFocusInWindow();
+		setLocationRelativeTo(parent);
+		parent.pack();
+		parent.pack();
 		setVisible(true);
-		
-	}
-	private void initComponents() {
-		// TableSettingsPanel declaration
-		tablepanel = new TableSettingsPanel();
-		tablepanel.setBounds(300, 10, 510, 510);
-		
-		// HashSettingsPanel declaration
-		hashpan = new HashtagSettingsPanel();
-		hashpan.setBounds(50, -12, 180, 320);
-		
-		// DisplaySettingsPanel
-		dispset = new DisplaySettingsPanel();
-		dispset.setBounds(60, 360, 185, 70);
-
-		// Save settings button declaration
-		saveButton = new JButton("Save Settings");
-		saveButton.setBounds(660, 530, 105, 28);
-		
-		
-		// Background Image declaration
-		backgroundImageLabel = new JLabel();
-		backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
-		"/resource/img/backgr.jpg")));
-		backgroundImageLabel.setIconTextGap(0);
-		backgroundImageLabel.setPreferredSize(new Dimension(2560, 1600));
-		backgroundImageLabel.setBounds(0, 0, 933, 810);
+		// Testing add hashtags to list
 	}
 
-   // Will be called when the frame is in the process of closing
-   // Will call the necessary methods to update settings
-	class closeAndSave extends InternalFrameAdapter {
-		
+	// Will be called when the frame is in the process of closing
 
-		  public void internalFrameClosing(InternalFrameEvent internalFrameEvent) {
-		 /*
-		  *  update,set displaysettings here
-		  *  
-		  *   Call:  updateDisplaySettings()
-		  */
-		
-	    /*
-	     *  update,set hashtags here 
-	     *  
-	     *  Call: updateHashtags
-			  
-	     */ 
-	    /*
-	     *  update thumnails   
-	     *  
-	     *  
-	     */
-		  }
-		}
+	// Will call the necessary methods to update settings
 
+	public void updateTableSettings() {
+		ImageTableModel imtabmod = tablepanel.getImageTableModel();
+		// not implemented a method to get selected SettingsPicture object and
+		// flag them yet.
+		// This can be done here for test purposes
+		// f.ex we want to flag picture in row 10 column 10:
+		imtabmod.flagPicture(10, 10);
 
-/// send updated display settings 
-  
-    // get updated displaysettings  and set them
-    public void updateDisplaySettings(){
-    	
-    	viewCtrl.setRandom(dispset.getViewMode());
+		// here is the data to send, picture in row 10 colum 10 should be
+		// flagged
+
+		List<List<SettingsPicture>> datatosend = imtabmod.getTableModelData();
+
+		// TODO: iterate through the data
+		// can be done with enchanced for loop, like this:
+		/*
+		 * for(List<SettingsPicture> row: datatosend){
+		 * 
+		 * for(SettingsPicture pic: row){
+		 * 
+		 * //TODO: send id of pic to DAL } }
+		 */
+
+	}
+
+	public boolean validationExit() {
+		return true;
+	}
+
+	// / send updated display settings
+
+	// get updated displaysettings and set them
+	public void updateDisplaySettings() {
+
+		viewCtrl.setRandom(dispset.getViewMode());
 		viewCtrl.setDisplayTime(dispset.getViewDelay());
-    	
-    }
-    //  send updated hashtags to ViewCtrl
-	public void updateHashtags() {
-		Set<String>  hashtagList = hashpan.getHashtagList();
-		viewCtrl.updateHashtags(hashtagList);
 
 	}
-	//Get hashtags from DB to show on start up.
-	public void getHashTags(){
-		
-		
+
+	// send updated hashtags to ViewCtrl
+	public void updateHashtags() {
+		Set<String> hashtagList = hashpan.getHashtagList();
+		viewCtrl.updateHashtags(hashtagList);
 	}
+
+
+
 }

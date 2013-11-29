@@ -1,82 +1,104 @@
 package gui;
 
-
- 
 /*
  * TableDemo.java requires no other files.
  */
- 
-import javax.swing.ImageIcon;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
 import bll.SettingsPicture;
 
-import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.EventQueue;
 import java.util.ArrayList;
 import java.util.List;
+
 public class ImageTableModel extends AbstractTableModel {
-  private List<List<SettingsPicture>> data;
-  private final static int DEFAULT_COLS=10, DEFAULT_ROWS=10;
-  public ImageTableModel( List<List<SettingsPicture>> thumbs){
-	 
-	 data = new ArrayList<List<SettingsPicture>>(thumbs); 
+	private List<List<SettingsPicture>> data;
 
-	  
-  }
+	private List<String> columnNames;
 
-
-    public int getRowCount() {
-        return data.size();
-    }
-
-
-    public Object getValueAt(int row, int col) {
-        return data.get(row).get(col);
-    }
-    public Class<? extends Object> getColumnClass(int c) {
-        return getValueAt(0, c).getClass();
-    }
-
-    public boolean isCellEditable(int row, int col) {
-     
-            return false;
-  
-    }
-    public void setValueAt(Object value, int row, int col) {
- 
-        (data.get(row)).set(col,(SettingsPicture) value);
-        fireTableCellUpdated(row, col);
-
-      
-    }
-  public   List<List<SettingsPicture>> getTableSettingsPictures(){
-	return data;
-	  
-  }
-  public  SettingsPicture getTableSettingsPicture(int row,int col){
-		return data.get(row).get(col);
-		  
-	  }
-
-	@Override
-	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return 0;
+	ImageTableModel(List<List<SettingsPicture>> data) {
+		this.data = new ArrayList<List<SettingsPicture>>(data);
+		System.out.println("Size" + data.size());
+		columnNames = new ArrayList<String>();
+		addColumns();
+	/*
+		addTableModelListener(new TableModelListener() {
+			  @Override public void tableChanged(final TableModelEvent e) {
+				    // TO DO: replace 100 with the actual preferred height.
+				    EventQueue.invokeLater(new Runnable() {
+				      @Override public void run() {
+				      System.out.println("table changed");
+				      }
+				    });
+				  }
+				});
+				*/
 	}
-	public void insertRow(int r,List<SettingsPicture> rowData)
-	    {
-	        data.add(r,rowData);
-	        fireTableRowsInserted(data.size() - 1, data.size() - 1);
-	    }
 
-	public void insertRow(int r, Object object) {
-		// TODO Auto-generated method stub
-		
+	public void addColumns() {
+		for (int i = 0; i < getColumnCount(); i++) {
+			columnNames.add("");
+		}
+
+	}
+
+	public int getColumnCount() {
+		return data.get(0).size();
+	}
+
+	public String getColumnName(int column) {
+		return columnNames.get(column);
+	}
+
+	public int getRowCount() {
+		int total = 0;
+		for (List<SettingsPicture> sublist : data) {
+			// TODO: Null checking
+			total++;
+		}
+		return total;
+	}
+
+	public Object getValueAt(int row, int column) {
+		return data.get(row).get(column).getIconTest();
+	}
+	
+	public void setValueAt(Object value, int row, int col){
+		 SettingsPicture pic = (SettingsPicture)value;
+		 data.get(row).set(col,pic);
+		 fireTableCellUpdated(row,col);
+		 }
+		 
+		 public boolean isCellEditable(int row, int col){
+		 if (4 == col){
+		 return true;
+		 }
+		 else {
+		 return false;
+		 }
+		 }
+		 
+	
+		 
+		 public void removeRow(int row){
+		 data.remove(row);
+		 fireTableDataChanged();
+		 }
+		 
+		 
+	
+	public void flagPicture(int row, int column) {
+		data.get(row).get(column).setIsFlagged(true);
+	}
+
+	public List<List<SettingsPicture>> getTableModelData() {
+		return data;
+	}
+
+	public Class getColumnClass(int column) {
+		return (getValueAt(0, column).getClass());
 	}
 
 }

@@ -2,15 +2,19 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
 import resources.ViewControllerDummy;
 
@@ -20,38 +24,41 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	 */
 	private static final long serialVersionUID = 1L;
 	private Constraints[] gbc;
-	private final static int COLS = 10, ROWS = 10;
+	private final static int COLS = 5, ROWS = 20;
 	private ImageTableModel tablemodel;
 	private JButton removeButton;
+	private Dimension dim;
 	private JScrollPane tableScroller;
 	private ImageTable thumbnailTable;
 
-	public TableSettingsPanel() {
+	public TableSettingsPanel(Dimension dim) {
+		this.dim=dim;
 		setOpaque(false);
 		setLayout(new GridBagLayout());
 		gbc = new Constraints[] { new Constraints(), new Constraints() };
 		init();
-
+		System.out.println("TableSettingsPanel"+super.getSize());
 		setConstraints();
 	}
 
 	private void init() {
 		// thumbnailTable properties
-		ViewControllerDummy setv = new ViewControllerDummy(null,null);
-		tablemodel= new ImageTableModel(setv.getSettingsPicturesAs2DList());
-		thumbnailTable = new ImageTable(tablemodel,COLS, ROWS);
-		
-		// setv.setH(thumbnailTable.getHeight()/rows);
-		// setv.setW(thumbnailTable.getWidth()/cols);
-		System.out.println(thumbnailTable.getHeight());
-		TableUpdater update = new TableUpdater(thumbnailTable.getModel(), setv);
-		update.start();
+		ViewControllerDummy setv = new ViewControllerDummy(null, null);
+		List<String> str = new ArrayList<String>();
+	
+		tablemodel = new ImageTableModel(setv.getSettingsPictures(ROWS, COLS) );
+		thumbnailTable = new ImageTable(tablemodel,dim);
+		// TableUpdater update = new TableUpdater(thumbnailTable.getModel(),
+		// setv);
+		// update.start();
 		// tableScroller properties
 		tableScroller = new JScrollPane();
 		tableScroller.setOpaque(false);
 
 		tableScroller.setCursor(new Cursor(Cursor.MOVE_CURSOR));
 		tableScroller.setViewportView(thumbnailTable);
+		tableScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		// removeButton Properties
 		removeButton = new JButton("Remove");
 		removeButton.addActionListener(this);
@@ -71,6 +78,13 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-    
+		if (e.getSource().equals(removeButton)) {
+
+		}
+
+	}
+
+	public ImageTableModel getImageTableModel() {
+		return tablemodel;
 	}
 }

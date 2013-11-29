@@ -5,143 +5,74 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
-public class LoginDialog extends JDialog implements ActionListener {
+public class LoginDialog extends JDialog {
 
 	/**
-	 *
+	 * 
 	 * @author Andreas J.
 	 */
 	private static final long serialVersionUID = 1L;
 
-	private LoginPanel panel;
+	private JFrame jf;
+	private JPanel jp;
+	private LoginInputPanel inputpanel;
+	private ButtonPanel buttonPanel;
+	private Dimension dim, totalsize;
 
-	private Constraints gbc;
-	private JPanel buttonPanel;
-	private JButton okButton, cancelButton;
-	private JPasswordField passwordInputField;
-	private JTextField usernameInputField;
-	private JLabel usernameLabel, passwordLabel;
-	private boolean succeeded;
+	LoginDialog logd = this;
 
-	public LoginDialog() {
-
-
+	public LoginDialog(JFrame jf) {
+		super(jf, "", true);
+		this.jf = jf;
+		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		totalsize = new Dimension((int) (dim.getWidth() / 4),
+				(int) dim.getHeight() / 7);
 		init();
-		add(panel, BorderLayout.CENTER);
-	    add(buttonPanel, BorderLayout.PAGE_END);
-		//pack();
-	
-	
-	}
-	/*Declares GUI objects.
-	 * 
-	 *  
-	 */
-	public void init(){
-		panel = new LoginPanel();
-		buttonPanel = new JPanel();
-		okButton = new JButton("Login");
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		setModal(true);
+		setResizable(false);
+		setAlwaysOnTop(true);
+		requestFocusInWindow();
+		setLocationRelativeTo(this.jf);
+		pack();
+		jf.pack();
+		setVisible(true);
 
-		okButton.addActionListener(this);
-		cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(this);
-		buttonPanel = new JPanel();
-		buttonPanel.add(okButton);
-		buttonPanel.add(cancelButton);
+		this.addWindowListener(new WindowAdapter() {
 
+			@Override
+			public void windowClosing(WindowEvent e) {
+				System.out.println("Window is closing");
+			}
+		});
 
 	}
+
 	/*
-	 * Returns username typed by user (without spaces)
+	 * Declares GUI objects.
 	 */
-	public String getUsername() {
-		return usernameInputField.getText().trim();
+	public void init() {
+		inputpanel = new LoginInputPanel(1);
+		inputpanel.setPreferredSize(new Dimension(totalsize.width,
+				totalsize.height * 2 / 3));
+		// ButtonPanel properties
+
+		buttonPanel = new ButtonPanel(logd, inputpanel);
+		buttonPanel.setPreferredSize(new Dimension(totalsize.width,
+				totalsize.height * 1 / 3));
+
+		// add both panels to a panel
+
+		jp = new JPanel();
+		jp.setPreferredSize(totalsize);
+		jp.setLayout(new BorderLayout());
+		jp.add(inputpanel, BorderLayout.CENTER);
+		jp.add(buttonPanel, BorderLayout.PAGE_END);
+		setContentPane(jp);
 	}
 
-	public String getPassword() {
-		return new String(passwordInputField.getPassword());
-	}
-	/*
-	 * 
-	 */
-	public boolean isSucceeded() {
-		return succeeded;
-	}
-	/*
-	 *  If user has clicked cancel: close Dialog.
-	 *  If user has clicked OK: call class to check info
-	 * */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object jc= e.getSource();
-		if (jc.equals(okButton))tryToLogin();
-		else if (jc.equals(cancelButton))setVisible(false);
-	}
-	/* Calls method to compare provided login information with the hardcoded values.
-	 * If correct: closes dialog box. 
-	 * If fail: opens up a messageDialog with error message.
-	 * 
-	 */
-	public void tryToLogin() {
-
-		if (LoginData.authenticate(getUsername(), getPassword())) {
-			succeeded = true;
-			setVisible(false);
-		} else {
-			JOptionPane.showMessageDialog(LoginDialog.this,
-					"Wrong credentials", "Login", JOptionPane.ERROR_MESSAGE);
-
-			usernameInputField.setText("");
-			passwordInputField.setText("");
-			succeeded = false;
-
-		}
+	public boolean getSucceeded() {
+		return buttonPanel.getSucceeded();
 	}
 
-	/* GUI for Login Panel.
-	 * The Text and Password fields. 
-	 * 
-	 * 
-	 */
-	class LoginPanel extends JPanel {
-
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public LoginPanel() {
-
-			setLayout(new GridBagLayout());
-			setBorder(new LineBorder(Color.GRAY));
-			init();
-			setConstraints();
-
-		}
-
-		private void init() {
-			gbc = new Constraints();
-			gbc.fill = GridBagConstraints.HORIZONTAL;
-			usernameLabel = new JLabel("Username: ");
-			passwordLabel = new JLabel("Password: ");
-			usernameInputField = new JTextField(20);
-			passwordInputField = new JPasswordField(20);
-		}
-		/*
-		 * Sets GUI objects with GB Layout using the Constraint class 
-		 * 
-		 */
-		private void setConstraints() {
-                        
-			gbc.set(0, 0, 1, 1,0,0);
-			add(usernameLabel, gbc);
-			gbc.set(1, 0, 2, 1,0,0);
-			add(usernameInputField, gbc);
-			gbc.set(0, 1, 1, 1,0,0);
-			add(passwordLabel, gbc);
-			gbc.set(1, 1, 2, 1,0,0);
-			add(passwordInputField, gbc);
-		}
-
-	}
 }

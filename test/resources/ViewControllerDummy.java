@@ -19,7 +19,7 @@ import java.util.*;
 import dal.*;
 
 /**
- * @author Simen Sollie, Kristine Svaboe, Petter Austerheim
+ * @author Andreas J, Simen Sollie, Kristine Svaboe, Petter Austerheim
  * @since 2013-11-04
  */
 
@@ -37,7 +37,6 @@ public class ViewControllerDummy {
 	private Set<String> hashtags;
 	private boolean isRandom;
 	private int displayTime;
-	private String[] urls = new String[]{};
 
 	public ViewControllerDummy(PictureController picCtrl, DatabaseManager dbMan){
 		
@@ -77,7 +76,7 @@ public class ViewControllerDummy {
 		Collections.shuffle(randomPictureList);
 	}
 	
-	private BufferedImage getBufImage(String path) throws IOException{
+	private BufferedImage getBufImage(String path){
 		URL url = this.getClass().getResource(path);
           BufferedImage tmp = null;
 		try {
@@ -89,42 +88,42 @@ public class ViewControllerDummy {
 		}
 		return tmp;
 	}
- 
-	public List<SettingsPicture> getSettingsPictures() {
-		System.out.println("ViewController: getSettingsPictures");
+
+	public  List<List<SettingsPicture>> getSettingsPictures(int rows,int cols)  {
+		List<List<SettingsPicture>> settingsPictures=null;
+		List<PictureData> picd=null;
+		if(rows*cols==100){
+		picd=getPictureData(rows,cols) ;
+		settingsPictures =new ArrayList<List<SettingsPicture>>();
+
 		
-		List<SettingsPicture> settingsPictures = new ArrayList<SettingsPicture>();
-
-		String id, url;
-
-		for (int i=0;i<100;i++) {
-			
-			id  = Integer.toString(Integer.valueOf((int)Math.random()*98111+33311));
-			url ="/resource/img/"+ i%10+".png";
-			System.out.println("URL : "+url);
-			try {
-				settingsPictures.add(new SettingsPicture(id, getBufImage(url)));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			PictureData pic=null;
+			String id="",url;
+			 int s=0;
+		   for (int r=0;r<100/cols;r++){
+			   List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
+			   for (int c=0;c<cols;c++){
+				  
+				   pic=picd.get(s);
+				   url=pic.getUrlThumb();
+				   id=pic.getId();
+				   tmp.add(new SettingsPicture(id,this.getBufImage(url))); 
+				   s++;
+			   }
+			   settingsPictures.add(tmp);
+				
 			}
-		}	
-		
+	}
 		return settingsPictures;
 	}
-	
-	public  List<List<SettingsPicture>> getSettingsPicturesAs2DList()  {
-	
-		List<SettingsPicture> df=getSettingsPictures();
-		List<List<SettingsPicture>> settingsPictures =new ArrayList<List<SettingsPicture>>();
-         System.out.println("Size: "+df.size());
-			int startindex=0;
-			for (int col=0;col<100;col+=10){
-			settingsPictures.add(col%10,new ArrayList<SettingsPicture>(df.subList(startindex,col%10)));
-			
-			
-			}
-		return settingsPictures;
+	public List<PictureData>getPictureData(int row, int col){
+		List<PictureData> picd = new ArrayList<PictureData>();
+		for(int r=0;r<100;r++){
+		    
+			picd.add(new PictureData("idnum"+r,"/resource/img/"+r%10+".png","/resource/img/"+r%10+".png",12345,false));
+		}
+		return picd;
+		
 	}
 
 

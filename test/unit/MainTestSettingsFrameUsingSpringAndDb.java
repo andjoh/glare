@@ -60,11 +60,7 @@ public class MainTestSettingsFrameUsingSpringAndDb {
 								
 				SettingsFrame intfr = new SettingsFrame(vc);
 				
-				JFrame fr = new JFrame();
-				fr.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				fr.getContentPane().add(intfr);
-				fr.pack();
-				fr.setVisible(true);
+				
 
 			}
 		});
