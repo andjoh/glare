@@ -67,11 +67,16 @@ public class TwitterReader  implements IReader {
 					if (media[0].getType().equals("photo")){
 						String id = String.valueOf(media[0].getId());
 						pd.setId(id);
+//						System.out.println(pd.getId());
 						pd.setUrlStd(media[0].getMediaURL() + ":large");
+//						System.out.println(pd.getUrlStd());
 						pd.setUrlThumb(media[0].getMediaURL() + ":thumb");
+//						System.out.println(pd.getUrlThumb());
 						pd.setCreatedTime(DateConvert(date));
+//						System.out.println(pd.getCreatedTime());
 						pd.setRemoveFlag(false);
 						pd.addHashtag(new Hashtag(searchTag));
+//						System.out.println(pd.getHashtags());
 						pictures.add(pd);
 					}
 				}

@@ -16,6 +16,7 @@ local.properties
 .settings/
 .loadpath
 conf.ini
+HvorforFungererDetIkke.java
 
 # External tool builders
 .externalToolBuilders/
