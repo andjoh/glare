@@ -26,7 +26,7 @@ public class TwitterReaderTest {
 			pictures = new ArrayList<PictureData>();
 			tr = new TwitterReader(new ConfigurationReader());
 			
-			pictures = tr.getPictures("twittermotjavatesting");
+			pictures = tr.getPictures("winter");
 		}
 		@After
 		public void tearDown() {

@@ -29,12 +29,16 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import bll.ViewController;
+
 public class HashtagSettingsPanel extends JPanel implements ActionListener,
 		DocumentListener, ListSelectionListener {
 
 	private DefaultListModel<String> listModel;
 	private JTextField addhashField;
 	private JList<String> hashJList;
+	private ViewController viewCtrl;
+	private Dimension dim;
 	private JLabel hashsignLabel;
 	private JButton delhashButton, addhashButton;
 	private JScrollPane jlistScroller;
@@ -43,8 +47,9 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 			new Constraints(), new Constraints(), new Constraints(),
 			new Constraints() };
 
-	public HashtagSettingsPanel() {
-
+	public HashtagSettingsPanel(ViewController viewCtrl, Dimension dim) {
+        this.viewCtrl=viewCtrl;
+        this.dim=dim;
 		setAutoscrolls(true);
 		setMaximumSize(new Dimension(20000, 23000));
 		setOpaque(false);

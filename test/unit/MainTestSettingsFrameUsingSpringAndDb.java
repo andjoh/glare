@@ -24,8 +24,17 @@ import bll.*;
  * 4. Displaytime set
  *    a) Set Displaytime - OK    
  */
-public class MainTestSettingsFrameUsingSpringAndDb {
+public class MainTestSettingsFrameUsingSpringAndDb  extends JFrame{
+	 SettingsFrame settingsFrame;
+		public MainTestSettingsFrameUsingSpringAndDb() {
+			
+			ViewController vc = (ViewController) ClassFactory.getBeanByName("viewController");
+			 settingsFrame = new SettingsFrame(vc, this);
+			 boolean suc =  settingsFrame.validationExit();
+			 
+			
 
+		}
 	public static void main(String args[]) {
 		/*
 		 * Set the Nimbus look and feel
@@ -56,9 +65,8 @@ public class MainTestSettingsFrameUsingSpringAndDb {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 
-				ViewController vc = (ViewController) ClassFactory.getBeanByName("viewController");
-								
-				SettingsFrame intfr = new SettingsFrame(vc);
+				
+				 new MainTestSettingsFrameUsingSpringAndDb();
 				
 				
 

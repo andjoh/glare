@@ -3,96 +3,73 @@ package unit;
 import glare.ClassFactory;
 import gui.SettingsFrame;
 
-import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.swing.*;
+
+import resources.DatabaseManagerDummy;
+import dal.DatabaseHandler;
 
 import bll.*;
 
 /*
  * Show SettingsFrame and perform tests regarding hashtags, view mode and display time
- *    - Using Spring to get objects from BLL and DAL
- *    - Using database
  *    
  * Tests Performed:
  * 1. No hashtags in db
- *    a) Add hashtags to db - OK
- *    b) Remove hashtags from db - OK
+ *    a) Add hashtags to db
+ *    b) Remove hashtags from db
  * 2. Db containing hashtags
- *    a) Add hashtags to db - OK
- *    b) Remove hashtags from db - OK
+ *    a) Add hashtags to db
+ *    b) Remove hashtags from db
  * 3. Random set
- *    a) Set Random true/false - OK
+ *    a) Set Random true/false
  * 4. Displaytime set
- *    a) Set Displaytime - OK    
+ *    a) Set Displaytime 
  */
-public class MainTestSettingsFrame extends JFrame implements VetoableChangeListener {
+public class MainTestSettingsFrame extends JFrame  {
 	 SettingsFrame settingsFrame;
 	public MainTestSettingsFrame() {
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(1024,800));
-		JButton button = new JButton("Open SettingsFrame");
-		button.setBounds(200,300,200,150);
-	    button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               openSettings();
-            }
-        });
-	    //setLayout(null);
-	    getContentPane().add(button);
-	    pack();
-        setVisible(true);
-       SettingsFrame settingsFrame = new SettingsFrame();
-		 
-		  JDesktopPane desktopPane = new JDesktopPane();
-		  getContentPane().add(desktopPane);
-		  desktopPane.add(settingsFrame);
-	
-		  settingsFrame.setSize(800, 600);
-		  settingsFrame.setLocation(50, 50);
-		  
-		  settingsFrame.setVisible(true);
-		 
-		  JPanel gp = new JPanel();
-		  gp.setSize(800, 600);
-		  gp.setOpaque(true);
-		  gp.setVisible(true);
-		  gp.setBackground(java.awt.Color.BLUE);
-		  settingsFrame.setGlassPane(gp);
-		  settingsFrame.addVetoableChangeListener(this);
-		 
+
+		// DUMMY CHECK
+		DatabaseHandler dbHandler     = new DatabaseHandler();
+		DatabaseManagerDummy dbManDum = new DatabaseManagerDummy(dbHandler);
+		PictureController picCtrl     = new PictureController(dbManDum);
+
+		// Do some dummy stuff
+		List<String> sourcesDummy;
+		Set<String> hashtagsDummy;
+
+		// Set dummy sources
+		sourcesDummy = new ArrayList<String>();
+		sourcesDummy.add("instagram");
+		sourcesDummy.add("twitter");
+
+		// Set test data for source and hashtag
+		hashtagsDummy = new HashSet<String>();
+
+		hashtagsDummy.add("winter");
+		hashtagsDummy.add("raskebriller");
+
+		// Set dummy sources and hashtag
+		dbManDum.setSources(sourcesDummy);
+		dbManDum.setHashtags(hashtagsDummy);
+
+		// Run test
+		picCtrl.getNewPictureData();
+		ViewController vc = new ViewController(picCtrl,dbManDum);
+		
+		 vc.getSortedList();
+		 SettingsFrame dialog = new SettingsFrame(vc, this);
+		boolean b = dialog.validationExit();
+		
 
 	}
-	public void openSettings(){
-		  settingsFrame = new SettingsFrame();
-			 
-		  JDesktopPane desktopPane = new JDesktopPane();
-		  getContentPane().add(desktopPane);
-		  desktopPane.add(settingsFrame);
-	
-		  settingsFrame.setSize(800, 600);
-		  settingsFrame.setLocation(50, 50);
-		  
-		  settingsFrame.setVisible(true);
-		 
-		  JPanel gp = new JPanel();
-		  gp.setSize(800, 600);
-		  gp.setOpaque(true);
-		  gp.setVisible(true);
-		  gp.setBackground(java.awt.Color.BLUE);
-		  settingsFrame.setGlassPane(gp);
-		  settingsFrame.addVetoableChangeListener(this);
-		 
-	}
+
 
 	public static void main(String args[]) {
 		/*
@@ -122,27 +99,11 @@ public class MainTestSettingsFrame extends JFrame implements VetoableChangeListe
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-
-				// ViewController vc = (ViewController)
-				// ClassFactory.getBeanByName("viewController");
-
-				// SettingsFrame intfr = new SettingsFrame(vc);
 			 new MainTestSettingsFrame();
 
 			}
 		});
 	}
 
-	@Override
-	 public void vetoableChange(PropertyChangeEvent evt)
-			  throws PropertyVetoException
-			 {
-			  if(evt.getPropertyName().equals(JInternalFrame.IS_SELECTED_PROPERTY))
-			  {
-			   System.err.println("SELECTED");
-			   throw new PropertyVetoException("Selected", null);
-			  }
-
-			 }
 
 }
