@@ -2,10 +2,12 @@ package bll;
 
 import glare.*;
 import dal.*;
-
 import java.util.*;
 
-
+/**
+ * Controller for getting, processing and sending picture data to database
+ * @author Petter Austerheim
+ */
 public class PictureController {
 	private DatabaseManager databaseManager;
 
@@ -15,7 +17,7 @@ public class PictureController {
 	private List<PictureData> pictureDataModified;              // Existing pictureData which contains new- in addition to existing hashtags
 	private List<PictureIdHashtags> existingPicIdNewHashtags;   // List of objects containing existing pictureId and new hashtags
 
-
+	
 	public PictureController(DatabaseManager databaseManager) {
 		this.databaseManager = databaseManager;
 	}
@@ -49,26 +51,14 @@ public class PictureController {
 				}
 				System.out.println("");				
 
-			}			
-						
-//			if ( !pictureDataModified.isEmpty() ) {			
-//
-//				pictureDataToSave.addAll(pictureDataModified);
-//				
-//				System.out.println("");				
-//				System.out.println("PictureController, getNewPictureData: Modified PictureData before save to db");
-//				for ( PictureData pd : pictureDataModified ) {
-//					System.out.println(pd.getId());
-//				}
-//				System.out.println("");				
-//
-//			}				
+			}						
 			
 			if ( !pictureDataToSave.isEmpty() ) {
 				databaseManager.savePictureDataToDb(pictureDataToSave);
 				success = true;
 			}
 			
+			// TODO: This might be used if new hashtags explicitly should be updated in database
 			// If new hashtags on existing pictureData: Save to db
 			//if ( !existingPicIdNewHashtags.isEmpty() ) {				
 			//	databaseManager.saveHashtagsToExistingPictureData(existingPicIdNewHashtags);
@@ -156,6 +146,11 @@ public class PictureController {
 		return pictureData;
 	}
 
+	/**
+	 * Remove duplicated picture data from list
+	 * @param pictureData
+	 * @return - picture data without duplicates
+	 */
 	private List<PictureData> removePictureDataDuplicates(List<PictureData> pictureData) {
 		List<PictureData> pictureDataWithoutDuplicates = new ArrayList<PictureData>();
 		boolean pictureDataExists;
