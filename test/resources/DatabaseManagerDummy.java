@@ -45,6 +45,11 @@ public class DatabaseManagerDummy extends DatabaseManager {
 	public List<PictureData> getPictureDataFromDb() {
 		return pictureDataFromDb;
 	}
+	
+	public void removePicturesWithoutHashtagFromDB(){
+		System.out.println("DatabaseManagerDummy: removePicturesWithoutHashtagFromDB");
+	}
+	
 	public void setRemoveFlag(Set<String> pictureDataId) {
 		for (String s: pictureDataId){
 			DatabaseHandler.setRemoveFlag(s);
