@@ -70,6 +70,18 @@ public class DatabaseManagerDummy extends DatabaseManager {
 	public Set<String> getHashtags() {
 		return hashtags;
 	}
+
+	public void addHashtags(Set<String> hashtags) {
+		for (String s: hashtags){
+			hashtags.add(s);
+		}
+	}
+
+	public void removeHashtags(Set<String> hashtags) {
+		for(String s: hashtags){
+			hashtags.remove(s);
+		}
+	}
 	
 	public void setHashtags(Set<String> hashtags) {
 		this.hashtags = hashtags;
