@@ -62,7 +62,7 @@ public class ImageTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int row, int column) {
-		return data.get(row).get(column).getIconTest();
+		return data.get(row).get(column).getIcon(50,50);
 	}
 	
 	public void setValueAt(Object value, int row, int col){

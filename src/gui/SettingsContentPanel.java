@@ -17,12 +17,12 @@ public class SettingsContentPanel extends JPanel {
 	private  DisplaySettingsPanel dispset;
 	public SettingsContentPanel(Dimension dim, HashtagSettingsPanel hashpan, DisplaySettingsPanel dispset, TableSettingsPanel tablepanel) {
 		this.dim=new Dimension(dim.width * 2 / 3,
-				dim.height * 2 / 4);
+				dim.height * 2 / 3);
 		this.hashpan=hashpan;
 		this.dispset=dispset;
 		this.tablepanel=tablepanel;
-		setPreferredSize(new Dimension(dim.width * 2 / 3,
-				dim.height * 2 / 4));
+		//setPreferredSize(dim);
+		setPreferredSize(new Dimension(800,600));
 		setDoubleBuffered(true);
 		initComponents();
 		addComponents();
@@ -54,10 +54,9 @@ public class SettingsContentPanel extends JPanel {
 		backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
 				"/resource/img/backgr.jpg")));
 		backgroundImageLabel.setIconTextGap(0);
-		backgroundImageLabel.setPreferredSize(dim);
-		backgroundImageLabel.setBounds(0, 0,
-				dim.width,dim.height);
-
+		//backgroundImageLabel.setPreferredSize(dim);
+		///backgroundImageLabel.setBounds(0, 0,dim.width,dim.height);
+		backgroundImageLabel.setBounds(0, 0,800,600);
 	}
 
 }
