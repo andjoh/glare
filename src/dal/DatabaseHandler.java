@@ -18,23 +18,32 @@ import org.hibernate.exception.ConstraintViolationException;
 public class DatabaseHandler {
 
 	public static void addPictureToDB(PictureData pic){
-		List<PictureData> result = null;
+		List<PictureData> resultPic = null;
+		List<Hashtag> resultHash = null;
 		Transaction tx = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
+			
+			Set<Hashtag> newHashSet = pic.getHashtags();
+			for(Hashtag h : newHashSet){
+				resultHash = DatabaseHandler.returnHashtagIfAlreadyExists(h);
+				if(resultHash.size() == 1){
+					pic.remHashtag(h);
+					pic.addHashtag(resultHash.get(0));
+				}
+			}
 
-			result = DatabaseHandler.returnPictureIfAlreadyExists(pic);
-			if(result.size() == 1){
-				Set<Hashtag> hashtagsFromDB = result.get(0).getHashtags();
-				Set<Hashtag> newHashSet = pic.getHashtags();
+			resultPic = DatabaseHandler.returnPictureIfAlreadyExists(pic);
+			if(resultPic.size() == 1){
+				Set<Hashtag> hashtagsFromDB = resultPic.get(0).getHashtags();
 				newHashSet.addAll(hashtagsFromDB);
 				pic.setHashtags(newHashSet);
 			}
 			session.saveOrUpdate(pic);
 
-			session.getTransaction().commit();
+			tx.commit();
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
@@ -53,7 +62,7 @@ public class DatabaseHandler {
 			tx = session.beginTransaction();
 
 			result = session.createQuery("from PictureData where id=\'" + pic.getId() + "\'").list();
-			session.getTransaction().commit();
+			tx.commit();
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
@@ -75,11 +84,11 @@ public class DatabaseHandler {
 
 			result = session.createQuery("from PictureData").list();
 
-			session.getTransaction().commit();
+			tx.commit();
 		} catch(HibernateException e){
 			if (tx!= null)
 				tx.rollback();
-			//e.printStackTrace();
+			e.printStackTrace();
 		} finally{
 			session.close();
 		}
@@ -99,11 +108,11 @@ public class DatabaseHandler {
 				session.saveOrUpdate(hash);
 			}
 
-			session.getTransaction().commit();
+			tx.commit();
 		} catch(ConstraintViolationException e){
 			if(tx != null)
 				tx.rollback();
-			//e.printStackTrace();
+			e.printStackTrace();
 		} finally{
 			session.close();
 		}
@@ -118,7 +127,7 @@ public class DatabaseHandler {
 			tx = session.beginTransaction();
 
 			result = session.createQuery("from Hashtag where hashtag=\'" + h.getHashtag() + "\'").list();
-			session.getTransaction().commit();
+			tx.commit();
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
@@ -140,11 +149,11 @@ public class DatabaseHandler {
 
 			result = session.createQuery("SELECT hashtag FROM Hashtag").list();
 
-			session.getTransaction().commit();
+			tx.commit();
 		} catch(HibernateException e){
 			if(tx != null)
 				tx.rollback();
-			//e.printStackTrace();
+			e.printStackTrace();
 		} finally{
 			session.close();
 		}
@@ -152,21 +161,21 @@ public class DatabaseHandler {
 		return result;
 	}
 
-	public static void removePictureDataFromDB(){
+	public static void removePictureDataFromDB(String id){
 		Transaction tx = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
 
-			Query q = session.createSQLQuery("DELETE FROM PictureData");
+			Query q = session.createQuery("DELETE FROM PictureData WHERE id=\'" + id + "\'");
 			q.executeUpdate();
 
-			session.getTransaction().commit();
+			tx.commit();
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
-			//e.printStackTrace();
+			e.printStackTrace();
 		} finally{
 			session.close();
 		}
@@ -184,11 +193,11 @@ public class DatabaseHandler {
 			Query q = session.createQuery(s);
 			q.executeUpdate();
 
-			session.getTransaction().commit();
+			tx.commit();
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
-			//e.printStackTrace();
+			e.printStackTrace();
 		} finally{
 			session.close();
 		}
@@ -212,11 +221,11 @@ public class DatabaseHandler {
 			Query q = session.createSQLQuery(s);
 			q.executeUpdate();
 
-			session.getTransaction().commit();
+			tx.commit();
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
-			//e.printStackTrace();
+			e.printStackTrace();
 		} finally{
 			session.close();
 		}
@@ -235,11 +244,11 @@ public class DatabaseHandler {
 
 			q.executeUpdate();
 
-			session.getTransaction().commit();
+			tx.commit();
 		} catch(HibernateException e){
 			if (tx!=null) 
 				tx.rollback();
-			//e.printStackTrace();
+			e.printStackTrace();
 		} finally{
 			session.close();
 		}

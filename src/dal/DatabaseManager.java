@@ -17,7 +17,10 @@ public class DatabaseManager {
 	
 	public void savePictureDataToDb(List<PictureData> pictureData) {
 		
-		DatabaseHandler.removePictureDataFromDB();
+		List<PictureData> pics = DatabaseHandler.listOfPicturesFromDB();
+		for(PictureData p : pics){
+			DatabaseHandler.removePictureDataFromDB(p.getId());
+		}
 		
 		for (PictureData pd: pictureData){
 			System.out.println(pd.getId());
