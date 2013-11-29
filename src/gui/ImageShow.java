@@ -59,12 +59,12 @@ public class ImageShow extends JPanel {
 	// Resizes currImage, adds rendering hints, draws and dispose of Graphics
 	// object
 	//
-
+	@Override
 	public void paint(Graphics g) {
 		int w = 0, h = 0;
 		Graphics2D g2 = (Graphics2D) g;
 		if (currImg != null) {
-           
+
 			w = (SCREEN_W - currImg.getWidth()) / 2;
 			h = (SCREEN_H - currImg.getHeight()) / 2;
 

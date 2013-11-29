@@ -24,6 +24,7 @@ public class ShowInterface extends JFrame {
 	private ViewController viewCtrl;
 	private JButton settingsButton;
 	private LoginDialog ld = null;
+	private WindowAdapter windowAdapter = null;
 	private Dimension dim = null;
 	private ImageSlider slider;
 	JDesktopPane desktopPane;
@@ -41,35 +42,29 @@ public class ShowInterface extends JFrame {
 		this.viewCtrl = viewCtrl;
 		settingsFrame = null;
 		slider = new ImageSlider();
-		//setLayout(null);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setLayout(null);
+		setDefaultCloseOperation(ShowInterface.EXIT_ON_CLOSE);
 		setAlwaysOnTop(true);
+		setSize(800, 600);
 		setAutoRequestFocus(true);
-		//desktopPane= new JDesktopPane();
-		
+		requestFocusInWindow();
 		setContentPane(slider);
-		//getContentPane().add(settingsButton);
-		//getContentPane().add(slider);
-		setLocationByPlatform(true);
+
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+
+		addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+			}
+		});
+
 		setUndecorated(true);
 		pack();
 		setVisible(true);
 		setFullScreen();
-		WindowListener exitListener = new WindowAdapter() {
 
-			@Override
-			public void windowClosing(WindowEvent e) {
-
-				System.exit(1);
-
-			}
-		};
-		addWindowListener(exitListener);
-		
-		openSettingsFrame();
 	}
-
-	
 
 	private void setFullScreen() {
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
@@ -80,39 +75,27 @@ public class ShowInterface extends JFrame {
 			this.validate();
 		}
 	}
-	//opens SettingsFrame
 
 	public void openSettingsFrame() {
-		System.out.println("Tries to open settingsframe");
-		 SettingsFrame settingsFrame = new  SettingsFrame(viewCtrl);
+		SettingsFrame dialog = new SettingsFrame(viewCtrl, this);
 
-		  slider.add(settingsFrame);
-		  settingsFrame.setSize(800, 600);
-		  settingsFrame.setLocation(50, 50);
-		  settingsFrame.setVisible(true);
-		  setVisible(true);
-
-		  // To avoid events from being fired outside the SettingsFrame
-		  JPanel gp = new JPanel();
-		  gp.setSize(400, 300);
-		  gp.setOpaque(true);
-		  gp.setVisible(true);
-		  gp.setBackground(java.awt.Color.RED);
-		  settingsFrame.setGlassPane(gp);
-
-		  // Veto Listener to prevent selection of other components
-		
-
-		repaint();
+		boolean suc = dialog.validationExit();
+		if (suc)
+			unhideComponent(settingsButton);
+		System.out.println("Returns from settingsFrame" + suc);
 
 	}
-	// opens Dialog Box for login and waits for return value.
 
 	public void openLoginBox() {
 		hideComponent(settingsButton);
-		boolean loggedIn = new LoginDialog(parent).getSucceeded();
-		System.out.println("Login return equals" + loggedIn);
-		if (loggedIn)openSettingsFrame();
+		ld = new LoginDialog(parent);
+		boolean suc = ld.getSucceeded();
+
+		System.out.println("Login return equals" + suc);
+		if (suc) {
+			openSettingsFrame();
+		} else
+			unhideComponent(settingsButton);
 
 	}
 
@@ -126,7 +109,8 @@ public class ShowInterface extends JFrame {
 		c.setEnabled(true);
 	}
 
-	class ImageSlider extends JComponent implements Runnable, ActionListener {
+	class ImageSlider extends JPanel implements Runnable, ActionListener {
+		Constraints gbc = new Constraints();
 		/**
 		 * 
 		 */
@@ -137,41 +121,34 @@ public class ShowInterface extends JFrame {
 		private Action escapeAction;
 
 		public ImageSlider() throws IOException {
+
 			dim = Toolkit.getDefaultToolkit().getScreenSize();
 			show = new ImageShow(viewCtrl, (int) dim.getWidth(),
 					(int) dim.getHeight());
 			escapeAction = new EscapeAction();
-			
-			
-			System.out.println("Widht ImageSlider: "+dim.width+"Height ImageSlider: "+dim.height);
 			setPreferredSize(new Dimension(dim.width, dim.height));
 			getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),
 					"doEscapeAction");
-
 			getActionMap().put("doEscapeAction", escapeAction);
 			setDoubleBuffered(true);
-			setFocusable(true);
-			setBackground(new Color(223, 219, 218));
+			setLayout(new GridBagLayout());
 			init();
-			 
 			start();
 
 		}
 
 		private void init() {
 
-			settingsButton = new JButton();
+			settingsButton = new JButton("gfhdhhthdthydtyh");
 			settingsButton.addActionListener(this);
 			settingsButton.setIcon(new ImageIcon(getClass().getResource(
 					"/resource/img/settings.gif")));
 			settingsButton.setBorderPainted(false);
 			settingsButton.setContentAreaFilled(false);
-			settingsButton.addActionListener(this);
-			int w = 150, h = 150;
-			System.out.println(getSize().getHeight());
-			settingsButton.setBounds(0,dim.height-h, w, h);
-			
-
+			gbc.fill = GridBagConstraints.BOTH;
+			gbc.set(1, 10, 10, 10, 1, 1, new Insets(dim.height, 130, 80,
+					dim.height + 200), GridBagConstraints.NORTHWEST);
+			add(settingsButton, gbc);
 		}
 
 		public void start() {
@@ -181,15 +158,15 @@ public class ShowInterface extends JFrame {
 		}
 
 		@Override
-		public void paintComponents(Graphics g)
-	    {
-	      super.paintComponent(g);
-	        if (show != null) {
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			if (show != null) {
 				show.paint(g);
 
-			};
-	    }
-		
+			}
+			;
+
+		}
 
 		@Override
 		public void run() {
@@ -198,12 +175,13 @@ public class ShowInterface extends JFrame {
 			try {
 				while (stop != true) {
 
-					//System.out.println("before thread");
+					// System.out.println("before thread");
+
+					// System.out.println("after thread");
 					Thread.sleep(viewCtrl.getDisplayTime());
-					//System.out.println("after thread");
 					show.moveNext();
 					repaint();
-					//System.out.println("ShowINterface, kaller moveNext()");
+					System.out.println("ShowINterface, kaller moveNext()");
 
 				}
 			} catch (InterruptedException ie) {
@@ -212,7 +190,6 @@ public class ShowInterface extends JFrame {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
 
 		}
 
@@ -222,32 +199,41 @@ public class ShowInterface extends JFrame {
 		}
 
 		class EscapeAction extends AbstractAction {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			public void actionPerformed(ActionEvent tf) {
-				stopClick();
-				System.exit(1);
-
-				System.out.println("Escape");
-
+				System.out.println("Escape key pressed");
+				closeWindow();
 			}
 
 		}
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (e.getSource().equals(settingsButton)) {
+			if (e.getSource().equals(settingsButton)
+					&& (ld == null || !ld.isVisible())) {
+
 				slider.stopClick();
-				openSettingsFrame();
+				openLoginBox();
 				System.out.println("Check modal");
-				//openLoginBox();
+
 			}
 
+		}
 
 	}
+
+	public void closeWindow() {
+		if (ShowInterface.this != null) {
+			slider.stopClick();
+			show = null;
+			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+
+		}
+
 	}
-
-
-
-
-
 
 }

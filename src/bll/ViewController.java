@@ -141,8 +141,21 @@ public class ViewController {
 			return settingsPictures;
 		}
 
-	public void removePictures(List<String> pictureIds) {
-		// TODO Flag pictures in db and from current pictures
+	public void removePictures(List<List<SettingsPicture>> list2d) {
+		Set<String> flaggedList = new HashSet<String>();
+		String id=null;
+		for(List<SettingsPicture> list:list2d){
+			
+			for(SettingsPicture pic :list){
+				if(pic.getIsFlagged()){
+				id=pic.getId();
+				flaggedList.add(id);
+				System.out.println("Got a flagged SettingsPicture object, sending ID: "+id+"to dbMan");
+				}
+				
+			}
+			
+		}
 	}
 
 	public Set<String> getHashtags() {

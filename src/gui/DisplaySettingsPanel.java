@@ -1,4 +1,5 @@
 package gui;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -25,8 +26,8 @@ public class DisplaySettingsPanel extends JPanel implements ActionListener {
 	private JComboBox<String> viewmodeCombo;
 	private JLabel viewdelayLabel, viewmodeLabel;
 	private static final long serialVersionUID = 1L;
-	private static int  SPINNER_DEFAULT=3;
-	private final int SPINNER_MINIMUM=1, SPINNER_MAXIMUM=10;
+	private static int SPINNER_DEFAULT = 3;
+	private final int SPINNER_MINIMUM = 1, SPINNER_MAXIMUM = 10;
 	private Constraints[] gbcs = new Constraints[] { new Constraints(),
 			new Constraints(), new Constraints(), new Constraints() };
 
@@ -43,7 +44,8 @@ public class DisplaySettingsPanel extends JPanel implements ActionListener {
 		// delaySpinner properties
 		delaySpinner = new JSpinner();
 		delaySpinner.setEditor(new JSpinner.DefaultEditor(delaySpinner));
-		delaySpinner.setModel(new SpinnerNumberModel(SPINNER_DEFAULT, SPINNER_MINIMUM, SPINNER_MAXIMUM, 1));
+		delaySpinner.setModel(new SpinnerNumberModel(SPINNER_DEFAULT,
+				SPINNER_MINIMUM, SPINNER_MAXIMUM, 1));
 		delaySpinner.setOpaque(false);
 		delaySpinner.setBorder(null);
 
@@ -86,24 +88,27 @@ public class DisplaySettingsPanel extends JPanel implements ActionListener {
 		add(viewmodeLabel, gbcs[3]);
 
 	}
-	public boolean getViewMode(){
-		Object obj= viewmodeCombo.getSelectedItem();
-		boolean b=false;
-		if(obj instanceof String){
-			if(obj.equals("randomly")){
-				b=true;		
+
+	public boolean getViewMode() {
+		Object obj = viewmodeCombo.getSelectedItem();
+		boolean b = false;
+		if (obj instanceof String) {
+			if (obj.equals("randomly")) {
+				b = true;
 			}
 		}
 		return b;
-		
+
 	}
-	public int getViewDelay(){
-		int i= (Integer) delaySpinner.getValue();
-		return  i;
-		
+
+	public int getViewDelay() {
+		int i = (Integer) delaySpinner.getValue();
+		return i;
+
 	}
-	public void setViewDelay(int delay){
-		if(delay>= SPINNER_MINIMUM && delay<= SPINNER_MINIMUM){
+
+	public void setViewDelay(int delay) {
+		if (delay >= SPINNER_MINIMUM && delay <= SPINNER_MINIMUM) {
 			delaySpinner.setValue(new Integer(delay));
 		}
 	}

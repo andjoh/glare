@@ -29,9 +29,10 @@ public class DatabaseManager {
 		}
 	}
 
-	public void setRemoveFlag(List<String> pictureDataId) {
+	public void setRemoveFlag(Set<String> pictureDataId) {
 		for (String s: pictureDataId){
 			DatabaseHandler.setRemoveFlag(s);
+			System.out.println("setRemoveflag, ID: "+s);
 		}
 	}
 
