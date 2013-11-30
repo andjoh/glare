@@ -79,7 +79,7 @@ public class SettingsContentPanel extends JPanel  {
 	public void saveBeforeExit(){
 		updateDisplaySettings();
 		updateHashtags();
-		updateTableSettings();
+		//updateTableSettings();
 	}
 	public void updateTableSettings() {
 		ImageTableModel imtabmod = tablepanel.getImageTableModel();

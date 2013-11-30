@@ -42,7 +42,7 @@ public class ShowInterface extends JFrame {
 		this.viewCtrl = viewCtrl;
 		settingsFrame = null;
 		slider = new ImageSlider();
-		setDefaultCloseOperation(ShowInterface.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		//setAlwaysOnTop(true);
 		setSize(800, 600);
 		setAutoRequestFocus(true);
@@ -89,8 +89,10 @@ public class ShowInterface extends JFrame {
 		SettingsFrame dialog = new SettingsFrame(viewCtrl);
 
 		boolean suc = dialog.validationExit();
-		if (suc)
+		if (suc){
 			unhideComponent(settingsButton);
+			slider.start();
+		}
 		System.out.println("Returns from settingsFrame" + suc);
 
 	}
@@ -169,24 +171,14 @@ public class ShowInterface extends JFrame {
 		}
 		
 
-		@Override
-		public void paint(Graphics g) {
-			
-			if (show != null) {
-				show.paint(g);
-
-			}//settingsButton.repaint();
-			settingsButton.update(g);
-			;
-
-		}
+	
 		@Override
 		public void paintComponent(Graphics g) {
 			
 			if (show != null) {
 				show.paint(g);
 
-			}settingsButton.repaint();
+			}super.paintChildren(g);
 			;
 
 		}
@@ -195,7 +187,7 @@ public class ShowInterface extends JFrame {
 		@Override
 		public void run() {
 			System.out.println("run()");
-
+            stop=false;
 			try {
 				while (stop != true) {
 
@@ -203,7 +195,7 @@ public class ShowInterface extends JFrame {
 
 					// System.out.println("after thread");
 					Thread.sleep(viewCtrl.getDisplayTime());
-					show.moveNext();
+					show.moveNext();	
 					repaint();
 					System.out.println("ShowINterface, kaller moveNext()");
 
