@@ -4,8 +4,10 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 
 import dal.*;
@@ -79,10 +81,11 @@ public class ViewController {
 		URL imageUrl;
 		BufferedImage image = null;
 		try {
-			imageUrl = new URL(url);
-			InputStream in = imageUrl.openStream();
-			image = ImageIO.read(in);
-			in.close();
+		     imageUrl = new URL(url);
+		     HttpURLConnection urlConn =( HttpURLConnection) imageUrl.openConnection();
+		    InputStream is = urlConn.getInputStream();
+			image = ImageIO.read(is);
+			is.close();
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

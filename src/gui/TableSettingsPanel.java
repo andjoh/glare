@@ -23,7 +23,7 @@ import bll.ViewController;
 
 import resources.ViewControllerDummy;
 
-public class TableSettingsPanel extends JPanel implements ActionListener {
+public class TableSettingsPanel extends JPanel  {
 	/**
 	 * 
 	 */
@@ -55,7 +55,21 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	
 		tablemodel = new ImageTableModel(viewCtrl.getSettingsPictures(ROWS, COLS) );
 		thumbnailTable = new ImageTable(tablemodel,dim);
-		imagetablelistener= new ImageTableListener(thumbnailTable,null);
+		
+		action= new AbstractAction("Remove") {
+            private static final long serialVersionUID = 1L;
+  
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	 ImageTableListener tcl = (ImageTableListener)e.getSource();
+                 System.out.println("Row   : " + tcl.getRow());
+                 System.out.println("Column: " + tcl.getColumn());
+                 System.out.println("Old   : " + tcl.getOldValue());
+                 System.out.println("New   : " + tcl.getNewValue());
+            
+            }
+        };
+		imagetablelistener= new ImageTableListener(thumbnailTable,action);
 		// tableScroller properties
 		tableScroller = new JScrollPane();
 		tableScroller.setOpaque(false);
@@ -66,15 +80,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 		tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		// removeButton Properties
 		System.out.println("Screensize : "+Toolkit.getDefaultToolkit().getScreenSize());
-		action= new AbstractAction("Remove") {
-            private static final long serialVersionUID = 1L;
-  
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               System.out.println("fnhhhhhhhhhhh");
-            
-            }
-        };
+		
 		
 		removeButton =new JButton(action);
 		//removeButton.addActionListener(this);
@@ -113,13 +119,6 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	
 	
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(removeButton)) {
-
-		}
-
-	}
 
 	public ImageTableModel getImageTableModel() {
 		return tablemodel;
