@@ -90,14 +90,17 @@ public class ShowInterface extends JFrame {
 	}
 
 	public void openLoginBox() {
+		slider.stopClick();
 		hideComponent(settingsButton);
 		ld = new LoginDialog(parent);
 		boolean suc = ld.getSucceeded();
-		if (suc) {
-			openSettingsFrame();
-		} else
-			unhideComponent(settingsButton);
-		slider.start();
+		if(suc)openSettingsFrame();
+		else {
+			slider.start();
+			
+		}
+		
+			
 
 	}
 
@@ -117,9 +120,9 @@ public class ShowInterface extends JFrame {
 		 * 
 		 */
 		private static final long serialVersionUID = 1;
-		boolean stop = false;
+		private volatile boolean  stop = false;
 		private Dimension dim;
-		private Thread th;
+		private volatile Thread th;
 
 		private Action escapeAction;
 
@@ -168,14 +171,24 @@ public class ShowInterface extends JFrame {
 				show.paint(g);
 
 			}
-			super.paintComponent(g);
+		//uper.paintComponent(g);
+		}
+		public void stopClick() {
+			stop = true;
+			try {
+				th.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		}
 
 		@Override
 		public void run() {
 			System.out.println("run()");
 			stop = false;
-			int d = viewCtrl.getDisplayTime();
+			int d = viewCtrl.getDisplayTime()*1000;
 			System.out.println("Display time: " + d);
 			try {
 				while (stop != true) {
@@ -184,13 +197,17 @@ public class ShowInterface extends JFrame {
 
 					// System.out.println("after thread");
 
-					Thread.sleep(d);
-					show.moveNext();
-					repaint();
-
-					System.out.println("ShowINterface, kaller moveNext()");
+				
+					  int i=0;
+					  System.out.println("IS called :"+i+"times");
+					  show.moveNext();
+					 repaint();
+	                  Thread.sleep(d);
+					//System.out.println("ShowINterface, kaller moveNext()");
 
 				}
+				//th.join();
+				
 			} catch (InterruptedException ie) {
 				System.out.println("Interrupted slide show...");
 			} catch (IOException e) {
@@ -200,10 +217,7 @@ public class ShowInterface extends JFrame {
 
 		}
 
-		public void stopClick() {
-			stop = true;
-
-		}
+	
 
 		class EscapeAction extends AbstractAction {
 			/**
@@ -212,7 +226,7 @@ public class ShowInterface extends JFrame {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent tf) {
-				System.out.println("Escape key pressed");
+			
 				closeWindow();
 			}
 
@@ -222,10 +236,8 @@ public class ShowInterface extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource().equals(settingsButton)
 					&& (ld == null || !ld.isVisible())) {
-
-				slider.stopClick();
 				openLoginBox();
-				System.out.println("Check modal");
+
 
 			}
 
