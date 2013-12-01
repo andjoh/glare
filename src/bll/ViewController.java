@@ -34,8 +34,8 @@ public class ViewController {
 		sortedPictureList = new ArrayList<PictureData>();
 
 		// Default settings
-		isRandom = false;
-		displayTime = 1000;
+		isRandom    = true;
+		displayTime = 5000;
 	}
 
 	public BufferedImage getCurrentPicture() throws IOException {
@@ -71,7 +71,7 @@ public class ViewController {
 
 
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);
-		randomPictureList = new ArrayList<PictureData>(sortedPictureList);
+		randomPictureList = new ArrayList<PictureData>(pictureDataList);
 		Collections.shuffle(randomPictureList);
 	}
 
@@ -193,6 +193,7 @@ public class ViewController {
 		// Update db regarding hashtags deleted
 		// Delete pictures that are connected to these, and only these, hashtags
 		if (!hashtagDeleted.isEmpty()) {
+			removeCurrentPicturesWithoutHashtags(hashtagDeleted);
 			dbMan.removeHashtags(hashtagDeleted);
 			dbMan.removePicturesWithoutHashtagFromDB();
 		}
@@ -204,6 +205,32 @@ public class ViewController {
 
 		// Set the new list as current list
 		hashtags = hashtagList;
+	}
+	
+	private void removeCurrentPicturesWithoutHashtags(Set<String> hashtagsDeleted) {
+		// Loop through current pictureData and delete hashtags
+		Set<Hashtag> hashtagObj;
+		String hashtag;
+		for ( PictureData pd : pictureDataList) {
+			hashtagObj = pd.getHashtags();
+			for ( String htDel : hashtagsDeleted) {
+				for ( Hashtag htObj : hashtagObj ) {
+					if ( htObj.getHashtag().equalsIgnoreCase(htDel) ) {
+						
+					}
+					
+				}
+			}
+			
+
+		}
+		
+		for ( String ht : hashtags) {
+			// Find pictureData that have this specific hashtag and delete hashtag
+			for ( PictureData pd : pictureDataList) {
+				
+			}
+		}
 	}
 
 	public boolean isRandom() {
