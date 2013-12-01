@@ -44,7 +44,7 @@ public class ImageTable extends JTable implements TableModelListener {
 		setBorder(null);
 		setDragEnabled(false);
 		setShowGrid(false);
-		// ColumnsAutoResizer s; - to be implemented
+		// ColumnsAutoResizer s; - to be implemente nbd
 	}
 
 	public void addRows(int rows) {

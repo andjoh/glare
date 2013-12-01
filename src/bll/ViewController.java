@@ -119,13 +119,13 @@ public class ViewController {
 					url=pic.getUrlThumb();
 					id=pic.getId();
 					tmp.add(new SettingsPicture(id,this.getBufImage(url)));
-					System.out.println("index s is: " + s);
+			
 					s++;
 				}
 				settingsPictures.add(tmp);				
 			}
 			
-		if(settingsPictures==null)System.out.println("settingsPictures is null");
+	
 		return settingsPictures;
 	}
 

@@ -1,8 +1,6 @@
 package gui;
 
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Set;
 
@@ -14,6 +12,10 @@ import bll.SettingsPicture;
 import bll.ViewController;
 
 public class SettingsContentPanel extends JPanel  {
+	/**
+	 * @author Andreas J
+	 */
+	private static final long serialVersionUID = 1L;
 	private Dimension dim;
 	private HashtagSettingsPanel hashpan;
 	private ViewController viewCtrl;
@@ -23,9 +25,8 @@ public class SettingsContentPanel extends JPanel  {
 	public SettingsContentPanel(ViewController viewCtrl,Dimension dim) {
 		this.viewCtrl=viewCtrl;
 		this.dim=new Dimension(dim.width * 2 / 3,
-				dim.height * 2 / 3);
-		//setPreferredSize(dim);
-		setPreferredSize(new Dimension(800,600));
+				dim.height * 7/ 10);
+		setPreferredSize(this.dim);
 		setDoubleBuffered(true);
 		initComponents();
 		if (viewCtrl != null)this.hashpan.setHashtagList(viewCtrl.getHashtags());
@@ -42,16 +43,23 @@ public class SettingsContentPanel extends JPanel  {
 	}
 
 	private void initComponents() {
-		// TableSettingsPanel declaration
-		tablepanel = new TableSettingsPanel(viewCtrl,dim);
-		tablepanel.setBounds(300, 10, 510, 510);
+		
 		// HashSettingsPanel declaration
-		hashpan = new HashtagSettingsPanel(viewCtrl,dim);
-		hashpan.setBounds(50, -12, 180, 320);
+		hashpan = new HashtagSettingsPanel();
+		hashpan.setBounds( dim.width*1/16, 0, dim.width*25/100,  dim.height*3/4);
 		// DisplaySettingsPanel
 		dispset = new DisplaySettingsPanel(viewCtrl,dim);
-		dispset.setBounds(60, 360, 185, 70);
+		dispset.setBounds(dim.width*1/16, dim.height*4/5, dim.width*25/100, dim.height*1/10);
+		// TableSettingsPanel declaration
+		tablepanel = new TableSettingsPanel(viewCtrl,dim);
+		tablepanel.setBounds(dim.width*35/100, 10,dim.width*2/3, dim.height*4/3);
+		
+		
 		// Background Image declaration
+		
+		
+		
+		
 		backgroundImageLabel = new JLabel();
 
 		backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
@@ -59,7 +67,7 @@ public class SettingsContentPanel extends JPanel  {
 		backgroundImageLabel.setIconTextGap(0);
 		//backgroundImageLabel.setPreferredSize(dim);
 		///backgroundImageLabel.setBounds(0, 0,dim.width,dim.height);
-		backgroundImageLabel.setBounds(0, 0,800,600);
+		backgroundImageLabel.setBounds(0, 0,dim.width,dim.height);
 		
 	}
 	public void updateDisplaySettings() {
@@ -94,15 +102,8 @@ public class SettingsContentPanel extends JPanel  {
 
 		List<List<SettingsPicture>> datatosend = imtabmod.getTableModelData();
          viewCtrl.removePictures(datatosend);
-		// TODO: iterate through the data
-		// can be done with enchanced for loop, like this:
-		/*
-		 * for(List<SettingsPicture> row: datatosend){
-		 * 
-		 * for(SettingsPicture pic: row){
-		 * 
-		 * //TODO: send id of pic to DAL } }
-		 */
+         //TODO: send id of pic to DAL } }
+		 
 
 	}
 

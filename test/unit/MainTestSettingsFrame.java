@@ -62,8 +62,6 @@ public class MainTestSettingsFrame  {
 		// Run test
 		picCtrl.getNewPictureData();
 		ViewController vc = new ViewController(dbManDum);
-		if( vc==null)
-		System.out.println("Vctrl is null");
 		 vc.getSortedList();
 		 settingsFrame = new SettingsFrame(vc);
 		boolean b = settingsFrame.validationExit();

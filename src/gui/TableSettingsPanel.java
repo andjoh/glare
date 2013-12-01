@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -59,6 +60,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 		tableScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		// removeButton Properties
+		System.out.println("Screensize : "+Toolkit.getDefaultToolkit().getScreenSize());
 		removeButton = new JButton("Remove");
 		removeButton.addActionListener(this);
 		;
@@ -66,12 +68,16 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 
 	private void setConstraints() {
 
-		gbc[0].set(0, 0, 2, 1, 429, 375, 1.0, 1.0, new Insets(19, 11, 0, 47),
+		gbc[0].set(0, 0, 1, 1, dim.width,dim.height*3/4, 1.0, 1.0, new Insets(11, 10, 0, 18),
 				GridBagConstraints.NORTHWEST);
 
 		add(tableScroller, gbc[0]);
-		gbc[1].set(0, 1, 1, 1, new Insets(9, 390, 57, 0),
-				GridBagConstraints.NORTHWEST);
+		
+		//gbc[0].set(0, 1, 1, 1, new Insets(9, 200, 57, 0),
+			//	GridBagConstraints.NORTHWEST);
+
+		gbc[1].set(0, 1, 1, 1, 0,0, 1.0, 1.0, new Insets(6,dim.width/2, 150, 18),
+			GridBagConstraints.NORTHWEST);
 		add(removeButton, gbc[1]);
 	}
 

@@ -1,17 +1,8 @@
 package gui;
 
-import glare.ClassFactory;
-
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
 import java.io.IOException;
-import java.net.URL;
-
-import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import bll.*;
@@ -19,42 +10,57 @@ import bll.*;
 public class ShowInterface extends JFrame {
 	/**
 	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 
 	 * @author Andreas J
 	 */
 	private ViewController viewCtrl;
 	private JButton settingsButton;
 	private LoginDialog ld = null;
-	private WindowAdapter windowAdapter = null;
 	private Dimension dim = null;
 	private ImageSlider slider;
-	JDesktopPane desktopPane;
 	private SettingsFrame settingsFrame;
 	private JFrame parent = null;
 	private ImageShow show;
-	// private Constraints gbc = null;
-	private GraphicsDevice device;
-
-	// private final ImageShow show;
 
 	public ShowInterface(ViewController viewCtrl) throws IOException {
-
+		this.dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.parent = this;
 		this.viewCtrl = viewCtrl;
 		settingsFrame = null;
-		slider = new ImageSlider();
+		slider = new ImageSlider(this.dim);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		//setAlwaysOnTop(true);
-		setSize(800, 600);
 		setAutoRequestFocus(true);
 		requestFocusInWindow();
-		//setContentPane(slider);
 		getContentPane().add(slider);
-		
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter() {
+			@Override
 			public void windowClosing(WindowEvent e) {
 				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+			}
+
+			@Override
+			public void windowIconified(WindowEvent e) {
+				System.out.println("Window  iconified");
+
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+
+				System.out.println("Window  deiconified");
+			}
+
+		});
+		addWindowFocusListener(new WindowAdapter() {
+
+			@Override
+			public void windowLostFocus(WindowEvent e) {
+				System.out.println("Window lost focus");
 
 			}
 		});
@@ -63,37 +69,23 @@ public class ShowInterface extends JFrame {
 		pack();
 		setVisible(true);
 		setFullScreen();
-
-	}
-	@Override
-	public void paintComponents(Graphics g) {
-		
-	
-
-	super.paintComponents(g);
-		
+		setResizable(false);
 
 	}
 
 	private void setFullScreen() {
-		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
-				.getLocalGraphicsEnvironment();
-		device = graphicsEnvironment.getDefaultScreenDevice();
-		if (device.isFullScreenSupported()) {
-			device.setFullScreenWindow(this);
-			this.validate();
-		}
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 
 	public void openSettingsFrame() {
-		SettingsFrame dialog = new SettingsFrame(viewCtrl);
+		settingsFrame = new SettingsFrame(viewCtrl);
 
-		boolean suc = dialog.validationExit();
-		if (suc){
+		boolean suc = settingsFrame.validationExit();
+		if (suc) {
 			unhideComponent(settingsButton);
 			slider.start();
 		}
-		System.out.println("Returns from settingsFrame" + suc);
+		
 
 	}
 
@@ -101,12 +93,11 @@ public class ShowInterface extends JFrame {
 		hideComponent(settingsButton);
 		ld = new LoginDialog(parent);
 		boolean suc = ld.getSucceeded();
-
-		System.out.println("Login return equals" + suc);
 		if (suc) {
 			openSettingsFrame();
 		} else
 			unhideComponent(settingsButton);
+		slider.start();
 
 	}
 
@@ -127,13 +118,14 @@ public class ShowInterface extends JFrame {
 		 */
 		private static final long serialVersionUID = 1;
 		boolean stop = false;
+		private Dimension dim;
 		private Thread th;
 
 		private Action escapeAction;
 
-		public ImageSlider() throws IOException {
+		public ImageSlider(Dimension dim) throws IOException {
 
-			dim = Toolkit.getDefaultToolkit().getScreenSize();
+			this.dim = dim;
 			show = new ImageShow(viewCtrl, (int) dim.getWidth(),
 					(int) dim.getHeight());
 			escapeAction = new EscapeAction();
@@ -141,27 +133,26 @@ public class ShowInterface extends JFrame {
 			getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),
 					"doEscapeAction");
 			getActionMap().put("doEscapeAction", escapeAction);
+			setBackground(Color.black);
 			setDoubleBuffered(true);
-			//setLayout(new GridBagLayout());
-			setLayout(null);
+			setLayout(new GridBagLayout());
 			init();
 			start();
 
 		}
 
 		private void init() {
-
+			Constraints gbc = new Constraints();
 			settingsButton = new JButton("gfhdhhthdthydtyh");
 			settingsButton.addActionListener(this);
-			settingsButton.setIcon(new ImageIcon(getClass().getResource(
-					"/resource/img/settings.gif")));
-			settingsButton.setBorderPainted(false);
-			settingsButton.setContentAreaFilled(false);
+			// settingsButton.setIcon(new ImageIcon(getClass().getResource(
+			// "/resource/img/settings.gif")));
+			// settingsButton.setBorderPainted(false);
+			// settingsButton.setContentAreaFilled(false);
 			gbc.fill = GridBagConstraints.BOTH;
 			gbc.set(1, 10, 10, 10, 1, 1, new Insets(dim.height, 130, 80,
 					dim.height + 200), GridBagConstraints.NORTHWEST);
-			settingsButton.setBounds(500,500,200,100);
-			add(settingsButton);
+			add(settingsButton, gbc);
 		}
 
 		public void start() {
@@ -169,34 +160,34 @@ public class ShowInterface extends JFrame {
 			th.start();
 
 		}
-		
 
-	
 		@Override
-		public void paintComponent(Graphics g) {
-			
+		public void paint(Graphics g) {
+			super.paint(g);
 			if (show != null) {
 				show.paint(g);
 
-			}super.paintChildren(g);
-			;
-
+			}
+			super.paintComponent(g);
 		}
-
 
 		@Override
 		public void run() {
 			System.out.println("run()");
-            stop=false;
+			stop = false;
+			int d = viewCtrl.getDisplayTime();
+			System.out.println("Display time: " + d);
 			try {
 				while (stop != true) {
 
 					// System.out.println("before thread");
 
 					// System.out.println("after thread");
-					Thread.sleep(viewCtrl.getDisplayTime());
-					show.moveNext();	
+
+					Thread.sleep(d);
+					show.moveNext();
 					repaint();
+
 					System.out.println("ShowINterface, kaller moveNext()");
 
 				}

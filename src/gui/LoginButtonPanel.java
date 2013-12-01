@@ -1,20 +1,18 @@
 package gui;
 
-import java.awt.Color;
+
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-
-import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 ;
 
-class ButtonPanel extends JPanel {
+class ButtonPanel extends JPanel implements ActionListener{
 	private boolean succeeded = false;
 	private Dimension dim;
 	private LoginInputPanel input;
@@ -25,70 +23,67 @@ class ButtonPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private JButton okButton, cancelButton;
 
-	public ButtonPanel(final LoginDialog ld, LoginInputPanel input) {
-		super();
+	public ButtonPanel(final LoginDialog ld, LoginInputPanel input,Dimension dim) {
 		this.ld = ld;
-		this.input = input;
-		setBackground(Color.green);
-		setPreferredSize(dim);
+		this.input = input;	
+		this.dim =dim;
+		this.setBounds(0,this.dim.height*2/3,dim.width,dim.height*1/3);
+	    
+		setOpaque(false);
 		setFocusable(true);
 		init();
 
 	}
 
 	private void init() {
-
-		this.add(new JButton(new AbstractAction("Login") {
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (tryToLogin()) {
-					ld.setVisible(false);
-					ld.dispatchEvent(new WindowEvent(ld,
-							WindowEvent.WINDOW_CLOSING));
-				}
-			}
-		}));
-
-		this.add(new JButton(new AbstractAction("Cancel") {
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				ld.setVisible(false);
-				ld.dispatchEvent(new WindowEvent(ld, WindowEvent.WINDOW_CLOSING));
-			}
-		}));
+		okButton= new JButton("Login");
+		cancelButton= new JButton("Cancel");
+        okButton.addActionListener(this);
+        cancelButton.addActionListener(this);
+		add(okButton);
+		add(cancelButton);
 
 	}
+	
 
 	private boolean tryToLogin() {
 		if (LoginData.authenticate(input.getUsername(), input.getPassword())) {
 			succeeded = true;
 
-		} else {
-			JOptionPane.showMessageDialog(ld, "Wrong credentials", "Login",
-					JOptionPane.ERROR_MESSAGE);
-			input.resetFields();
-			succeeded = false;
-
 		}
 		return succeeded;
 
 	}
-
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
+	}
 	public boolean getSucceeded() {
 		return succeeded;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+            if(e.getSource().equals(okButton)){
+            	
+            	if (tryToLogin()) {
+					ld.setVisible(false);
+					ld.dispatchEvent(new WindowEvent(ld,
+							WindowEvent.WINDOW_CLOSING));
+				} else {
+					JOptionPane.showMessageDialog(ld, "Wrong credentials", "Login",
+							JOptionPane.ERROR_MESSAGE);
+					input.resetFields();
+					succeeded = false;
+
+				}
+            }
+            else if(e.getSource().equals(cancelButton)){
+            	
+            	ld.setVisible(false);
+				ld.dispatchEvent(new WindowEvent(ld, WindowEvent.WINDOW_CLOSING));
+            }
+		
 	}
 
 }

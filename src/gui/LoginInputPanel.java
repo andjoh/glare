@@ -2,6 +2,8 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,17 +27,26 @@ public class LoginInputPanel extends JPanel {
          this.dim=dim;
 		gbc = new Constraints();
 		setLayout(new GridBagLayout());
-		setBorder(new LineBorder(Color.GRAY));
-
+		setOpaque(false);
 		init();
-		setPreferredSize(dim);
+		setBounds(0,0,this.dim.width,dim.height);
 		setConstraints();
 		
+	}
+	@Override
+	public void paintComponent(Graphics g){
+		super.paintComponent(g);
 	}
 
 	private void init() {
 		usernameLabel = new JLabel("Username: ");
+		usernameLabel.setFont(new Font("Tahoma", 0, 14));
+		usernameLabel.setForeground(new Color(255, 255, 255));
+		//
 		passwordLabel = new JLabel("Password: ");
+		passwordLabel.setFont(new Font("Tahoma", 0, 14));
+		passwordLabel.setForeground(new Color(255, 255, 255));
+		//
 		usernameInputField = new JTextField(20);
 		passwordInputField = new JPasswordField(20);
 
