@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,7 +32,9 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	private final static int COLS = 5, ROWS = 20;
 	private ImageTableModel tablemodel;
 	private JButton removeButton;
+	private Action action;
 	private Dimension dim;
+	private ImageTableListener imagetablelistener;
 	private ViewController viewCtrl;
 	private JScrollPane tableScroller;
 	private ImageTable thumbnailTable;
@@ -52,6 +55,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	
 		tablemodel = new ImageTableModel(viewCtrl.getSettingsPictures(ROWS, COLS) );
 		thumbnailTable = new ImageTable(tablemodel,dim);
+		imagetablelistener= new ImageTableListener(thumbnailTable,null);
 		// tableScroller properties
 		tableScroller = new JScrollPane();
 		tableScroller.setOpaque(false);
@@ -62,11 +66,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 		tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		// removeButton Properties
 		System.out.println("Screensize : "+Toolkit.getDefaultToolkit().getScreenSize());
-		removeButton =new JButton(new AbstractAction("Remove") {
-      	  
-            /**
-             * 
-             */
+		action= new AbstractAction("Remove") {
             private static final long serialVersionUID = 1L;
   
             @Override
@@ -74,7 +74,9 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
                System.out.println("fnhhhhhhhhhhh");
             
             }
-        });
+        };
+		
+		removeButton =new JButton(action);
 		//removeButton.addActionListener(this);
 		;
 	}
