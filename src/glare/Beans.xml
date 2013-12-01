@@ -22,12 +22,7 @@
 	</bean>
 
 	<bean id="viewController" class="bll.ViewController">
-		<constructor-arg ref="pictureController" />
 		<constructor-arg ref="databaseManager" />		
-	</bean>
-
-	<bean id="displayController" class="bll.DisplayController">
-		<constructor-arg ref="pictureController" />
 	</bean>
 
 	<bean id="constraints" class="gui.Constraints">

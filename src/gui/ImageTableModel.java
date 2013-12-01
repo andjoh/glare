@@ -18,8 +18,8 @@ public class ImageTableModel extends AbstractTableModel {
 
 	private List<String> columnNames;
 
-	ImageTableModel(List<List<SettingsPicture>> data) {
-		this.data = new ArrayList<List<SettingsPicture>>(data);
+	ImageTableModel(List<List<SettingsPicture>> data1) {
+		this.data = new ArrayList<List<SettingsPicture>>(data1);
 		System.out.println("Size" + data.size());
 		columnNames = new ArrayList<String>();
 		addColumns();

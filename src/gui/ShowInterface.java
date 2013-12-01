@@ -42,14 +42,14 @@ public class ShowInterface extends JFrame {
 		this.viewCtrl = viewCtrl;
 		settingsFrame = null;
 		slider = new ImageSlider();
-		setLayout(null);
-		setDefaultCloseOperation(ShowInterface.EXIT_ON_CLOSE);
-		setAlwaysOnTop(true);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		//setAlwaysOnTop(true);
 		setSize(800, 600);
 		setAutoRequestFocus(true);
 		requestFocusInWindow();
-		setContentPane(slider);
-
+		//setContentPane(slider);
+		getContentPane().add(slider);
+		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		addWindowListener(new WindowAdapter() {
@@ -65,6 +65,15 @@ public class ShowInterface extends JFrame {
 		setFullScreen();
 
 	}
+	@Override
+	public void paintComponents(Graphics g) {
+		
+	
+
+	super.paintComponents(g);
+		
+
+	}
 
 	private void setFullScreen() {
 		GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
@@ -77,11 +86,13 @@ public class ShowInterface extends JFrame {
 	}
 
 	public void openSettingsFrame() {
-		SettingsFrame dialog = new SettingsFrame(viewCtrl, this);
+		SettingsFrame dialog = new SettingsFrame(viewCtrl);
 
 		boolean suc = dialog.validationExit();
-		if (suc)
+		if (suc){
 			unhideComponent(settingsButton);
+			slider.start();
+		}
 		System.out.println("Returns from settingsFrame" + suc);
 
 	}
@@ -131,7 +142,8 @@ public class ShowInterface extends JFrame {
 					"doEscapeAction");
 			getActionMap().put("doEscapeAction", escapeAction);
 			setDoubleBuffered(true);
-			setLayout(new GridBagLayout());
+			//setLayout(new GridBagLayout());
+			setLayout(null);
 			init();
 			start();
 
@@ -148,7 +160,8 @@ public class ShowInterface extends JFrame {
 			gbc.fill = GridBagConstraints.BOTH;
 			gbc.set(1, 10, 10, 10, 1, 1, new Insets(dim.height, 130, 80,
 					dim.height + 200), GridBagConstraints.NORTHWEST);
-			add(settingsButton, gbc);
+			settingsButton.setBounds(500,500,200,100);
+			add(settingsButton);
 		}
 
 		public void start() {
@@ -156,22 +169,25 @@ public class ShowInterface extends JFrame {
 			th.start();
 
 		}
+		
 
+	
 		@Override
 		public void paintComponent(Graphics g) {
-			super.paintComponent(g);
+			
 			if (show != null) {
-				//show.paint(g);
+				show.paint(g);
 
-			}
+			}super.paintChildren(g);
 			;
 
 		}
 
+
 		@Override
 		public void run() {
 			System.out.println("run()");
-
+            stop=false;
 			try {
 				while (stop != true) {
 
@@ -179,7 +195,7 @@ public class ShowInterface extends JFrame {
 
 					// System.out.println("after thread");
 					Thread.sleep(viewCtrl.getDisplayTime());
-					show.moveNext();
+					show.moveNext();	
 					repaint();
 					System.out.println("ShowINterface, kaller moveNext()");
 

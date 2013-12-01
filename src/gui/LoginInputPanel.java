@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -11,7 +12,7 @@ import javax.swing.border.LineBorder;
 public class LoginInputPanel extends JPanel {
 
 	private JTextField usernameInputField;
-	// private Dimension dim;
+	 private Dimension dim;
 	private JLabel usernameLabel, passwordLabel;
 	private JPasswordField passwordInputField;
 	private Constraints gbc;
@@ -20,15 +21,16 @@ public class LoginInputPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public LoginInputPanel(int i) {
-
+	public LoginInputPanel(Dimension dim) {
+         this.dim=dim;
 		gbc = new Constraints();
 		setLayout(new GridBagLayout());
 		setBorder(new LineBorder(Color.GRAY));
 
-		// setPreferredSize(dim);
 		init();
+		setPreferredSize(dim);
 		setConstraints();
+		
 	}
 
 	private void init() {

@@ -1,8 +1,6 @@
 package bll;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +20,6 @@ public class ViewController {
 	/**
 	 * Manage list with pictures
 	 */
-	private PictureController picCtrl;
 	private DatabaseManager dbMan;
 
 	private List<PictureData> sortedPictureList;
@@ -32,8 +29,7 @@ public class ViewController {
 	private boolean isRandom;
 	private int displayTime;
 
-	public ViewController(PictureController picCtrl, DatabaseManager dbMan) {
-		this.picCtrl = picCtrl;
+	public ViewController(DatabaseManager dbMan) {
 		this.dbMan = dbMan;
 		sortedPictureList = new ArrayList<PictureData>();
 
@@ -50,7 +46,7 @@ public class ViewController {
 		}
 
 		System.out.println("PictureData left in sorted list: " + sortedPictureList.size());
-		
+
 		PictureData p;
 
 		if (isRandom) {
@@ -65,15 +61,15 @@ public class ViewController {
 	}
 
 	public void getSortedList() {
-		pictureDataList = picCtrl.getSortedPictureData();
+		pictureDataList = dbMan.getSortedPictureData();
 
 		System.out.println("");
 		System.out.println("ViewController: getSortedList from PictureController");
 		for ( PictureData pd : pictureDataList)
 			System.out.println(pd.getId());
 		System.out.println("");
-		
-		
+
+
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);
 		randomPictureList = new ArrayList<PictureData>(sortedPictureList);
 		Collections.shuffle(randomPictureList);
@@ -97,24 +93,7 @@ public class ViewController {
 		return image;
 	}
 
-	/*
-	 * public List<SettingsPicture> getSettingsPictures() throws IOException {
-	 * System.out.println("ViewController: getSettingsPictures");
-	 * 
-	 * List<SettingsPicture> settingsPictures = new
-	 * ArrayList<SettingsPicture>();
-	 * 
-	 * String id, url;
-	 * 
-	 * for ( PictureData pd : pictureDataList) { id = pd.getId(); url =
-	 * pd.getUrlThumb();
-	 * 
-	 * settingsPictures.add(new SettingsPicture(id, getBufImage(url))); }
-	 * 
-	 * return settingsPictures; }
-	 */
-	public List<List<SettingsPicture>> getSettingsPictures(int rows, int cols) 
-	{
+	public List<List<SettingsPicture>> getSettingsPictures(int rows, int cols) {
 		System.out.println("");
 		System.out.println("ViewController: getSettingsPictures. Print pictureDataList");
 		System.out.println("Size: " + pictureDataList.size());
@@ -122,47 +101,48 @@ public class ViewController {
 		for ( PictureData pd : pictureDataList)
 			System.out.println(pd.getId());
 		System.out.println("");
-		
+
 		List<List<SettingsPicture>> settingsPictures=null;
-		
-			if(rows*cols==100){
-			
+
+	
+
 			settingsPictures =new ArrayList<List<SettingsPicture>>();
 
-			
-				PictureData pic=null;
-				String id="",url;
-				 int s=0;
-			   for (int r=0;r < pictureDataList.size()/cols; r++){
-				   List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
-				   for (int c=0;c<cols;c++){
-					   pic=pictureDataList.get(s);
-					   url=pic.getUrlThumb();
-					   id=pic.getId();
-					   tmp.add(new SettingsPicture(id,this.getBufImage(url)));
-					   System.out.println("index s is: " + s);
-					   s++;
-				   }
-				   settingsPictures.add(tmp);				
+
+			PictureData pic=null;
+			String id="",url;
+			int s=0;
+			for (int r=0;r < pictureDataList.size()/cols; r++){
+				List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
+				for (int c=0;c<cols;c++){
+					pic=pictureDataList.get(s);
+					url=pic.getUrlThumb();
+					id=pic.getId();
+					tmp.add(new SettingsPicture(id,this.getBufImage(url)));
+					System.out.println("index s is: " + s);
+					s++;
 				}
-		}
-			return settingsPictures;
-		}
+				settingsPictures.add(tmp);				
+			}
+			
+		if(settingsPictures==null)System.out.println("settingsPictures is null");
+		return settingsPictures;
+	}
 
 	public void removePictures(List<List<SettingsPicture>> list2d) {
 		Set<String> flaggedList = new HashSet<String>();
 		String id=null;
 		for(List<SettingsPicture> list:list2d){
-			
+
 			for(SettingsPicture pic :list){
 				if(pic.getIsFlagged()){
-				id=pic.getId();
-				flaggedList.add(id);
-				System.out.println("Got a flagged SettingsPicture object, sending ID: "+id+"to dbMan");
+					id=pic.getId();
+					flaggedList.add(id);
+					System.out.println("Got a flagged SettingsPicture object, sending ID: "+id+"to dbMan");
 				}
-				
+
 			}
-			
+
 		}
 		dbMan.setRemoveFlag(flaggedList);
 	}
@@ -183,7 +163,7 @@ public class ViewController {
 			System.out.println(ht);
 		}
 		System.out.println("");
-		
+
 		// Check if hashtags have been added
 		Set<String> hashtagAdded = new HashSet<String>();
 		for (String ht : hashtagList) {
@@ -196,7 +176,7 @@ public class ViewController {
 		for ( String ht : hashtagAdded ) {
 			System.out.println(ht);
 		}
-		
+
 		// Check if hashtags have been deleted
 		Set<String> hashtagDeleted = new HashSet<String>();
 		for (String ht : hashtags) {
@@ -209,7 +189,7 @@ public class ViewController {
 		for ( String ht : hashtagDeleted ) {
 			System.out.println(ht);
 		}
-		
+
 		// Update db regarding hashtags deleted
 		// Delete pictures that are connected to these, and only these, hashtags
 		if (!hashtagDeleted.isEmpty()) {

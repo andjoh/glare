@@ -2,10 +2,12 @@ package bll;
 
 import glare.*;
 import dal.*;
-
 import java.util.*;
 
-
+/**
+ * Controller for getting, processing and sending picture data to database
+ * @author Petter Austerheim
+ */
 public class PictureController {
 	private DatabaseManager databaseManager;
 
@@ -15,8 +17,7 @@ public class PictureController {
 	private List<PictureData> pictureDataModified;              // Existing pictureData which contains new- in addition to existing hashtags
 	private List<PictureIdHashtags> existingPicIdNewHashtags;   // List of objects containing existing pictureId and new hashtags
 
-	private final int MAX_SIZE = 100;
-
+	
 	public PictureController(DatabaseManager databaseManager) {
 		this.databaseManager = databaseManager;
 	}
@@ -50,26 +51,14 @@ public class PictureController {
 				}
 				System.out.println("");				
 
-			}			
-						
-//			if ( !pictureDataModified.isEmpty() ) {			
-//
-//				pictureDataToSave.addAll(pictureDataModified);
-//				
-//				System.out.println("");				
-//				System.out.println("PictureController, getNewPictureData: Modified PictureData before save to db");
-//				for ( PictureData pd : pictureDataModified ) {
-//					System.out.println(pd.getId());
-//				}
-//				System.out.println("");				
-//
-//			}				
+			}						
 			
 			if ( !pictureDataToSave.isEmpty() ) {
 				databaseManager.savePictureDataToDb(pictureDataToSave);
 				success = true;
 			}
 			
+			// TODO: This might be used if new hashtags explicitly should be updated in database
 			// If new hashtags on existing pictureData: Save to db
 			//if ( !existingPicIdNewHashtags.isEmpty() ) {				
 			//	databaseManager.saveHashtagsToExistingPictureData(existingPicIdNewHashtags);
@@ -157,6 +146,11 @@ public class PictureController {
 		return pictureData;
 	}
 
+	/**
+	 * Remove duplicated picture data from list
+	 * @param pictureData
+	 * @return - picture data without duplicates
+	 */
 	private List<PictureData> removePictureDataDuplicates(List<PictureData> pictureData) {
 		List<PictureData> pictureDataWithoutDuplicates = new ArrayList<PictureData>();
 		boolean pictureDataExists;
@@ -201,12 +195,13 @@ public class PictureController {
 	 */		
 	public void processPictureData() {
 		// Get pictureData from db. Assume no duplicates.
-		pictureDataExisting = databaseManager.getPictureDataFromDb();
+		pictureDataExisting      = databaseManager.getPictureDataFromDb();
 
-		// Init pictureData lists
-		pictureDataNew      = new ArrayList<PictureData>();
-		pictureDataModified = new ArrayList<PictureData>();
-
+		// Init lists
+		pictureDataNew           = new ArrayList<PictureData>();
+		pictureDataModified      = new ArrayList<PictureData>();
+		existingPicIdNewHashtags = new ArrayList<PictureIdHashtags>();
+		
 		// Iterate over picture data from sources
 		boolean pictureDataExists;
 		for ( PictureData pdPossibleNew : pictureDataFromSources ) {
@@ -272,29 +267,6 @@ public class PictureController {
 		}
 
 		return newHashtags;
-	}
-
-	/**
-	 * Return sorted List of PictureData objects that can be displayed, i.e. no inappropriate.
-	 * @return List of PictureData
-	 */
-	public List<PictureData> getSortedPictureData() {		
-		List<PictureData> pictureData = new ArrayList<PictureData>();
-		List<PictureData> pictureDataFromDb = databaseManager.getPictureDataFromDb();
-
-		int i = 0;
-		for ( PictureData pD : pictureDataFromDb ) {
-			if ( !pD.isRemoveFlag() ) {
-				pictureData.add(pD);
-				if (++i >= MAX_SIZE){ 
-					break;
-				}
-			}
-		}
-
-		Collections.sort(pictureData, new PictureDataComparator());
-
-		return pictureData;
 	}
 
 	public List<PictureData> getPictureDataFromSources() {
