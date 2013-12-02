@@ -64,7 +64,6 @@ public class MainTestSettingsFrame  {
 		ViewController vc = new ViewController(dbManDum);
 		 vc.getSortedList();
 		 settingsFrame = new SettingsFrame(vc);
-		boolean b = settingsFrame.validationExit();
 		
 
 	}

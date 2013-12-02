@@ -20,7 +20,7 @@ public class HibernateAddPicAndUpdatePicTest {
 	@Test
 	public void AddPictureToDB_UpdatePicture_ReturnListOfPictures() {
 		Hashtag h1 = new Hashtag("winter");
-		//DatabaseHandler.addHashtagToDB(h1);
+		Hashtag h2 = new Hashtag("summer");
 		
 		PictureData pic = new PictureData();
 		pic.setId("1247845_2455");
@@ -29,13 +29,10 @@ public class HibernateAddPicAndUpdatePicTest {
 		pic.setCreatedTime(123456);
 		pic.setRemoveFlag(false);
 		pic.addHashtag(h1);
+		pic.addHashtag(h2);
 		DatabaseHandler.addPictureToDB(pic);
 		
-		Hashtag h2 = new Hashtag("summer");
-//		DatabaseHandler.addHashtagToDB(h2);
-		
-		Hashtag h3 = new Hashtag("winter");
-		DatabaseHandler.addHashtagToDB(h3);
+		Hashtag h3 = new Hashtag("yajog");
 		
 		PictureData pic2 = new PictureData();
 		pic2.setId("1247845_2455");
@@ -43,8 +40,17 @@ public class HibernateAddPicAndUpdatePicTest {
 		pic2.setUrlThumb("www.instagram.com");
 		pic2.setCreatedTime(123456);
 		pic2.setRemoveFlag(false);
-		pic2.addHashtag(h2);
+		pic2.addHashtag(h3);
 		DatabaseHandler.addPictureToDB(pic2);
+		
+		PictureData pic3 = new PictureData();
+		pic3.setId("132894");
+		pic3.setUrlStd("www.twitter.com");
+		pic3.setUrlThumb("www.instagram.com");
+		pic3.setCreatedTime(123456);
+		pic3.setRemoveFlag(false);
+		pic3.addHashtag(h3);
+		DatabaseHandler.addPictureToDB(pic3);
 		
 		pictures = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();
 		
@@ -53,7 +59,7 @@ public class HibernateAddPicAndUpdatePicTest {
 					+ pic1.getCreatedTime() + " " + pic1.isRemoveFlag());
 		}
 		
-		assertThat(pictures.size(), is(1));
+		assertThat(pictures.size(), is(2));
 	}
 
 }

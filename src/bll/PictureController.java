@@ -44,12 +44,12 @@ public class PictureController {
 
 				pictureDataToSave.addAll(pictureDataExisting);
 				
-				System.out.println("");				
-				System.out.println("PictureController, getNewPictureData: All PictureData before save to db");
+				//System.out.println("");				
+				//System.out.println("PictureController, getNewPictureData: All PictureData before save to db");
 				for ( PictureData pd : pictureDataNew ) {
-					System.out.println(pd.getId());
+					//System.out.println(pd.getId());
 				}
-				System.out.println("");				
+				//System.out.println("");				
 
 			}						
 			
@@ -84,19 +84,19 @@ public class PictureController {
 		List<String> sources = databaseManager.getSources();
 		Set<String> hashtags = databaseManager.getHashtags();
 
-		System.out.println("");				
-		System.out.println("PictureController, searchPictureData: Sources from db");
+		//System.out.println("");				
+		//System.out.println("PictureController, searchPictureData: Sources from db");
 		for ( String s : sources ) {
 			System.out.println(s);
 		}
-		System.out.println("");	
+		//System.out.println("");	
 		
-		System.out.println("");				
-		System.out.println("PictureController, searchPictureData: Hashtag from db");
+		//System.out.println("");				
+		//System.out.println("PictureController, searchPictureData: Hashtag from db");
 		for ( String s : hashtags ) {
-			System.out.println(s);
+		//	System.out.println(s);
 		}
-		System.out.println("");	
+		//System.out.println("");	
 		
 		
 		if ( hashtags.isEmpty() || sources.isEmpty() )
@@ -115,12 +115,6 @@ public class PictureController {
 		}
 		if ( pictureData.isEmpty() )
 			return false;
-		
-//		System.out.println("");	
-//		System.out.println("PictureController, searchPictureData: Searched PictureData before remove duplicates");
-//		for ( PictureData pd : pictureData )
-//			System.out.println(pd.getId());
-//		System.out.println("");		
 		
 		// Remove duplicates from pictureData got from sources
 		pictureDataFromSources = removePictureDataDuplicates(pictureData);

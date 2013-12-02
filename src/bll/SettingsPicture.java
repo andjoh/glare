@@ -38,23 +38,7 @@ public class SettingsPicture {
 		}
 		return new ImageIcon(img);
 	}
-	public ImageIcon getIconTest(){
-		
-		URL url = this.getClass().getResource("/resource/img/settings.gif");
-		BufferedImage buf = null;
-		try {
-			buf = ImageIO.read(url);
-			buf = Thumbnails.of(buf).size(50, 50)
-					.asBufferedImage();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return new ImageIcon(buf);
-		
-		
 
-	}
 	public void setIsFlagged(boolean isFlagged){
 		this.isFlagged=isFlagged;
 	}
