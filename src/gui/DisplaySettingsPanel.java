@@ -104,6 +104,13 @@ public class DisplaySettingsPanel extends JPanel implements ActionListener {
 		return b;
 
 	}
+	
+	public void setViewMode(boolean isRandom) {
+		if ( isRandom ) 
+			viewmodeCombo.setSelectedItem("randomly");
+		else 
+			viewmodeCombo.setSelectedItem("sequential");
+	}
 
 	public int getViewDelay() {
 		int i = (Integer) delaySpinner.getValue();
@@ -112,7 +119,7 @@ public class DisplaySettingsPanel extends JPanel implements ActionListener {
 	}
 
 	public void setViewDelay(int delay) {
-		if (delay >= SPINNER_MINIMUM && delay <= SPINNER_MINIMUM) {
+		if (delay >= SPINNER_MINIMUM && delay <= SPINNER_MAXIMUM) {
 			delaySpinner.setValue(new Integer(delay));
 			SPINNER_DEFAULT=delay;
 		}

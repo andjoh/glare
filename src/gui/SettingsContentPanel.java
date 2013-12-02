@@ -29,7 +29,13 @@ public class SettingsContentPanel extends JPanel  {
 		setPreferredSize(this.dim);
 		setDoubleBuffered(true);
 		initComponents();
-		if (viewCtrl != null)this.hashpan.setHashtagList(viewCtrl.getHashtags());
+		if (viewCtrl != null) {
+			this.hashpan.setHashtagList(viewCtrl.getHashtags());
+			this.dispset.setViewDelay(viewCtrl.getDisplayTime());
+			this.dispset.setViewMode(viewCtrl.isRandom());
+		}
+		
+		
 		addComponents();
 		
 	}
