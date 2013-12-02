@@ -43,7 +43,7 @@ public class ImageShow extends JPanel {
 		URL url = this.getClass().getResource("/resource/img/glare.png");
 		backgroundImage = ImageIO.read(url);
 		backgroundImage = Thumbnails.of(backgroundImage)
-				.scale(1.3).asBufferedImage();
+				.scale(1.7).asBufferedImage();
 		return backgroundImage;
 
 	}
