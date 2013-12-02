@@ -18,7 +18,8 @@ public class ImageTableModel extends AbstractTableModel {
 	private List<String> columnNames;
 
 	ImageTableModel(List<List<SettingsPicture>> data1) {
-		this.data = new ArrayList<List<SettingsPicture>>(data1);
+		
+this.data = new ArrayList<List<SettingsPicture>>(data1);
 		System.out.println("Size" + data.size());
 		columnNames = new ArrayList<String>();
 		addColumns();
@@ -43,7 +44,6 @@ public class ImageTableModel extends AbstractTableModel {
 		int total = 0;
 		for (@SuppressWarnings("unused")
 		final List<SettingsPicture> sublist : data) {
-			// TODO: Null checking
 			total++;
 		}
 		return total;
@@ -67,11 +67,41 @@ public class ImageTableModel extends AbstractTableModel {
 		data.remove(row);
 		fireTableDataChanged();
 	}
-
-	public void flagPicture(int row, int column) {
-		data.get(row).get(column).setIsFlagged(true);
+	public void removeCell(int row, int col){
+		data.get(row).remove(col);
+		fireTableDataChanged();
 	}
 
+	public void setflagOnPicture(int row, int column, boolean isFlagged) {
+		data.get(row).get(column).setIsFlagged(isFlagged);
+	}
+
+	public void clearFlags() {
+		for (int i = 0; i < getRowCount(); i++) {
+
+			for (int j = 0; j < getColumnCount(); j++) {
+				setflagOnPicture(i, j, false);
+			}
+		}
+	}
+	public SettingsPicture getModelObjectAt(int row, int col){
+		
+		
+		return data.get(row).get(col);
+		
+		
+		
+	}
+	public void removeFlagged() {
+		SettingsPicture pic;
+		for (int i = 0; i < getRowCount(); i++) {
+
+			for (int j = 0; j < getColumnCount(); j++) {
+				pic=(SettingsPicture)getModelObjectAt(i,j);
+				if(pic.getIsFlagged())removeCell(i, j);
+			}
+		}
+	}
 	public List<List<SettingsPicture>> getTableModelData() {
 		return data;
 	}

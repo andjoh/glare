@@ -101,8 +101,8 @@ public class SettingsContentPanel extends JPanel  {
 		// flag them yet.
 		// This can be done here for test purposes
 		// f.ex we want to flag picture in row 4 column 4:
-		imtabmod.flagPicture(4, 4);
-		imtabmod.flagPicture(3, 4);
+		imtabmod.setflagOnPicture(4, 4,true);
+		imtabmod.setflagOnPicture(3, 4,true);
 		// here is the data to send, picture in row 4 colum 4 should be
 		// flagged
 

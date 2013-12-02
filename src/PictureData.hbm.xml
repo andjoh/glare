@@ -17,7 +17,7 @@
 		<property name="createdTime" not-null="true"/>
 		<property name="removeFlag" not-null="true"/>
 		
-		<set name="hashtags" cascade="save-update" table="Hash_Pics" inverse="false" lazy="false">
+		<set name="hashtags" cascade="all" table="Hash_Pics" inverse="false" lazy="false">
 			<key column="picID"/>
 			<many-to-many column="hashID" class="dal.Hashtag"/>
 		</set>

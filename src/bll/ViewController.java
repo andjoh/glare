@@ -105,15 +105,16 @@ public class ViewController {
 //			System.out.println(pd.getId());
 //		System.out.println("");
 
-		List<List<SettingsPicture>> settingsPictures=null;
-
-			settingsPictures =new ArrayList<List<SettingsPicture>>();
-
+		List<List<SettingsPicture>> settingsPictures =new ArrayList<List<SettingsPicture>>();
+		List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
+			
+			
 			PictureData pic=null;
 			String id="",url;
+			if(!pictureDataList.isEmpty()){
 			int s=0;
 			for (int r=0;r < pictureDataList.size()/cols; r++){
-				List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
+				 tmp= new ArrayList<SettingsPicture>();
 				for (int c=0;c<cols;c++){
 					pic=pictureDataList.get(s);
 					url=pic.getUrlThumb();
@@ -124,6 +125,8 @@ public class ViewController {
 				}
 				settingsPictures.add(tmp);				
 			}
+			}
+			else settingsPictures.add(tmp);
 				
 		return settingsPictures;
 	}

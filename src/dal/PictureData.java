@@ -3,6 +3,7 @@ package dal;
 import java.util.*;
 
 /**
+ * A class that represents all metadata in a picture
  * @author Andreas Bjerga & Marius Vasshus
  */
 
@@ -96,5 +97,10 @@ public class PictureData {
 			if(p.id.equals(id)) return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "PictureData [id=" + id + ", hashtags=" + hashtags + "]";
 	}
 }

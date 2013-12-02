@@ -36,6 +36,7 @@ public class ImageTable extends JTable implements TableModelListener {
 		setOpaque(false);
 		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		setTableHeader(null);
+		this.setAutoCreateColumnsFromModel(true);
 		setSelectionBackground(Color.blue);
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		setColumnSelectionAllowed(true);
@@ -55,7 +56,7 @@ public class ImageTable extends JTable implements TableModelListener {
 	public void setRowSize(){
 		for(int i=0;i<model.getRowCount();i++){
 			
-			this.setRowHeight(i, 50);
+			this.setRowHeight(i, 60);
 			this.setRowMargin(5);
 		}
 		System.out.println("Row count"+getRowCount());
@@ -67,8 +68,8 @@ public class ImageTable extends JTable implements TableModelListener {
 		for (int i = 0; i < model.getColumnCount(); i++) {
 			column = getColumnModel().getColumn(i);
 			
-				column.setPreferredWidth(400/model.getColumnCount());
-			
+				//column.setPreferredWidth(400/model.getColumnCount());
+			column.sizeWidthToFit();
 			}
 	}
 	public JTable getTable(){return this;}
@@ -78,15 +79,16 @@ public class ImageTable extends JTable implements TableModelListener {
 	}
     private class RowColumnListSelectionListener implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
+        	
         if ( getTable().getCellSelectionEnabled()) {
+        	//clearSelection();
+        	model.clearFlags();
         	if (! e.getValueIsAdjusting()){
         	int selectionMode =  getTable().getSelectionModel().getSelectionMode();
-                System.out.println("selectionMode = " + selectionMode);
-                if (selectionMode == ListSelectionModel.SINGLE_SELECTION) {
-                    int rowIndex =  getTable().getSelectedRow();
-                    int colIndex =  getTable().getSelectedColumn();
-                    System.out.printf("Selected [Row,Column] = [%d,%d]n", rowIndex, colIndex);
-                } else if (selectionMode == ListSelectionModel.SINGLE_INTERVAL_SELECTION || 
+                
+        	
+        	System.out.println("selectionMode = " + selectionMode);
+              if (selectionMode == ListSelectionModel.SINGLE_INTERVAL_SELECTION || 
                         selectionMode == ListSelectionModel.MULTIPLE_INTERVAL_SELECTION) {
                     int rowIndexStart =  getTable().getSelectedRow();
                     int rowIndexEnd =  getTable().getSelectionModel().getMaxSelectionIndex();
@@ -98,6 +100,8 @@ public class ImageTable extends JTable implements TableModelListener {
                             if ( getTable().isCellSelected(i, j)) {
                                 System.out.printf("Selected [Row,Column] = [%d,%d]n", i, j);
                             System.out.println("");
+                            model.setflagOnPicture(i, j,true);
+                           
                             }
                         } 
                     }

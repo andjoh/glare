@@ -56,8 +56,8 @@ public class TableSettingsPanel extends JPanel  {
   
             @Override
             public void actionPerformed(ActionEvent e) {
-            	 
-            
+            	tablemodel.removeFlagged();
+            	repaint();
             }
         };
         removeButton =new JButton(act);
