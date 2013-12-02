@@ -32,7 +32,7 @@ public class ShowInterface extends JFrame {
 		settingsFrame = null;
 		slider = new ImageSlider(this.dim);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		//setAutoRequestFocus(true);
+		// setAutoRequestFocus(true);
 		requestFocusInWindow();
 		getContentPane().add(slider);
 
@@ -129,7 +129,7 @@ public class ShowInterface extends JFrame {
 			this.dim = dim;
 			show = new ImageShow(viewCtrl, (int) dim.getWidth(),
 					(int) dim.getHeight());
-			
+
 			setPreferredSize(new Dimension(dim.width, dim.height));
 			escapeAction = new EscapeAction();
 			getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),
@@ -145,12 +145,12 @@ public class ShowInterface extends JFrame {
 
 		private void init() {
 			Constraints gbc = new Constraints();
-			settingsButton = new JButton("gfhdhhthdthydtyh");
+			settingsButton = new JButton();
 			settingsButton.addActionListener(this);
-			// settingsButton.setIcon(new ImageIcon(getClass().getResource(
-			// "/resource/img/settings.gif")));
-			// settingsButton.setBorderPainted(false);
-			// settingsButton.setContentAreaFilled(false);
+			settingsButton.setIcon(new ImageIcon(getClass().getResource(
+					"/resource/img/settings.gif")));
+			settingsButton.setBorderPainted(false);
+			settingsButton.setContentAreaFilled(false);
 			gbc.fill = GridBagConstraints.BOTH;
 			gbc.set(1, 10, 10, 10, 1, 1, new Insets(dim.height, 130, 80,
 					dim.height + 200), GridBagConstraints.NORTHWEST);

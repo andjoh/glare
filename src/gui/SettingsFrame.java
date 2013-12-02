@@ -28,6 +28,7 @@ final public class SettingsFrame extends JDialog {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		getContentPane().add(contp);
 		setLocationRelativeTo(parent);
+		setUndecorated(true);
 		pack();
 		setResizable(false);
 		setAlwaysOnTop(true);
