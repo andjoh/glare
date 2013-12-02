@@ -97,4 +97,9 @@ public class PictureData {
 		}
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return "PictureData [id=" + id + ", hashtags=" + hashtags + "]";
+	}
 }

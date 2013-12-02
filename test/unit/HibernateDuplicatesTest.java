@@ -50,7 +50,7 @@ public class HibernateDuplicatesTest {
 		
 		PictureData pic3 = new PictureData();
 		pic3.setId("1247845_2455");
-		pic3.setUrlStd("www.twitter.com");
+		pic3.setUrlStd("www.gyjlhui");
 		pic3.setUrlThumb("www.instagram.com");
 		pic3.setCreatedTime(123456);
 		pic3.setRemoveFlag(false);

@@ -1,5 +1,6 @@
 package dal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,20 +29,21 @@ public class DatabaseHandler {
 			tx = session.beginTransaction();
 			
 			Set<Hashtag> newHashSet = pic.getHashtags();
-			for(Hashtag h : newHashSet){
-				resultHash = DatabaseHandler.returnHashtagIfAlreadyExists(h);
-//				Hibernate.initialize(resultHash.get(0).getPictures());
+			List<Hashtag> testList = new ArrayList<Hashtag>();
+			testList.addAll(newHashSet);
+			for(int i = 0; i < testList.size(); i++){
+				resultHash = DatabaseHandler.returnHashtagIfAlreadyExists(testList.get(i));
 				if(resultHash.size() == 1){
 					System.out.println("HAAAALLLOOOOOOO" + resultHash.get(0));
-					pic.remHashtag(h);
-//					pic.addHashtag(resultHash.get(0));
-					resultHash.get(0).addPicToHashtag(pic);
-					session.saveOrUpdate(resultHash);
+					pic.remHashtag(testList.get(i));
+					pic.addHashtag(resultHash.get(0));
 				}
 			}
 
+			newHashSet = pic.getHashtags();
 			resultPic = DatabaseHandler.returnPictureIfAlreadyExists(pic);
 			if(resultPic.size() == 1){
+				System.out.println(resultPic.get(0));
 				Set<Hashtag> hashtagsFromDB = resultPic.get(0).getHashtags();
 				newHashSet.addAll(hashtagsFromDB);
 				pic.setHashtags(newHashSet);
@@ -131,7 +133,7 @@ public class DatabaseHandler {
 		try{
 			tx = session.beginTransaction();
 
-			result = session.createQuery("from Hashtag where hashtag=\'" + h.getHashtag() + "\'").list();
+			result = session.createQuery("select distinct h from Hashtag h left join fetch h.pictures where hashtag=\'" + h.getHashtag() + "\'").list();
 
 			tx.commit();
 		} catch(HibernateException e){
