@@ -222,8 +222,8 @@ public class ViewController {
 			}
 		}
 
-		// Remove picture data from current list without any hashtags connected
-		// Update db regarding hashtags deleted
+		// Remove picture data from current lists without any hashtags connected
+		// and update db regarding hashtags deleted
 		if (!hashtagDeleted.isEmpty()) {
 			removeCurrentPicturesWithoutHashtags(hashtagDeleted);
 			dbMan.removeHashtags(hashtagDeleted);
