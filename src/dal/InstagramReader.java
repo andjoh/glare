@@ -6,7 +6,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-
+/**
+ * A class that connects to instagram
+ * @author Marius Vasshus
+ *
+ */
 public class InstagramReader implements IReader{
 
 	InstagramParser parser;
@@ -17,6 +21,9 @@ public class InstagramReader implements IReader{
 		this.confReader = confReader;
 	}
 
+	/**
+	 * Method to get pictures from Instagram with given hashtag
+	 */
 	public List<PictureData> getPictures(String searchTag) {
 		confReader.setPath("src/resource/conf.ini");
 		String instagramURL = "https://api.instagram.com/v1/tags/"+searchTag+"/media/recent?client_id=" + confReader.read("client_id");

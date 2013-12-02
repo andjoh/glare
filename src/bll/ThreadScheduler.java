@@ -1,13 +1,10 @@
 package bll;
 
-import java.util.ArrayList;
-
-import com.sun.xml.internal.bind.v2.ClassFactory;
-
-import dal.DatabaseHandler;
-import dal.DatabaseManager;
-import dal.PictureData;
-
+/**
+ * A thread that runs in the background and gets pictures with the applications hashtags
+ * @author Andreas Bjerga & Marius Vasshus
+ *
+ */
 public class ThreadScheduler implements Runnable{
 	private PictureController pc;
 	

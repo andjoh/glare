@@ -7,6 +7,10 @@ import java.util.List;
 
 import com.google.gson.*;
 
+/**
+ * A class that parses JSON-objects to Java-objects
+ * @author Marius Vasshus
+ */
 public class InstagramParser {
 
 	public List<PictureData> parse(InputStreamReader reader, String searchTag) {

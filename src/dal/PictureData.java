@@ -3,6 +3,7 @@ package dal;
 import java.util.*;
 
 /**
+ * A class that represents all metadata in a picture
  * @author Andreas Bjerga & Marius Vasshus
  */
 

@@ -2,23 +2,24 @@ package dal;
 
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * @author Andreas Bjerga & Marius Vasshus
- */
-
-
 import java.util.Set;
 
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.exception.ConstraintViolationException;
 
+/**
+ * A class that handles all communication with DB through Hibernate.
+ * @author Andreas Bjerga & Marius Vasshus
+ */
 public class DatabaseHandler {
 
+	/**
+	 * Method to add and save a picture to DB. Checks for duplicate pictures and saves changes to the relevant picture to DB.
+	 * @param pic
+	 */
 	public static void addPictureToDB(PictureData pic){
 		List<PictureData> resultPic = null;
 		List<Hashtag> resultHash = null;
@@ -28,6 +29,7 @@ public class DatabaseHandler {
 		try{
 			tx = session.beginTransaction();
 			
+			//Checks if a hashtag, connected to the picture, is already saved in the DB
 			Set<Hashtag> newHashSet = pic.getHashtags();
 			List<Hashtag> testList = new ArrayList<Hashtag>();
 			testList.addAll(newHashSet);
@@ -40,6 +42,7 @@ public class DatabaseHandler {
 				}
 			}
 
+			//Checks if a picture with the same ID is in DB, and updates the hashtags if exists
 			newHashSet = pic.getHashtags();
 			resultPic = DatabaseHandler.returnPictureIfAlreadyExists(pic);
 			if(resultPic.size() == 1){
@@ -60,6 +63,12 @@ public class DatabaseHandler {
 		}
 	}
 	
+	/**
+	 * Checks if picture with given ID is already in DB, and returns this picture as List
+	 * @param pic
+	 * @return List<PictureData>
+	 */
+	@SuppressWarnings("unchecked")
 	public static List<PictureData> returnPictureIfAlreadyExists(PictureData pic){
 		List<PictureData> result = null;
 		Transaction tx = null;
@@ -74,12 +83,15 @@ public class DatabaseHandler {
 			if (tx!=null) 
 				tx.rollback();
 			e.printStackTrace();
-//		} finally{
-//			session.close();
 		}
 		return result;
 	}
 
+	/**
+	 * Returns a list of all pictures saved in DB
+	 * @return List<PictureData>
+	 */
+	@SuppressWarnings("unchecked")
 	public static List<PictureData> listOfPicturesFromDB(){
 		Transaction tx = null;
 		List<PictureData> result = null;
@@ -102,6 +114,10 @@ public class DatabaseHandler {
 		return result;
 	}
 
+	/**
+	 * Checks if hashtag is already saved to DB. If not, saves hashtag to DB.
+	 * @param hash
+	 */
 	public static void addHashtagToDB(Hashtag hash){
 		List<Hashtag> result = null;
 		Transaction tx = null;
@@ -125,6 +141,12 @@ public class DatabaseHandler {
 		}
 	}
 	
+	/**
+	 * Checks if given hashtag exists in DB, returns as List
+	 * @param h
+	 * @return List<PictureData>
+	 */
+	@SuppressWarnings("unchecked")
 	public static List<Hashtag> returnHashtagIfAlreadyExists(Hashtag h){
 		List<Hashtag> result = null;
 		Transaction tx = null;
@@ -140,12 +162,15 @@ public class DatabaseHandler {
 			if (tx!=null) 
 				tx.rollback();
 			e.printStackTrace();
-//		} finally{
-//			session.close();
 		}
 		return result;
 	}
 
+	/**
+	 * Returns a list of all hashtags from DB
+	 * @return List<String>
+	 */
+	@SuppressWarnings("unchecked")
 	public static List<String> listOfHashtagsFromDB() {
 		Transaction tx = null;
 		List<String> result = null;
@@ -169,6 +194,10 @@ public class DatabaseHandler {
 		return result;
 	}
 
+	/**
+	 * Deletes a picture with the given ID from DB
+	 * @param id
+	 */
 	public static void removePictureDataFromDB(String id){
 		Transaction tx = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -189,6 +218,10 @@ public class DatabaseHandler {
 		}
 	}
 
+	/**
+	 * Delete Hashtags from DB with a given name
+	 * @param hashName
+	 */
 	public static void removeHashtagFromDB(String hashName){
 		Transaction tx = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -211,6 +244,9 @@ public class DatabaseHandler {
 		}
 	}
 
+	/**
+	 * Deletes pictures without any hashtags from DB, given that they are not flagged.
+	 */
 	public static void removePicturesWithoutHashTagFromDB(){
 		Transaction tx = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();
@@ -238,6 +274,11 @@ public class DatabaseHandler {
 			session.close();
 		}
 	}
+	
+	/**
+	 * Flags a picture with the given ID
+	 * @param picID
+	 */
 	public static void setRemoveFlag(String picID){
 		Transaction tx = null;
 		Session session = HibernateUtil.getSessionFactory().openSession();

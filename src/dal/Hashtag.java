@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * A class to represent a Hashtag
  * @author Andreas Bjerga & Marius Vasshus
  */
 
