@@ -1,9 +1,16 @@
 package gui;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.border.*;
+
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Toolkit;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 
 public class LoginDialog extends JDialog {
 
@@ -32,7 +39,7 @@ public class LoginDialog extends JDialog {
 		setSize(this.dim);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModal(true);
-		setLocationRelativeTo(jf);
+		setLocationRelativeTo(this.jf);
 		pack();
 		setVisible(true);
 	}
@@ -42,6 +49,11 @@ public class LoginDialog extends JDialog {
 	 */
 
 	class LPanel extends JPanel {
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
 		public LPanel() {
 			setOpaque(false);

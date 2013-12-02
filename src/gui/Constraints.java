@@ -8,6 +8,11 @@ import java.awt.Insets;
  * @author Andreas J
  */
 public class Constraints extends GridBagConstraints {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public Constraints() {
 		super();
 	}

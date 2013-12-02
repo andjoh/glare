@@ -1,22 +1,14 @@
 package gui;
 
-import javax.swing.*;
-import javax.swing.event.InternalFrameAdapter;
-import javax.swing.event.InternalFrameEvent;
-import javax.swing.event.InternalFrameListener;
-import javax.swing.event.MouseInputAdapter;
 
-import bll.SettingsPicture;
 import bll.ViewController;
 
 import java.awt.event.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.beans.VetoableChangeListener;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
 
 /**
  * 
@@ -25,18 +17,11 @@ import java.util.Set;
 @SuppressWarnings("serial")
 final public class SettingsFrame extends JDialog {
 
-	private static final Dimension PREFERRED_SIZE = new Dimension(800, 600);
-
-	// Variables
-	private ViewController viewCtrl;
 	private SettingsContentPanel contp;
-	private TableSettingsPanel tablepanel;
 	private JFrame parent;
 	private Dimension dim;
 
 	public SettingsFrame(ViewController viewCtrl) {
-		this.parent = parent;
-		this.viewCtrl = viewCtrl;
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		//setSize(dim.width * 2 / 3, dim.width * 2 / 4);
 		setModal(true);
@@ -60,7 +45,7 @@ final public class SettingsFrame extends JDialog {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				
-				System.out.println("SettingsFrame is closing");
+
 				
 				contp.saveBeforeExit();
 				

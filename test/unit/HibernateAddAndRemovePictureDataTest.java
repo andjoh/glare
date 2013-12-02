@@ -25,7 +25,7 @@ public class HibernateAddAndRemovePictureDataTest {
 		pic.setRemoveFlag(false);
 		DatabaseHandler.addPictureToDB(pic);
 		
-		DatabaseHandler.removePictureDataFromDB();
+		DatabaseHandler.removePictureDataFromDB(pic.getId());
 		pictures = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();
 		
 		assertThat(pictures.size(), is(0));
