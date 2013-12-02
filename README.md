@@ -17,7 +17,7 @@ DB
      	2. Set username as "root"
      	3. No password
      	4. Create schema named "glare"
-     	5. Your good to go, take a sip of Diet Coke:)
+     	5. You're good to go, take a sip of Diet Coke:)
 
-   Run the application, and begin stalking.
+   Run the application and begin stalking.
 
