@@ -32,7 +32,7 @@ public class ShowInterface extends JFrame {
 		settingsFrame = null;
 		slider = new ImageSlider(this.dim);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setAutoRequestFocus(true);
+		//setAutoRequestFocus(true);
 		requestFocusInWindow();
 		getContentPane().add(slider);
 
@@ -85,7 +85,6 @@ public class ShowInterface extends JFrame {
 			unhideComponent(settingsButton);
 			slider.start();
 		}
-		
 
 	}
 
@@ -94,13 +93,12 @@ public class ShowInterface extends JFrame {
 		hideComponent(settingsButton);
 		ld = new LoginDialog(parent);
 		boolean suc = ld.getSucceeded();
-		if(suc)openSettingsFrame();
+		if (suc)
+			openSettingsFrame();
 		else {
 			slider.start();
-			
+
 		}
-		
-			
 
 	}
 
@@ -120,7 +118,7 @@ public class ShowInterface extends JFrame {
 		 * 
 		 */
 		private static final long serialVersionUID = 1;
-		private volatile boolean  stop = false;
+		private volatile boolean stop = false;
 		private Dimension dim;
 		private volatile Thread th;
 
@@ -131,8 +129,9 @@ public class ShowInterface extends JFrame {
 			this.dim = dim;
 			show = new ImageShow(viewCtrl, (int) dim.getWidth(),
 					(int) dim.getHeight());
-			escapeAction = new EscapeAction();
+			
 			setPreferredSize(new Dimension(dim.width, dim.height));
+			escapeAction = new EscapeAction();
 			getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),
 					"doEscapeAction");
 			getActionMap().put("doEscapeAction", escapeAction);
@@ -171,8 +170,9 @@ public class ShowInterface extends JFrame {
 				show.paint(g);
 
 			}
-		//uper.paintComponent(g);
+			// uper.paintComponent(g);
 		}
+
 		public void stopClick() {
 			stop = true;
 			try {
@@ -188,7 +188,7 @@ public class ShowInterface extends JFrame {
 		public void run() {
 			System.out.println("run()");
 			stop = false;
-			int d = viewCtrl.getDisplayTime()*1000;
+			int d = viewCtrl.getDisplayTime() * 1000;
 			System.out.println("Display time: " + d);
 			try {
 				while (stop != true) {
@@ -197,17 +197,16 @@ public class ShowInterface extends JFrame {
 
 					// System.out.println("after thread");
 
-				
-					  int i=0;
-					  System.out.println("IS called :"+i+"times");
-					  show.moveNext();
-					 repaint();
-	                  Thread.sleep(d);
-					//System.out.println("ShowINterface, kaller moveNext()");
+					int i = 0;
+					System.out.println("IS called :" + i + "times");
+					show.moveNext();
+					repaint();
+					Thread.sleep(d);
+					// System.out.println("ShowINterface, kaller moveNext()");
 
 				}
-				//th.join();
-				
+				// th.join();
+
 			} catch (InterruptedException ie) {
 				System.out.println("Interrupted slide show...");
 			} catch (IOException e) {
@@ -217,8 +216,6 @@ public class ShowInterface extends JFrame {
 
 		}
 
-	
-
 		class EscapeAction extends AbstractAction {
 			/**
 			 * 
@@ -226,7 +223,7 @@ public class ShowInterface extends JFrame {
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent tf) {
-			
+
 				closeWindow();
 			}
 
@@ -237,7 +234,6 @@ public class ShowInterface extends JFrame {
 			if (e.getSource().equals(settingsButton)
 					&& (ld == null || !ld.isVisible())) {
 				openLoginBox();
-
 
 			}
 

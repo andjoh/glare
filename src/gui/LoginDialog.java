@@ -1,16 +1,20 @@
 package gui;
 
+import gui.ShowInterface.ImageSlider.EscapeAction;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-
+import javax.swing.KeyStroke;
 
 public class LoginDialog extends JDialog {
 
@@ -31,6 +35,7 @@ public class LoginDialog extends JDialog {
 	public LoginDialog(JFrame jf) {
 		super(jf);
 		this.jf = jf;
+
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.dim = new Dimension((int) (dim.getWidth() / 3),
 				(int) dim.getHeight() / 4);
@@ -40,8 +45,9 @@ public class LoginDialog extends JDialog {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModal(true);
 		setLocationRelativeTo(this.jf);
-		pack();
+		pack();//setUndecorated(true);
 		setVisible(true);
+		
 	}
 
 	/*
@@ -60,7 +66,7 @@ public class LoginDialog extends JDialog {
 			setPreferredSize(dim);
 			setLayout(null);
 			init();
-			
+			setAutoRequestFocus(true);
 			add(inputpanel);
 			add(buttonPanel);
 			add(backgroundImageLabel);

@@ -42,7 +42,7 @@ public class ImageTable extends JTable implements TableModelListener {
 		setSelectionBackground(Color.blue);
 		setColumnSelectionAllowed(true);
 		setRowSelectionAllowed(true);
-		//setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		setColumnSize();
 		setRowSize();
 		this.setShowVerticalLines(true);
@@ -51,9 +51,11 @@ public class ImageTable extends JTable implements TableModelListener {
 		setBorder(null);
 		setDragEnabled(false);
 		setShowGrid(false);
-	getSelectionModel().addListSelectionListener(new RowColumnListSelectionListener());
-	getColumnModel().getSelectionModel() .addListSelectionListener(new RowColumnListSelectionListener()); 
-		
+		getSelectionModel().addListSelectionListener(
+				new RowColumnListSelectionListener());
+		getColumnModel().getSelectionModel().addListSelectionListener(
+				new RowColumnListSelectionListener());
+
 	}
 
 	public void setRowSize() {
@@ -111,7 +113,8 @@ public class ImageTable extends JTable implements TableModelListener {
 					int colIndexStart = getSelectedColumn();
 					int colIndexEnd = getColumnModel().getSelectionModel()
 							.getMaxSelectionIndex();
-                    System.out.println("--------------------------------------------------\n");
+					System.out
+							.println("--------------------------------------------------\n");
 					for (int i = rowIndexStart; i <= rowIndexEnd; i++) {
 						for (int j = colIndexStart; j <= colIndexEnd; j++) {
 							if (isCellSelected(i, j)) {
@@ -120,10 +123,11 @@ public class ImageTable extends JTable implements TableModelListener {
 										j);
 							}
 						}
-						
-						   System.out.println("--------------------------------------------------\n");
+
+						System.out
+								.println("--------------------------------------------------\n");
 					}
-			
+
 				}
 			}
 		}

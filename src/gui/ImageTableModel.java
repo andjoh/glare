@@ -18,8 +18,8 @@ public class ImageTableModel extends AbstractTableModel {
 	private List<String> columnNames;
 
 	ImageTableModel(List<List<SettingsPicture>> data1) {
-		
-this.data = new ArrayList<List<SettingsPicture>>(data1);
+
+		this.data = new ArrayList<List<SettingsPicture>>(data1);
 		System.out.println("Size" + data.size());
 		columnNames = new ArrayList<String>();
 		addColumns();
@@ -67,7 +67,8 @@ this.data = new ArrayList<List<SettingsPicture>>(data1);
 		data.remove(row);
 		fireTableDataChanged();
 	}
-	public void removeCell(int row, int col){
+
+	public void removeCell(int row, int col) {
 		data.get(row).remove(col);
 		fireTableDataChanged();
 	}
@@ -84,24 +85,25 @@ this.data = new ArrayList<List<SettingsPicture>>(data1);
 			}
 		}
 	}
-	public SettingsPicture getModelObjectAt(int row, int col){
-		
-		
+
+	public SettingsPicture getModelObjectAt(int row, int col) {
+
 		return data.get(row).get(col);
-		
-		
-		
+
 	}
+
 	public void removeFlagged() {
 		SettingsPicture pic;
 		for (int i = 0; i < getRowCount(); i++) {
 
 			for (int j = 0; j < getColumnCount(); j++) {
-				pic=(SettingsPicture)getModelObjectAt(i,j);
-				if(pic.getIsFlagged())removeCell(i, j);
+				pic = (SettingsPicture) getModelObjectAt(i, j);
+				if (pic.getIsFlagged())
+					removeCell(i, j);
 			}
 		}
 	}
+
 	public List<List<SettingsPicture>> getTableModelData() {
 		return data;
 	}

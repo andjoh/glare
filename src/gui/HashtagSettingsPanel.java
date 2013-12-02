@@ -36,7 +36,6 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 	private JTextField addhashField;
 	private JList<String> hashJList;
 
-
 	private JLabel hashsignLabel;
 	private JButton delhashButton, addhashButton;
 	private JScrollPane jlistScroller;
@@ -45,9 +44,8 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 			new Constraints(), new Constraints(), new Constraints(),
 			new Constraints() };
 
-	public HashtagSettingsPanel( ) {
-       
-      
+	public HashtagSettingsPanel() {
+
 		setAutoscrolls(true);
 		setMaximumSize(new Dimension(20000, 23000));
 		setOpaque(false);
