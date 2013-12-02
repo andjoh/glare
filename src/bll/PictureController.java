@@ -116,11 +116,11 @@ public class PictureController {
 		if ( pictureData.isEmpty() )
 			return false;
 		
-		System.out.println("");	
-		System.out.println("PictureController, searchPictureData: Searched PictureData before remove duplicates");
-		for ( PictureData pd : pictureData )
-			System.out.println(pd.getId());
-		System.out.println("");		
+//		System.out.println("");	
+//		System.out.println("PictureController, searchPictureData: Searched PictureData before remove duplicates");
+//		for ( PictureData pd : pictureData )
+//			System.out.println(pd.getId());
+//		System.out.println("");		
 		
 		// Remove duplicates from pictureData got from sources
 		pictureDataFromSources = removePictureDataDuplicates(pictureData);
