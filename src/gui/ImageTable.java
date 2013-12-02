@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -19,6 +20,7 @@ public class ImageTable extends JTable implements TableModelListener {
 	private static final long serialVersionUID = 1L;
 	// private static DefaultTableModel model = new DefaultTableModel();
 	private static ImageTableModel model;
+	private  ImageTableListener imgtablist;
 	private static int w = 50, h = 50;
 	private static Dimension dim;
 	/*
@@ -44,25 +46,20 @@ public class ImageTable extends JTable implements TableModelListener {
 		setBorder(null);
 		setDragEnabled(false);
 		setShowGrid(false);
-		// ColumnsAutoResizer s; - to be implemented
+		Action action = new AbstractAction()
+		{
+		    public void actionPerformed(ActionEvent e)
+		    {
+		    	 imgtablist = (ImageTableListener)e.getSource();
+		        System.out.println("Row   : " + imgtablist .getRow());
+		        System.out.println("Column: " + imgtablist .getColumn());
+		        System.out.println("Old   : " + imgtablist .getOldValue());
+		        System.out.println("New   : " + imgtablist .getNewValue());
+		    }
+		};
+		// ColumnsAutoResizer s; - to be implemente nbd
 	}
 
-	public void addRows(int rows) {
-		for (int r = 0; r < rows; r++) {
-			// model.insertRow(r,null);
-		}
-		;
-	}
-	public boolean isCellEditable(int row, int col)
-    { return false; }
-	public void addColumns(int cols) {
-
-		for (int c = 0; c < cols; c++) {
-			// model.addColumn(new String(""));
-
-		}
-		;
-	}
 	public void setRowSize(){
 		for(int i=0;i<model.getRowCount();i++){
 			
@@ -83,17 +80,4 @@ public class ImageTable extends JTable implements TableModelListener {
 			}
 		}
 
-	
-
-	// Sets the renderer for all columns
-	public void setRenderer() {
-		TableColumn col;
-		for (int c = 0; c < model.getColumnCount(); c++) {
-			col = getColumnModel().getColumn(c);
-			// col.sizeColumnsToFit();
-			col.sizeWidthToFit();
-			// col.setCellRenderer(new IconRenderer());
-		}
-		;
-	}
 }

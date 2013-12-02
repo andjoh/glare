@@ -12,7 +12,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import dal.*;
 import bll.*;
-import glare.ClassFactory;
 import gui.*;
 import resources.*;
 

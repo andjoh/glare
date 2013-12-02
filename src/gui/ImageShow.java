@@ -1,26 +1,18 @@
 package gui;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
+
 
 import net.coobird.thumbnailator.Thumbnails;
 
 import bll.ViewController;
-
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 
 public class ImageShow extends JPanel {
 
@@ -41,7 +33,7 @@ public class ImageShow extends JPanel {
 		this.ctrl = ctrl;
 		SCREEN_W = w;
 		SCREEN_H = h;
-		SCALE_FACTOR = 1.4;
+		SCALE_FACTOR = 1.2;
 		// currImg = ctrl.getCurrentPicture(false);
 		currImg = null;
 		backgroundImage = loadBackground();
@@ -51,7 +43,7 @@ public class ImageShow extends JPanel {
 		URL url = this.getClass().getResource("/resource/img/glare.png");
 		backgroundImage = ImageIO.read(url);
 		backgroundImage = Thumbnails.of(backgroundImage)
-				.size(SCREEN_W, SCREEN_H).asBufferedImage();
+				.scale(1.3).asBufferedImage();
 		return backgroundImage;
 
 	}
@@ -82,10 +74,6 @@ public class ImageShow extends JPanel {
 		paint(g);
 	}
 
-	/*
-	 * Changes currImage to the next Image in the list. Only if the list
-	 * contains images and that that the
-	 */
 	public void moveNext() throws IOException {
 		BufferedImage bf = ctrl.getCurrentPicture();
 

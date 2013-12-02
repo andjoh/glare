@@ -6,11 +6,14 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -20,7 +23,7 @@ import bll.ViewController;
 
 import resources.ViewControllerDummy;
 
-public class TableSettingsPanel extends JPanel implements ActionListener {
+public class TableSettingsPanel extends JPanel  {
 	/**
 	 * 
 	 */
@@ -29,7 +32,9 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	private final static int COLS = 5, ROWS = 20;
 	private ImageTableModel tablemodel;
 	private JButton removeButton;
+	private Action action;
 	private Dimension dim;
+	private ImageTableListener imagetablelistener;
 	private ViewController viewCtrl;
 	private JScrollPane tableScroller;
 	private ImageTable thumbnailTable;
@@ -50,6 +55,21 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	
 		tablemodel = new ImageTableModel(viewCtrl.getSettingsPictures(ROWS, COLS) );
 		thumbnailTable = new ImageTable(tablemodel,dim);
+		
+		action= new AbstractAction("Remove") {
+            private static final long serialVersionUID = 1L;
+  
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	 ImageTableListener tcl = (ImageTableListener)e.getSource();
+                 System.out.println("Row   : " + tcl.getRow());
+                 System.out.println("Column: " + tcl.getColumn());
+                 System.out.println("Old   : " + tcl.getOldValue());
+                 System.out.println("New   : " + tcl.getNewValue());
+            
+            }
+        };
+		imagetablelistener= new ImageTableListener(thumbnailTable,action);
 		// tableScroller properties
 		tableScroller = new JScrollPane();
 		tableScroller.setOpaque(false);
@@ -59,29 +79,46 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 		tableScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		// removeButton Properties
-		removeButton = new JButton("Remove");
-		removeButton.addActionListener(this);
+		System.out.println("Screensize : "+Toolkit.getDefaultToolkit().getScreenSize());
+		
+		
+		removeButton =new JButton(action);
+		//removeButton.addActionListener(this);
 		;
 	}
 
 	private void setConstraints() {
-
-		gbc[0].set(0, 0, 2, 1, 429, 375, 1.0, 1.0, new Insets(19, 11, 0, 47),
+		gbc[0].fill= GridBagConstraints.BOTH;
+		gbc[0].set(0, 0, 1, 1, dim.width,dim.height*3/4, 1.0, 1.0, new Insets(11, 10, 0, 18),
 				GridBagConstraints.NORTHWEST);
 
 		add(tableScroller, gbc[0]);
-		gbc[1].set(0, 1, 1, 1, new Insets(9, 390, 57, 0),
-				GridBagConstraints.NORTHWEST);
+		
+		//gbc[0].set(0, 1, 1, 1, new Insets(9, 200, 57, 0),
+			//	GridBagConstraints.NORTHWEST);
+
+		gbc[1].set(0, 1, 1, 1, 0,0, 1.0, 1.0, new Insets(6,dim.width/2, 150, 18),
+			GridBagConstraints.NORTHWEST);
 		add(removeButton, gbc[1]);
-	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource().equals(removeButton)) {
+	
+	
+         
+         
+         
+         
+  
+    }
+  
+	
+	
+	
+	
+	
+	
+	
+	
 
-		}
-
-	}
 
 	public ImageTableModel getImageTableModel() {
 		return tablemodel;
