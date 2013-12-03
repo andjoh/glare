@@ -1,6 +1,7 @@
 package gui;
 
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -9,6 +10,7 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -19,7 +21,7 @@ import javax.swing.ScrollPaneConstants;
 import bll.ViewController;
 
 
-public class TableSettingsPanel extends JPanel  {
+public class TableSettingsPanel extends JPanel implements ActionListener {
 	/**
 	 * 
 	 */
@@ -50,21 +52,15 @@ public class TableSettingsPanel extends JPanel  {
 	
 		tablemodel = new ImageTableModel(viewCtrl.getSettingsPictures(ROWS, COLS) );
 		thumbnailTable = new ImageTable(tablemodel,dim);
-		
-		Action act= new AbstractAction("Remove") {
-            private static final long serialVersionUID = 1L;
-  
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            	tablemodel.removeFlagged();
-            	repaint();
-            }
-        };
-        removeButton =new JButton(act);
+
+        removeButton =new JButton("Remove");
+             removeButton.addActionListener(this);
 		
 		// tableScroller properties
 		tableScroller = new JScrollPane();
 		tableScroller.setOpaque(false);
+	//	tableScroller.setColumnHeader(null);
+		tableScroller.setBackground(Color.white.brighter());
 
 		tableScroller.setCursor(new Cursor(Cursor.MOVE_CURSOR));
 		tableScroller.setViewportView(thumbnailTable);
@@ -91,5 +87,15 @@ public class TableSettingsPanel extends JPanel  {
 
 	public ImageTableModel getImageTableModel() {
 		return tablemodel;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource().equals(removeButton)){
+    		
+    		thumbnailTable.removeFlagged();
+    	repaint();
+    }
+		
 	}
 }
