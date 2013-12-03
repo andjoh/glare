@@ -31,6 +31,10 @@ public class ImageTableModel extends AbstractTableModel {
 		}
 
 	}
+	 public void tableChanged() {
+       
+         this.fireTableRowsInserted(0,data.size());
+    }
 
 	public int getColumnCount() {
 		return data.get(0).size();
@@ -50,7 +54,7 @@ public class ImageTableModel extends AbstractTableModel {
 	}
 
 	public Object getValueAt(int row, int column) {
-		return data.get(row).get(column).getIcon(50, 50);
+		return data.get(row).get(column).getIcon(90, 50);
 	}
 
 	public void setValueAt(Object value, int row, int col) {

@@ -34,27 +34,31 @@ public class ImageTable extends JTable implements TableModelListener {
 		super(imgm);
 		this.dim = dim;
 		model = imgm;
-
+		//
+	    setDragEnabled(false);
 		setOpaque(false);
-		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		setTableHeader(null);
 		this.setAutoCreateColumnsFromModel(true);
+		// Set ListSelectionListener properties and selectionmodel
 		setSelectionBackground(Color.blue);
-		setColumnSelectionAllowed(true);
-		setRowSelectionAllowed(true);
+		this.setCellSelectionEnabled(true);
 		setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		getSelectionModel().addListSelectionListener(
+				new ImageTableListener());
+		getColumnModel().getSelectionModel().addListSelectionListener(
+				new ImageTableListener());
+		// Set table and column size properties
+		setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		setColumnSize();
 		setRowSize();
-		this.setShowVerticalLines(true);
-		this.setShowHorizontalLines(true);
+		// Set border, spacing and grid properties 
+		this.setShowVerticalLines(false);
+		this.setShowHorizontalLines(false);
 		setIntercellSpacing(new Dimension(0, 0));
 		setBorder(null);
-		setDragEnabled(false);
 		setShowGrid(false);
-		getSelectionModel().addListSelectionListener(
-				new RowColumnListSelectionListener());
-		getColumnModel().getSelectionModel().addListSelectionListener(
-				new RowColumnListSelectionListener());
+		
+	
 
 	}
 
@@ -73,8 +77,8 @@ public class ImageTable extends JTable implements TableModelListener {
 		for (int i = 0; i < model.getColumnCount(); i++) {
 			column = getColumnModel().getColumn(i);
 
-			// column.setPreferredWidth(400/model.getColumnCount());
-			column.sizeWidthToFit();
+			column.setPreferredWidth(450/model.getColumnCount());
+			//column.sizeWidthToFit();
 		}
 	}
 
@@ -86,51 +90,34 @@ public class ImageTable extends JTable implements TableModelListener {
 
 	}
 
-	private class RowColumnListSelectionListener implements
+	private class ImageTableListener implements
 			ListSelectionListener {
 		public void valueChanged(ListSelectionEvent e) {
-			if (getRowSelectionAllowed()) {
-				int[] rows = getSelectedRows();
-				System.out.println("Selected Rows: " + Arrays.toString(rows));
+			int rStart = 0, rEnd = 0, cStart = 0, cEnd = 0;
+			model.clearFlags();
+			if (!e.getValueIsAdjusting()) {
+				rStart = getSelectedRow();
+				rEnd = getSelectionModel().getMaxSelectionIndex();
+				cStart = getSelectedColumn();
+				cEnd = getColumnModel().getSelectionModel()
+						.getMaxSelectionIndex();
+
 			}
-			if (getColumnSelectionAllowed()) {
-				int[] cols = getSelectedColumns();
-				System.out
-						.println("Selected Columns: " + Arrays.toString(cols));
-			} else if (getCellSelectionEnabled()) {
-				int selectionMode = getSelectionModel().getSelectionMode();
-				System.out.println("selectionMode = " + selectionMode);
-				if (selectionMode == ListSelectionModel.SINGLE_SELECTION) {
-					int rowIndex = getSelectedRow();
-					int colIndex = getSelectedColumn();
-					System.out.printf("Selected [Row,Column] = [%d,%d]\n",
-							rowIndex, colIndex);
-				} else if (selectionMode == ListSelectionModel.SINGLE_INTERVAL_SELECTION
-						|| selectionMode == ListSelectionModel.MULTIPLE_INTERVAL_SELECTION) {
-					int rowIndexStart = getSelectedRow();
-					int rowIndexEnd = getSelectionModel()
-							.getMaxSelectionIndex();
-					int colIndexStart = getSelectedColumn();
-					int colIndexEnd = getColumnModel().getSelectionModel()
-							.getMaxSelectionIndex();
-					System.out
-							.println("--------------------------------------------------\n");
-					for (int i = rowIndexStart; i <= rowIndexEnd; i++) {
-						for (int j = colIndexStart; j <= colIndexEnd; j++) {
-							if (isCellSelected(i, j)) {
-								System.out.printf(
-										"Selected [Row,Column] = [%d,%d]\n", i,
-										j);
-							}
-						}
+			getSelectedCells(rStart, rEnd, cStart, cEnd);
+		}
+	}
 
-						System.out
-								.println("--------------------------------------------------\n");
-					}
-
+	public void getSelectedCells(int rStart, int rEnd, int cStart, int cEnd) {
+		System.out.println("------------------------------\n");
+		for (int i = rStart; i <= rEnd; i++) {
+			for (int j = cStart; j <= cEnd; j++) {
+				if (isCellSelected(i, j)) {
+					System.out.printf("Selected [Row,Column] = [%d,%d]\n", i, j);
 				}
 			}
 		}
+		System.out.println("--------------------------------------\n");
+
 	}
 
 }

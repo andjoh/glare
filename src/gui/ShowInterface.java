@@ -97,7 +97,7 @@ public class ShowInterface extends JFrame {
 			openSettingsFrame();
 		else {
 			slider.start();
-
+			unhideComponent(settingsButton);
 		}
 
 	}
@@ -197,8 +197,7 @@ public class ShowInterface extends JFrame {
 
 					// System.out.println("after thread");
 
-					int i = 0;
-					System.out.println("IS called :" + i + "times");
+					
 					show.moveNext();
 					repaint();
 					Thread.sleep(d);
