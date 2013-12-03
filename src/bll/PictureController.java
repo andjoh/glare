@@ -30,20 +30,24 @@ public class PictureController {
 	 * @return - True if new or modified picture data are saved to db
 	 */
 	public boolean getNewPictureData() {
-
+		System.out.println("PictureController: getNewPictureData");
+		
 		// Search for pictureData
 		boolean success = searchPictureData();
 
 		// If found pictureData: Process the data and save to db
 		if ( success ) {
+			System.out.println("PictureController: getNewPictureData: success");
+
 			processPictureData();
 
 			List<PictureData> pictureDataToSave = new ArrayList<PictureData>();
-			
-			if ( !pictureDataNew.isEmpty() || !pictureDataModified.isEmpty() ) {			
 
-				pictureDataToSave.addAll(pictureDataExisting);
-				
+			if ( !pictureDataNew.isEmpty() || !pictureDataModified.isEmpty() ) {			
+				System.out.println("PictureController: getNewPictureData: not empty");
+
+				pictureDataToSave.addAll(pictureDataNew);
+
 				System.out.println("");				
 				System.out.println("PictureController, getNewPictureData: All PictureData before save to db");
 				for ( PictureData pd : pictureDataNew ) {
@@ -51,8 +55,20 @@ public class PictureController {
 				}
 				System.out.println("");				
 
+				if ( !pictureDataModified.isEmpty() ) {			
+
+					pictureDataToSave.addAll(pictureDataModified);
+
+					System.out.println("");				
+					System.out.println("PictureController, getNewPictureData: Modified PictureData before save to db");
+					for ( PictureData pd : pictureDataModified ) {
+						System.out.println(pd.getId());
+					}
+					System.out.println("");				
+
+				}
 			}						
-			
+
 			if ( !pictureDataToSave.isEmpty() ) {
 				databaseManager.savePictureDataToDb(pictureDataToSave);
 				success = true;
@@ -78,27 +94,12 @@ public class PictureController {
 	 * @return - True if new picture data are found
 	 */
 	public boolean searchPictureData() {	
-		List<PictureData> pictureData = new ArrayList<PictureData>();
+		pictureDataFromSources = new ArrayList<PictureData>();
 
 		// Get sources and hashtags
 		List<String> sources = databaseManager.getSources();
-		Set<String> hashtags = databaseManager.getHashtags();
-
-		System.out.println("");				
-		System.out.println("PictureController, searchPictureData: Sources from db");
-		for ( String s : sources ) {
-			System.out.println(s);
-		}
-		System.out.println("");	
-		
-		System.out.println("");				
-		System.out.println("PictureController, searchPictureData: Hashtag from db");
-		for ( String s : hashtags ) {
-			System.out.println(s);
-		}
-		System.out.println("");	
-		
-		
+		Set<String> hashtags = databaseManager.getHashtags();	
+				
 		if ( hashtags.isEmpty() || sources.isEmpty() )
 			return false;
 
@@ -110,20 +111,15 @@ public class PictureController {
 			IReader reader  = (IReader) ClassFactory.getBeanByName(beanName);	
 
 			for ( String hashtag : hashtags ) {				
-				pictureData.addAll(searchPictureDataFromHashtags(reader, hashtag));	
+				pictureDataFromSources.addAll(searchPictureDataFromHashtags(reader, hashtag));	
 			}
 		}
-		if ( pictureData.isEmpty() )
+		
+		if ( pictureDataFromSources.isEmpty() )
 			return false;
 		
-		System.out.println("");	
-		System.out.println("PictureController, searchPictureData: Searched PictureData before remove duplicates");
-		for ( PictureData pd : pictureData )
-			System.out.println(pd.getId());
-		System.out.println("");		
-		
 		// Remove duplicates from pictureData got from sources
-		pictureDataFromSources = removePictureDataDuplicates(pictureData);
+		//pictureDataFromSources = removePictureDataDuplicates(pictureData);
 
 		return true;
 	}
@@ -201,6 +197,7 @@ public class PictureController {
 		pictureDataNew           = new ArrayList<PictureData>();
 		pictureDataModified      = new ArrayList<PictureData>();
 		existingPicIdNewHashtags = new ArrayList<PictureIdHashtags>();
+		PictureData picMod;
 		
 		// Iterate over picture data from sources
 		boolean pictureDataExists;
@@ -214,20 +211,26 @@ public class PictureController {
 				if ( pdPossibleNew.getId() == pdExisting.getId() ) {			
 					pictureDataExists = true;
 
-					// PictureData exists. Need to check if there are new hashtags to add
-					Set<String> newHashtags = checkForNewHashtags(pdExisting, pdPossibleNew);
-
-					if ( !newHashtags.isEmpty() ) {
-						// Add new hashtags to existing pictureData and add to modified list
-						for ( String ht : newHashtags ) {
-							pdExisting.addHashtag(new Hashtag(ht));
-						}
-						pictureDataModified.add(pdExisting);
-						
-						// Create object holding existing pictureId and new hashtags
-						PictureIdHashtags idHash = new PictureIdHashtags(pdExisting.getId(), newHashtags);
-						existingPicIdNewHashtags.add(idHash);	
-					}
+					// PictureData exist. Add this pictureData to modified list, but with only the new hashtag
+					picMod = new PictureData(pdExisting.getId(), pdExisting.getUrlStd(), 
+							pdExisting.getUrlThumb(),pdExisting.getCreatedTime(), pdExisting.isRemoveFlag() );
+					picMod.addHashtag(pdPossibleNew.getHashtags().iterator().next());
+					pictureDataModified.add(picMod);
+					
+//					// PictureData exists. Need to check if there are new hashtags to add
+//					Set<String> newHashtags = checkForNewHashtags(pdExisting, pdPossibleNew);
+//
+//					if ( !newHashtags.isEmpty() ) {
+//						// Add new hashtags to existing pictureData and add to modified list
+//						for ( String ht : newHashtags ) {
+//							pdExisting.addHashtag(new Hashtag(ht));
+//						}
+//						pictureDataModified.add(pdExisting);
+//						
+//						// Create object holding existing pictureId and new hashtags
+//						PictureIdHashtags idHash = new PictureIdHashtags(pdExisting.getId(), newHashtags);
+//						existingPicIdNewHashtags.add(idHash);	
+//					}
 
 					break;
 				}				
@@ -236,7 +239,7 @@ public class PictureController {
 			// Picture data doesn't exist - add to lists
 			if ( !pictureDataExists ) {
 				pictureDataNew.add(pdPossibleNew);
-				pictureDataExisting.add(pdPossibleNew);
+				//pictureDataExisting.add(pdPossibleNew);
 			}
 		}	
 		// Sort - Don't think this is needed

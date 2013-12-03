@@ -84,6 +84,9 @@ public class DatabaseManager {
 		for(String s: hashtags){
 			DatabaseHandler.removeHashtagFromDB(s);
 		}
+		
+		// Remove picture data without any hashtag
+		removePicturesWithoutHashtagFromDB();
 	}
 
 	public List<String> getSources() {

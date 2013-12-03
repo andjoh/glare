@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -25,8 +24,6 @@ public class DisplaySettingsPanel extends JPanel implements ActionListener {
 		 * 
 		 */
 	private JSpinner delaySpinner;
-	private ViewController viewCtrl;
-	private Dimension dim;
 	private JComboBox<String> viewmodeCombo;
 	private JLabel viewdelayLabel, viewmodeLabel;
 	private static final long serialVersionUID = 1L;
@@ -35,9 +32,7 @@ public class DisplaySettingsPanel extends JPanel implements ActionListener {
 	private Constraints[] gbcs = new Constraints[] { new Constraints(),
 			new Constraints(), new Constraints(), new Constraints() };
 
-	public DisplaySettingsPanel(ViewController viewCtrl, Dimension dim) {
-		this.viewCtrl=viewCtrl;
-        this.dim=dim;
+	public DisplaySettingsPanel(ViewController viewCtrl) {
 		setOpaque(false);
 		setLayout(new GridBagLayout());
 		init();

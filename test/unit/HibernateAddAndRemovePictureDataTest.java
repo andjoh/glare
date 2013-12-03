@@ -1,8 +1,6 @@
 package unit;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -30,6 +28,7 @@ public class HibernateAddAndRemovePictureDataTest {
 		pic.addHashtag(hash);
 		DatabaseHandler.addPictureToDB(pic);
 		
+		DatabaseHandler.removePictureDataFromDB(pic.getId());
 		List<PictureData> result = DatabaseHandler.listOfPicturesFromDB();
 		DatabaseHandler.removePictureDataFromDB(result.get(0).getId());
 		pictures = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();

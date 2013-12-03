@@ -77,8 +77,8 @@ public class ImageShow extends JPanel {
 	public void moveNext() throws IOException {
 		BufferedImage bf = ctrl.getCurrentPicture();
 
-		if (bf != null)
-			currImg = Thumbnails.of(bf).scale(SCALE_FACTOR).asBufferedImage();
+		if (bf != null)currImg = Thumbnails.of(bf).scale(SCALE_FACTOR).asBufferedImage();
+		else currImg =null;
 
 	}
 }

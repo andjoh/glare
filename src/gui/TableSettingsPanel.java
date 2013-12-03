@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.Color;
+
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -9,9 +9,6 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
@@ -21,7 +18,6 @@ import javax.swing.ScrollPaneConstants;
 
 import bll.ViewController;
 
-import resources.ViewControllerDummy;
 
 public class TableSettingsPanel extends JPanel  {
 	/**
@@ -32,9 +28,8 @@ public class TableSettingsPanel extends JPanel  {
 	private final static int COLS = 5, ROWS = 20;
 	private ImageTableModel tablemodel;
 	private JButton removeButton;
-	private Action action;
 	private Dimension dim;
-	private ImageTableListener imagetablelistener;
+	
 	private ViewController viewCtrl;
 	private JScrollPane tableScroller;
 	private ImageTable thumbnailTable;
@@ -56,20 +51,17 @@ public class TableSettingsPanel extends JPanel  {
 		tablemodel = new ImageTableModel(viewCtrl.getSettingsPictures(ROWS, COLS) );
 		thumbnailTable = new ImageTable(tablemodel,dim);
 		
-		action= new AbstractAction("Remove") {
+		Action act= new AbstractAction("Remove") {
             private static final long serialVersionUID = 1L;
   
             @Override
             public void actionPerformed(ActionEvent e) {
-            	 ImageTableListener tcl = (ImageTableListener)e.getSource();
-                 System.out.println("Row   : " + tcl.getRow());
-                 System.out.println("Column: " + tcl.getColumn());
-                 System.out.println("Old   : " + tcl.getOldValue());
-                 System.out.println("New   : " + tcl.getNewValue());
-            
+            	tablemodel.removeFlagged();
+            	repaint();
             }
         };
-		imagetablelistener= new ImageTableListener(thumbnailTable,action);
+        removeButton =new JButton(act);
+		
 		// tableScroller properties
 		tableScroller = new JScrollPane();
 		tableScroller.setOpaque(false);
@@ -81,9 +73,6 @@ public class TableSettingsPanel extends JPanel  {
 		// removeButton Properties
 		System.out.println("Screensize : "+Toolkit.getDefaultToolkit().getScreenSize());
 		
-		
-		removeButton =new JButton(action);
-		//removeButton.addActionListener(this);
 		;
 	}
 
@@ -93,32 +82,12 @@ public class TableSettingsPanel extends JPanel  {
 				GridBagConstraints.NORTHWEST);
 
 		add(tableScroller, gbc[0]);
-		
-		//gbc[0].set(0, 1, 1, 1, new Insets(9, 200, 57, 0),
-			//	GridBagConstraints.NORTHWEST);
 
 		gbc[1].set(0, 1, 1, 1, 0,0, 1.0, 1.0, new Insets(6,dim.width/2, 150, 18),
 			GridBagConstraints.NORTHWEST);
 		add(removeButton, gbc[1]);
-
-	
-	
-         
-         
-         
-         
-  
     }
   
-	
-	
-	
-	
-	
-	
-	
-	
-
 
 	public ImageTableModel getImageTableModel() {
 		return tablemodel;
