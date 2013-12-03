@@ -43,6 +43,7 @@ public class DatabaseHandler {
 			}
 
 			//Checks if a picture with the same ID is in DB, and updates the hashtags if exists
+			newHashSet = null;
 			newHashSet = pic.getHashtags();
 			resultPic = DatabaseHandler.returnPictureIfAlreadyExists(pic);
 			if(resultPic.size() == 1){
@@ -50,8 +51,9 @@ public class DatabaseHandler {
 				Set<Hashtag> hashtagsFromDB = resultPic.get(0).getHashtags();
 				newHashSet.addAll(hashtagsFromDB);
 				pic.setHashtags(newHashSet);
-			}
-			session.saveOrUpdate(pic);
+				session.merge(pic);
+			}else
+				session.saveOrUpdate(pic);
 
 			tx.commit();
 		} catch(HibernateException e){
@@ -72,7 +74,7 @@ public class DatabaseHandler {
 	public static List<PictureData> returnPictureIfAlreadyExists(PictureData pic){
 		List<PictureData> result = null;
 		Transaction tx = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
@@ -83,6 +85,8 @@ public class DatabaseHandler {
 			if (tx!=null) 
 				tx.rollback();
 			e.printStackTrace();
+		} finally{
+			session.close();
 		}
 		return result;
 	}
@@ -150,7 +154,7 @@ public class DatabaseHandler {
 	public static List<Hashtag> returnHashtagIfAlreadyExists(Hashtag h){
 		List<Hashtag> result = null;
 		Transaction tx = null;
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
 		try{
 			tx = session.beginTransaction();
@@ -162,6 +166,8 @@ public class DatabaseHandler {
 			if (tx!=null) 
 				tx.rollback();
 			e.printStackTrace();
+		} finally{
+			session.close();
 		}
 		return result;
 	}
