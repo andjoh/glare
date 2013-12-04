@@ -43,25 +43,36 @@ public class ViewController {
 		displayTime = 1000;
 	}
 
-	public BufferedImage getCurrentPicture() throws IOException {
-		if (sortedPictureList.isEmpty())
+	public BufferedImage getCurrentPicture() {
+		
+		BufferedImage image = null;
+		
+		if (sortedPictureList.isEmpty() || randomPictureList.isEmpty())
 			getSortedList();
 
-		if ( !(sortedPictureList.isEmpty() && randomPictureList.isEmpty()) ) {
+		while ( true ) {
+			if ( (sortedPictureList.isEmpty() || randomPictureList.isEmpty()) ) {
+				break;
+			}	
+			
 			PictureData p;
 
-			if (isRandom) {
+			if ( isRandom ) {
 				p = randomPictureList.remove(0);
 				sortedPictureList.remove(p);
 			} else {
 				p = sortedPictureList.remove(0);
 				randomPictureList.remove(p);
 			}
+			
+			image = getBufImage(p.getUrlStd());
 
-			return getBufImage(p.getUrlStd());
+			if ( image != null ) {
+				break;
+			}	
 		}
-
-		return null;
+		
+		return image;
 	}
 
 	public void getSortedList() {
@@ -85,10 +96,11 @@ public class ViewController {
 	private BufferedImage getBufImage(String url) {
 		URL imageUrl;
 		BufferedImage image = null;
+
 		try {
-		     imageUrl = new URL(url);
-		     HttpURLConnection urlConn =( HttpURLConnection) imageUrl.openConnection();
-		    InputStream is = urlConn.getInputStream();
+			imageUrl = new URL(url);
+			HttpURLConnection urlConn =( HttpURLConnection) imageUrl.openConnection();
+			InputStream is = urlConn.getInputStream();
 			image = ImageIO.read(is);
 			is.close();
 		} catch (MalformedURLException e) {
@@ -98,6 +110,7 @@ public class ViewController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 		return image;
 	}
 
