@@ -64,10 +64,12 @@ public class ImageTableModel extends AbstractTableModel {
 	// The value is the icon returned from SettingsPicture's getIcon
 
 	public Object getValueAt(int row, int column) {
-		if (data.get(row).get(column) != null)
-			return data.get(row).get(column).getIcon(100, 100);
-		else
+		SettingsPicture pic = getSetPic(row,column);
+		if (pic.getIsFlagged())
 			return null;
+		
+		else return  pic.getIcon(100, 100);
+			
 	}
 
 	// Sets value - a SettingsPicture object into the data object
@@ -78,19 +80,17 @@ public class ImageTableModel extends AbstractTableModel {
 		if (value != null) {
 			pic = (SettingsPicture) value;
 			data.get(row).set(col, pic);
-		} else
-			data.get(row).set(col, null);
-
+		}
 		fireTableCellUpdated(row, col);
 	}
 
 	public boolean cellIsFlagged(int row, int col) {
-		if (data.get(row).get(col) == null)
-			return true;
-		else if (data.get(row).get(col).getIsFlagged())
-			return true;
-		else
-			return false;
+         SettingsPicture pic=getSetPic(row,col);
+      return   pic.getIsTempFlagged();
+    
+	}
+	public SettingsPicture getSetPic(int row, int col){
+		  return data.get(row).get(col);
 	}
 
 	// Implementation from superclass
@@ -105,18 +105,14 @@ public class ImageTableModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
-	// Removes a cell fires event to update table
-	public void removeCell(int row, int col) {
-		data.get(row).remove(col);
-		fireTableStructureChanged();
-	}
+
 
 	// Flags picture based on row, column
 	public void setflagOnPicture(int row, int column, boolean isFlagged) {
-		if (data.get(row).get(column) == null)
-			;
-		else
-			data.get(row).get(column).setIsFlagged(isFlagged);
+	   getSetPic(row,column).setIsFlagged(isFlagged);
+	}
+	public void setTempflagOnPicture(int row, int column, boolean isTempFlagged) {
+		getSetPic(row,column).setIsTempFlagged(isTempFlagged);
 	}
 
 	public void clearFlags() {
@@ -124,11 +120,7 @@ public class ImageTableModel extends AbstractTableModel {
 
 			for (int j = 0; j < getColumnCount(); j++) {
 
-				if (getValueAt(i, j) == null)
-					;
-				else
-					setflagOnPicture(i, j, false);
-
+					setTempflagOnPicture(i, j, false);
 			}
 		}
 	}

@@ -12,12 +12,14 @@ import net.coobird.thumbnailator.Thumbnails;
 
 public class SettingsPicture {
 	private String id;
-	private boolean isFlagged=false;
+	private boolean isFlagged,isTempFlagged;
 	private BufferedImage image;
 	
 	public SettingsPicture(String id, BufferedImage image) {
 		this.id    = id;
 		this.image = image;
+		 isFlagged=false;
+		 isTempFlagged=false;
 	}
 
 	public String getId() {
@@ -42,7 +44,12 @@ public class SettingsPicture {
 	    if(image!=null)ic= new ImageIcon(img);
 		return ic;
 	}
-
+	public void setIsTempFlagged(boolean isTempFlagged){
+		this.isFlagged=isTempFlagged;
+	}
+	public boolean getIsTempFlagged(){
+		return isTempFlagged;
+	}
 	public void setIsFlagged(boolean isFlagged){
 		this.isFlagged=isFlagged;
 	}
