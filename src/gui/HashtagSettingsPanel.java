@@ -9,16 +9,22 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -35,7 +41,7 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 	private DefaultListModel<String> listModel;
 	private JTextField addhashField;
 	private JList<String> hashJList;
-
+    private InputMap input;
 	private JLabel hashsignLabel;
 	private JButton delhashButton, addhashButton;
 	private JScrollPane jlistScroller;
@@ -52,6 +58,34 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 		setLayout(new GridBagLayout());
 		init();
 		setConstraints();
+		addKeyBindings();
+	    
+	}private void addKeyBindings(){
+		
+		input= getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enter");
+		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
+         getActionMap().put("enter", new AbstractAction() {
+			            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+						@Override
+			            public void actionPerformed(ActionEvent e) {
+
+			            	if(addhashButton.isEnabled())addhashButton.doClick();
+			            }
+			        });
+         getActionMap().put("delete", new AbstractAction() {
+	            @Override
+	            public void actionPerformed(ActionEvent e) {
+
+	            	if(delhashButton.isEnabled())delhashButton.doClick();
+	            }
+	        });
+		
+		
 	}
 
 	private void init() {

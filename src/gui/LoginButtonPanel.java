@@ -4,11 +4,13 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
@@ -41,12 +43,20 @@ class ButtonPanel extends JPanel implements ActionListener {
 		this.dim = dim;
 		this.setBounds(0, this.dim.height * 2 / 3, dim.width,
 				dim.height * 1 / 3);
-		enterAction = new EnterAction();
-		getInputMap().put(KeyStroke.getKeyStroke("ENTER"), "doEnterAction");
-		getActionMap().put("doEntereAction", enterAction);
+getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "forward");
+
+getActionMap().put("forward", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (okButton.isEnabled())
+					okButton.doClick();
+			}
+	        });
 		setOpaque(false);
 		setFocusable(true);
-		// requestFocusInWindow();
+		
+		this.
+		requestFocusInWindow();
 		init();
 
 	}
@@ -115,9 +125,10 @@ class ButtonPanel extends JPanel implements ActionListener {
 		 * 
 		 */
 		private static final long serialVersionUID = 1L;
-
+           @Override
 		public void actionPerformed(ActionEvent tf) {
 			okButton.doClick();
+			System.exit(0);
 			System.out.println("Pressed enter");
 		}
 

@@ -9,12 +9,16 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.InputMap;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 
 import bll.ViewController;
@@ -29,7 +33,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	private ImageTableModel tablemodel;
 	private JButton removeButton;
 	private Dimension dim;
-
+    private InputMap input;
 	private ViewController viewCtrl;
 	private JScrollPane tableScroller;
 	private ImageTable thumbnailTable;
@@ -40,9 +44,13 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 		setOpaque(false);
 		setLayout(new GridBagLayout());
 		gbc = new Constraints[] { new Constraints(), new Constraints() };
+		setFocusable(true);
+		this.setRequestFocusEnabled(true);
+	
 		init();
 		System.out.println("TableSettingsPanel" + super.getSize());
 		setConstraints();
+		addKeyBindings();
 	}
 
 	private void init() {
@@ -73,6 +81,24 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 
 		;
 	}
+private void addKeyBindings(){
+		
+		input= getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
+         getActionMap().put("delete", new AbstractAction() {
+			            /**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+						@Override
+			            public void actionPerformed(ActionEvent e) {
+                            System.out.println("Table KeyBindings");
+			            	removeButton.doClick();
+			            }
+			        });	
+	}
+
 
 	private void setConstraints() {
 		gbc[0].fill = GridBagConstraints.BOTH;

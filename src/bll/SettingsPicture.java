@@ -31,15 +31,16 @@ public class SettingsPicture {
 		BufferedImage img=null;
 	
 		
-		try {
+		try {if(image!=null)
       img=Thumbnails.of(image).size(w, h)
 			.asBufferedImage();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-		return new ImageIcon(img);
+	    ImageIcon ic=null;
+	    if(image!=null)ic= new ImageIcon(img);
+		return ic;
 	}
 
 	public void setIsFlagged(boolean isFlagged){
