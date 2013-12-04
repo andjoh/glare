@@ -13,27 +13,29 @@ import javax.swing.JTextField;
 public class LoginInputPanel extends JPanel {
 
 	private JTextField usernameInputField;
-	 private Dimension dim;
+	private Dimension dim;
 	private JLabel usernameLabel, passwordLabel;
 	private JPasswordField passwordInputField;
 	private Constraints gbc;
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
 	public LoginInputPanel(Dimension dim) {
-         this.dim=dim;
+		this.dim = dim;
 		gbc = new Constraints();
 		setLayout(new GridBagLayout());
 		setOpaque(false);
 		init();
-		setBounds(0,0,this.dim.width,dim.height);
+		setBounds(0, 0, this.dim.width, dim.height);
 		setConstraints();
-		
+
 	}
+
 	@Override
-	public void paintComponent(Graphics g){
+	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 	}
 
@@ -51,7 +53,22 @@ public class LoginInputPanel extends JPanel {
 
 	}
 
-	public LoginInputPanel() {
+	public boolean checkFieldsFull() {
+
+		if (!getUsername().isEmpty() && !getPassword().isEmpty()) {
+
+			return true;
+		}
+		return false;
+
+	}
+
+	public JTextField getUserField() {
+		return usernameInputField;
+	}
+
+	public JPasswordField getPasswordField() {
+		return passwordInputField;
 
 	}
 

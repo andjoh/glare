@@ -3,7 +3,6 @@ package gui;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-
 import net.coobird.thumbnailator.Thumbnails;
 
 import bll.ViewController;
@@ -42,8 +41,8 @@ public class ImageShow extends JPanel {
 	public BufferedImage loadBackground() throws IOException {
 		URL url = this.getClass().getResource("/resource/img/glare.png");
 		backgroundImage = ImageIO.read(url);
-		backgroundImage = Thumbnails.of(backgroundImage)
-				.scale(1.3).asBufferedImage();
+		backgroundImage = Thumbnails.of(backgroundImage).scale(1.7)
+				.asBufferedImage();
 		return backgroundImage;
 
 	}
@@ -55,14 +54,14 @@ public class ImageShow extends JPanel {
 	public void paint(Graphics g) {
 		int w = 0, h = 0;
 		Graphics2D g2 = (Graphics2D) g;
-		if (currImg != null) {
-
+		if(currImg==null){
+			
+			currImg = backgroundImage;
+		}
 			w = (SCREEN_W - currImg.getWidth()) / 2;
 			h = (SCREEN_H - currImg.getHeight()) / 2;
 
-		} else {
-			currImg = backgroundImage;
-		}
+		
 		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 				RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 		g2.drawImage(currImg, w, h, null);
@@ -77,8 +76,10 @@ public class ImageShow extends JPanel {
 	public void moveNext() throws IOException {
 		BufferedImage bf = ctrl.getCurrentPicture();
 
-		if (bf != null)currImg = Thumbnails.of(bf).scale(SCALE_FACTOR).asBufferedImage();
-		else currImg =null;
+		if (bf != null)
+			currImg = Thumbnails.of(bf).scale(SCALE_FACTOR).asBufferedImage();
+		else
+			currImg = null;
 
 	}
 }

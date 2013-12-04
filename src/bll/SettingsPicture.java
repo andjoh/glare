@@ -29,13 +29,16 @@ public class SettingsPicture {
 	}
 	public ImageIcon getIcon(int w, int h) {
 		BufferedImage img=null;
+	
+		
 		try {
-			 img=Thumbnails.of(image).size(w, h)
+      img=Thumbnails.of(image).size(w, h)
 			.asBufferedImage();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	
 		return new ImageIcon(img);
 	}
 
