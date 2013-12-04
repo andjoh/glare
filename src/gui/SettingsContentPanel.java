@@ -128,7 +128,7 @@ exitButton.setContentAreaFilled(false);
 		System.out.println("Calld saveBeforExit");
 		updateDisplaySettings();
 		updateHashtags();
-	  //  updateTableSettings();
+	   updateTableSettings();
 	}
 
 	public void updateTableSettings() {
@@ -142,7 +142,21 @@ exitButton.setContentAreaFilled(false);
 		// flagged
 
 		List<List<SettingsPicture>> datatosend = imtabmod.getTableModelData();
-		viewCtrl.removePictures(datatosend);
+		System.out.println("Data to send's size: "+datatosend.size()+" * "+
+				datatosend.get(0).size());
+		SettingsPicture pic=null;
+		for(int i=0;i<datatosend.size();i++){
+			for(int j=0;j< datatosend.get(0).size();j++){
+				pic=datatosend.get(i).get(j);
+				if(pic==null)System.out.println("Picture is null..WTF?!");
+			 if (pic.getIsFlagged())
+					System.out.println("Flagged picture, ("+i+" , "+j+")");
+			}
+			
+		}
+		
+		
+		//viewCtrl.removePictures(datatosend);
 		// TODO: send id of pic to DAL } 
 	}
 

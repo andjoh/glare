@@ -64,7 +64,7 @@ public class ImageTable extends JTable implements TableModelListener {
 
 	public void setRowSize() {
 		for (int i = 0; i < model.getRowCount(); i++) {
-
+         
 			this.setRowHeight(i, 60);
 			this.setRowMargin(5);
 		}
@@ -77,8 +77,6 @@ public class ImageTable extends JTable implements TableModelListener {
 		TableColumn column = null;
 		for (int i = 0; i < model.getColumnCount(); i++) {
 			column = getColumnModel().getColumn(i);
-
-			// column.setPreferredWidth(400/model.getColumnCount());
 			column.sizeWidthToFit();
 		}
 	}
@@ -94,8 +92,11 @@ public class ImageTable extends JTable implements TableModelListener {
 
 				i = convertRowIndexToModel(i);
 				j = convertColumnIndexToModel(j);
-				if (model.cellIsFlagged(i, j))
-					setValueAt(null, i, j);
+				if (model.cellIsFlagged(i, j)){
+					model.setflagOnPicture(i, j, true);
+				}
+					
+					
 			}
 		}
 

@@ -10,9 +10,9 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.util.List;
 
 import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -21,6 +21,7 @@ import javax.swing.JScrollPane;
 import javax.swing.KeyStroke;
 import javax.swing.ScrollPaneConstants;
 
+import bll.SettingsPicture;
 import bll.ViewController;
 
 public class TableSettingsPanel extends JPanel implements ActionListener {
@@ -32,6 +33,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	private final static int COLS = 5, ROWS = 20;
 	private ImageTableModel tablemodel;
 	private JButton removeButton;
+	private List<List<SettingsPicture>> settingsPictures;
 	private Dimension dim;
     private InputMap input;
 	private ViewController viewCtrl;
@@ -55,7 +57,9 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 
 	private void init() {
 		// thumbnailTable properties
-
+		settingsPictures=viewCtrl.getSettingsPictures(ROWS,
+				COLS);
+		System.out.println();
 		tablemodel = new ImageTableModel(viewCtrl.getSettingsPictures(ROWS,
 				COLS));
 		thumbnailTable = new ImageTable(tablemodel, dim);
@@ -84,8 +88,8 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 private void addKeyBindings(){
 		
 		input= getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
-         getActionMap().put("delete", new AbstractAction() {
+		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "backspace");
+         getActionMap().put("backspace", new AbstractAction() {
 			            /**
 			 * 
 			 */
@@ -98,8 +102,6 @@ private void addKeyBindings(){
 			            }
 			        });	
 	}
-
-
 	private void setConstraints() {
 		gbc[0].fill = GridBagConstraints.BOTH;
 		gbc[0].set(0, 0, 1, 1, dim.width, dim.height * 3 / 4, 1.0, 1.0,
