@@ -45,11 +45,12 @@ public class LoginDialog extends JDialog {
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setModal(true);
 		setLocationRelativeTo(this.jf);
-				setUndecorated(true);pack();
+		setUndecorated(true);
+		pack();
 		setResizable(false);
 
 		setVisible(true);
-		
+
 	}
 
 	/*

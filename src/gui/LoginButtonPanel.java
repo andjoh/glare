@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
 class ButtonPanel extends JPanel implements ActionListener {
 	private boolean succeeded = false;
 	private Dimension dim;
@@ -35,8 +36,8 @@ class ButtonPanel extends JPanel implements ActionListener {
 			Dimension dim) {
 		this.ld = ld;
 		this.input = input;
-		this.usernameInputField=input.getUserField();
-		this.passwordInputField=input.getPasswordField();
+		this.usernameInputField = input.getUserField();
+		this.passwordInputField = input.getPasswordField();
 		this.dim = dim;
 		this.setBounds(0, this.dim.height * 2 / 3, dim.width,
 				dim.height * 1 / 3);
@@ -45,7 +46,7 @@ class ButtonPanel extends JPanel implements ActionListener {
 		getActionMap().put("doEntereAction", enterAction);
 		setOpaque(false);
 		setFocusable(true);
-		//requestFocusInWindow();
+		// requestFocusInWindow();
 		init();
 
 	}
@@ -56,20 +57,23 @@ class ButtonPanel extends JPanel implements ActionListener {
 			public void changedUpdate(DocumentEvent arg0) {
 				canEnter();
 			}
+
 			@Override
 			public void insertUpdate(DocumentEvent arg0) {
 				canEnter();
 			}
+
 			@Override
 			public void removeUpdate(DocumentEvent arg0) {
-		
+
 				canEnter();
 			}
 		};
-		usernameInputField.getDocument().addDocumentListener(	listenToTextFields);
-		passwordInputField.getDocument().addDocumentListener(	listenToTextFields);
-		
-		
+		usernameInputField.getDocument()
+				.addDocumentListener(listenToTextFields);
+		passwordInputField.getDocument()
+				.addDocumentListener(listenToTextFields);
+
 		okButton = new JButton("Login");
 		okButton.setEnabled(false);
 		cancelButton = new JButton("Cancel");
@@ -88,11 +92,13 @@ class ButtonPanel extends JPanel implements ActionListener {
 		return succeeded;
 
 	}
-	public void canEnter(){
-		if(input.checkFieldsFull()){
+
+	public void canEnter() {
+		if (input.checkFieldsFull()) {
 			okButton.setEnabled(true);
-		}else okButton.setEnabled(false);
-		
+		} else
+			okButton.setEnabled(false);
+
 	}
 
 	@Override

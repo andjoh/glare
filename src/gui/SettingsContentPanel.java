@@ -1,30 +1,43 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Set;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import net.coobird.thumbnailator.Thumbnails;
 
 import bll.SettingsPicture;
 import bll.ViewController;
 
-public class SettingsContentPanel extends JPanel {
+public class SettingsContentPanel<exitButton> extends JPanel implements ActionListener {
 	/**
 	 * @author Andreas J
 	 */
 	private static final long serialVersionUID = 1L;
 	private Dimension dim;
+	private JButton exitButton;
 	private HashtagSettingsPanel hashpan;
 	private ViewController viewCtrl;
+	private SettingsFrame parent;
 	private JLabel backgroundImageLabel;
 	private TableSettingsPanel tablepanel;
 	private DisplaySettingsPanel dispset;
 
-	public SettingsContentPanel(ViewController viewCtrl, Dimension dim) {
+	public SettingsContentPanel(ViewController viewCtrl,SettingsFrame parent, Dimension dim) {
 		this.viewCtrl = viewCtrl;
+		this.parent=parent;
 		this.dim = new Dimension(dim.width * 2 / 3, dim.height * 7 / 10);
 		setPreferredSize(this.dim);
 		setDoubleBuffered(true);
@@ -44,6 +57,7 @@ public class SettingsContentPanel extends JPanel {
 		add(dispset);
 		add(tablepanel);
 		add(hashpan);
+		add(exitButton);
 		add(backgroundImageLabel);
 	}
 
@@ -60,43 +74,61 @@ public class SettingsContentPanel extends JPanel {
 		// TableSettingsPanel declaration
 		tablepanel = new TableSettingsPanel(viewCtrl, dim);
 		tablepanel.setBounds(dim.width * 35 / 100, 10, dim.width * 2 / 3,
-				dim.height * 4 / 3);
+		dim.height * 4 / 3);
+		// exitButton properties
+		
+	exitButton= new JButton("Exit");
+	
+	exitButton.addActionListener(this);
+	
 
+		BufferedImage img=null;
+		URL  url = this.getClass().getResource("/resource/img/exit.png");
+		 int w=dim.width/20,h=dim.height/20;
+		try {
+   
+      img= ImageIO.read(url);
+     img=Thumbnails.of(img).size(w, h)
+			.asBufferedImage();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ImageIcon ic = new ImageIcon(img);
+	
+		exitButton.setIcon(ic);
+exitButton.setBorderPainted(false);
+exitButton.setContentAreaFilled(false);
+		exitButton.setBounds(dim.width-w*2/3,0,w,h);
+		
+		
 		// Background Image declaration
 
 		backgroundImageLabel = new JLabel();
-
 		backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
 				"/resource/img/backgr.jpg")));
 		backgroundImageLabel.setIconTextGap(0);
-		// backgroundImageLabel.setPreferredSize(dim);
-		// /backgroundImageLabel.setBounds(0, 0,dim.width,dim.height);
 		backgroundImageLabel.setBounds(0, 0, dim.width, dim.height);
 
 	}
 
 	public void updateDisplaySettings() {
-		if (dispset == null)
-			System.out.println("Dispset is null");
-		if (dispset == null)
-			System.out.println("Dispset is null");
 		viewCtrl.setRandom(dispset.getViewMode());
 		viewCtrl.setDisplayTime(dispset.getViewDelay());
 	}
 
 	// send updated hashtags to ViewCtrl
 	public void updateHashtags() {
-		if (hashpan == null)
-			System.out.println("hashpan is null");
 		Set<String> hashtagList = hashpan.getHashtagList();
 
 		viewCtrl.updateHashtags(hashtagList);
 	}
 
 	public void saveBeforeExit() {
+		System.out.println("Calld saveBeforExit");
 		updateDisplaySettings();
 		updateHashtags();
-		// updateTableSettings();
+	  //  updateTableSettings();
 	}
 
 	public void updateTableSettings() {
@@ -105,15 +137,23 @@ public class SettingsContentPanel extends JPanel {
 		// flag them yet.
 		// This can be done here for test purposes
 		// f.ex we want to flag picture in row 4 column 4:
-		imtabmod.setflagOnPicture(4, 4, true);
-		imtabmod.setflagOnPicture(3, 4, true);
+		
 		// here is the data to send, picture in row 4 colum 4 should be
 		// flagged
 
 		List<List<SettingsPicture>> datatosend = imtabmod.getTableModelData();
 		viewCtrl.removePictures(datatosend);
-		// TODO: send id of pic to DAL } }
+		// TODO: send id of pic to DAL } 
+	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
+	  if(e.getSource().equals(exitButton)){
+		  saveBeforeExit();
+		  parent.setVisible(false);
+		  parent.dispatchEvent(new WindowEvent( parent, WindowEvent.WINDOW_CLOSING));
+	  }
+		
 	}
 
 }

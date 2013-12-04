@@ -34,7 +34,6 @@ public class LoginInputPanel extends JPanel {
 
 	}
 
-
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -57,18 +56,20 @@ public class LoginInputPanel extends JPanel {
 	public boolean checkFieldsFull() {
 
 		if (!getUsername().isEmpty() && !getPassword().isEmpty()) {
-	
-         return true;
-		} 
+
+			return true;
+		}
 		return false;
 
 	}
-	public JTextField getUserField(){
+
+	public JTextField getUserField() {
 		return usernameInputField;
 	}
-	public JPasswordField getPasswordField(){
+
+	public JPasswordField getPasswordField() {
 		return passwordInputField;
-		
+
 	}
 
 	/*
