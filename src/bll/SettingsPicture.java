@@ -39,8 +39,7 @@ img=Thumbnails.of(image).size(w, h)
 			e.printStackTrace();
 		}
 		ImageIcon ic = new ImageIcon(img);
-		System.out.println("ImageIcon rez size: "+ic.getIconWidth()+
-				","+ic.getIconWidth());
+	
 		return new ImageIcon(img);
 	}
 

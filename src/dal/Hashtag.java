@@ -49,12 +49,14 @@ public class Hashtag {
 	}
 
 	public void setHashtag(String hashtag) {
-		this.hashtag = hashtag.toLowerCase();
+		this.hashtag = hashtag;
 	}
 
 	@Override
 	public int hashCode() {
-		return hashtag.hashCode();
+		int tmp = 0;
+		tmp = (id + hashtag).hashCode();
+		return tmp;
 	}
 
 	@Override

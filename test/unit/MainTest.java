@@ -40,7 +40,9 @@ public class MainTest {
 		} catch (IllegalAccessException ex) {
 			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
 					.log(java.util.logging.Level.SEVERE, null, ex);
-		} catch (UnsupportedLookAndFeelException ex) {
+		} catch (UnsupportedL
+				
+				ookAndFeelException ex) {
 			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
 					.log(java.util.logging.Level.SEVERE, null, ex);
 		}

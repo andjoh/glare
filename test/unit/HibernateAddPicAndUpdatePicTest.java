@@ -6,8 +6,10 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-
 import java.util.Set;
+
+import javax.xml.crypto.Data;
+
 import org.junit.Test;
 
 import dal.DatabaseHandler;
@@ -28,7 +30,7 @@ public class HibernateAddPicAndUpdatePicTest {
 		pic.setUrlThumb("www.instagram.com");
 		pic.setCreatedTime(123456);
 		pic.setRemoveFlag(false);
-		pic.addHashtag(h1);
+//		pic.addHashtag(h1);
 		pic.addHashtag(h2);
 		DatabaseHandler.addPictureToDB(pic);
 		
@@ -44,13 +46,41 @@ public class HibernateAddPicAndUpdatePicTest {
 		DatabaseHandler.addPictureToDB(pic2);
 		
 		PictureData pic3 = new PictureData();
-		pic3.setId("132894");
+		pic3.setId("1247845_2455");
 		pic3.setUrlStd("www.twitter.com");
 		pic3.setUrlThumb("www.instagram.com");
 		pic3.setCreatedTime(123456);
 		pic3.setRemoveFlag(false);
-		pic3.addHashtag(h3);
+		pic3.addHashtag(h1);
 		DatabaseHandler.addPictureToDB(pic3);
+		
+		PictureData pic6 = new PictureData();
+		pic6.setId("132894");
+		pic6.setUrlStd("www.twitter.com");
+		pic6.setUrlThumb("www.instagram.com");
+		pic6.setCreatedTime(123456);
+		pic6.setRemoveFlag(false);
+//		pic6.addHashtag(h3);
+		pic6.addHashtag(h2);
+		DatabaseHandler.addPictureToDB(pic6);
+		
+		PictureData pic4 = new PictureData();
+		pic4.setId("51242");
+		pic4.setUrlStd("www.twitter.com");
+		pic4.setUrlThumb("www.instagram.com");
+		pic4.setCreatedTime(123456);
+		pic4.setRemoveFlag(false);
+		pic4.addHashtag(h3);
+		DatabaseHandler.addPictureToDB(pic4);
+		
+		PictureData pic5 = new PictureData();
+		pic5.setId("132894");
+		pic5.setUrlStd("www.twitter.com");
+		pic5.setUrlThumb("www.instagram.com");
+		pic5.setCreatedTime(123456);
+		pic5.setRemoveFlag(false);
+		pic5.addHashtag(h3);
+		DatabaseHandler.addPictureToDB(pic5);
 		
 		pictures = (ArrayList<PictureData>) DatabaseHandler.listOfPicturesFromDB();
 		
@@ -59,7 +89,7 @@ public class HibernateAddPicAndUpdatePicTest {
 					+ pic1.getCreatedTime() + " " + pic1.isRemoveFlag());
 		}
 		
-		assertThat(pictures.size(), is(2));
+		assertThat(pictures.size(), is(3));
 	}
 
 }
