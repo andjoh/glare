@@ -59,6 +59,8 @@ public class ViewController {
 			getSortedList();
 
 		while ( true ) {
+			System.out.println("Hvor mange bilder igjen: " + sortedPictureList.size());
+			
 			if ( (sortedPictureList.isEmpty() || randomPictureList.isEmpty()) ) {
 				break;
 			}	
@@ -88,7 +90,15 @@ public class ViewController {
 	 * Prepare lists for sequential - and random view
 	 */
 	public void getSortedList() {
+		System.out.println("ViewController getSortedList");
+		
 		pictureDataList   = dbMan.getSortedPictureData();
+		for ( PictureData p : pictureDataList ) {
+			System.out.println(p.getId());
+			for ( Hashtag htObj : p.getHashtags() )
+				System.out.println(" - " + htObj.getHashtag());
+		}
+		
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);
 		randomPictureList = new ArrayList<PictureData>(pictureDataList);
 		Collections.shuffle(randomPictureList);
@@ -138,7 +148,9 @@ public class ViewController {
 				setPic.add(new SettingsPicture(p.getId(), image));
 			}
 		}
-				
+			
+		System.out.println("Size settings picture objects before making 2D list: " + setPic.size());
+		
 		List<List<SettingsPicture>> settingsPictures = new ArrayList<List<SettingsPicture>>();;
 		List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
 		
@@ -157,6 +169,16 @@ public class ViewController {
 		else 
 			settingsPictures.add(tmp);		
 
+		// Testing
+		int countSettingsPictureObjects = 0;
+		for(List<SettingsPicture> list : settingsPictures){
+			for(SettingsPicture pic :list){
+				countSettingsPictureObjects++;
+			}
+		}
+		System.out.println("Size settings picture objects AFTER making 2D list: " + countSettingsPictureObjects);
+
+		
 		return settingsPictures;
 		
 ////////////////////////////////////////////////////////////////////////////////////////////////
