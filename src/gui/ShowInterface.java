@@ -148,7 +148,11 @@ public class ShowInterface extends JFrame {
 			settingsButton = new JButton();
 			settingsButton.addActionListener(this);
 			settingsButton.setIcon(new ImageIcon(getClass().getResource(
-					"/resource/img/settings.gif")));
+					"/resource/img/settingsopcrop.png")));
+			settingsButton.setRolloverIcon(new ImageIcon(getClass().getResource(
+					"/resource/img/settingscrop.png")));
+			settingsButton.setPressedIcon(new ImageIcon(getClass().getResource(
+					"/resource/img/settingsopcrop.png")));
 			settingsButton.setBorderPainted(false);
 			settingsButton.setContentAreaFilled(false);
 			gbc.fill = GridBagConstraints.BOTH;
