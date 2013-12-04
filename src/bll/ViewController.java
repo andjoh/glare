@@ -26,14 +26,17 @@ import dal.*;
 public class ViewController {
 
 	private DatabaseManager dbMan;
+	private List<PictureData> pictureDataList;
 	private List<PictureData> sortedPictureList;
 	private List<PictureData> randomPictureList;
-	private List<PictureData> pictureDataList;
 	private Set<String> hashtags;
 	private boolean isRandom;
 	private int displayTime;
 
-	
+	/**
+	 * Constructor
+	 * @param dbMan
+	 */
 	public ViewController(DatabaseManager dbMan) {
 		this.dbMan        = dbMan;
 		sortedPictureList = new ArrayList<PictureData>();
@@ -43,6 +46,11 @@ public class ViewController {
 		displayTime = 1000;
 	}
 
+	/**
+	 * Get picture to display
+	 * 
+	 * @return BufferedImage
+	 */
 	public BufferedImage getCurrentPicture() {
 		
 		BufferedImage image = null;
@@ -75,24 +83,22 @@ public class ViewController {
 		return image;
 	}
 
+	/**
+	 * Load list of picture data from database
+	 * Prepare lists for sequential - and random view
+	 */
 	public void getSortedList() {
-		pictureDataList = dbMan.getSortedPictureData();
-
-		System.out.println("");
-		System.out.println("ViewController: getSortedList from DatabaseManager");
-		for ( PictureData pd : pictureDataList) {
-			System.out.println(pd.getId());
-			for ( Hashtag htObj : pd.getHashtags() ) {
-				System.out.println(" - " + htObj.getHashtag());
-			}
-		}
-		System.out.println("");
-
+		pictureDataList   = dbMan.getSortedPictureData();
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);
 		randomPictureList = new ArrayList<PictureData>(pictureDataList);
 		Collections.shuffle(randomPictureList);
 	}
 
+	/**
+	 * Get BufferedImage for current url
+	 * @param url
+	 * @return BufferedImage
+	 */
 	private BufferedImage getBufImage(String url) {
 		URL imageUrl;
 		BufferedImage image = null;
@@ -114,7 +120,13 @@ public class ViewController {
 
 		return image;
 	}
-
+	
+	/**
+	 * Get thumbnails to be displayed
+	 * @param rows
+	 * @param cols
+	 * @return 2d-list of settings picture objects
+	 */
 	public List<List<SettingsPicture>> getSettingsPictures(int rows, int cols) {
 
 		BufferedImage image;
@@ -178,12 +190,21 @@ public class ViewController {
 //		return settingsPictures;
 	}
 
+	/**
+	 * List of pictures to be marked inappropriate in database
+	 * @param list2d
+	 */
 	public void removePictures(List<List<SettingsPicture>> list2d) {
 		Set<String> flaggedList = new HashSet<String>();
 		String id = null;
 		for(List<SettingsPicture> list:list2d){
 
 			for(SettingsPicture pic :list){
+				if ( pic == null )
+					System.out.println("Picture is null");
+				
+					//System.out.println("removePictures: before if(pic.getIsFlagged())");
+
 				if(pic.getIsFlagged()){
 					id=pic.getId();
 					flaggedList.add(id);
@@ -197,6 +218,10 @@ public class ViewController {
 		dbMan.setRemoveFlag(flaggedList);		
 	}
 
+	/**
+	 * Remove pictures from current lists
+	 * @param pictureIds
+	 */
 	private void removeCurrentPictureData(Set<String> pictureIds) {
 		
 		for ( String picId : pictureIds ) {
@@ -212,6 +237,10 @@ public class ViewController {
 		}
 	}
 
+	/**
+	 * Remove picture data, without hashtags, from current lists
+	 * @param hashtagsDeleted
+	 */
 	private void removeCurrentPicturesWithoutHashtags(Set<String> hashtagsDeleted) {
 		
 		// Process current pictureData list
@@ -242,6 +271,10 @@ public class ViewController {
 		return hashtags;
 	}
 
+	/**
+	 * Add and delete hashtags according to input
+	 * @param hashtagList
+	 */
 	public void updateHashtags(Set<String> hashtagList) {
 
 		// Check if hashtags have been added
@@ -286,6 +319,7 @@ public class ViewController {
 	}
 
 	public int getDisplayTime() {
+		System.out.println("getDisplayTime " + displayTime);
 		return displayTime / 1000;
 	}
 

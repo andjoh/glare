@@ -90,7 +90,6 @@ public class DatabaseManager {
 	}
 
 	public List<String> getSources() {
-		// TODO This should not be hardcoded
 		List<String> sources = new ArrayList<String>();
 		sources.add("Instagram");
 		sources.add("Twitter");
