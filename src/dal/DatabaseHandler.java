@@ -30,27 +30,24 @@ public class DatabaseHandler {
 			tx = session.beginTransaction();
 			
 			//Checks if a hashtag, connected to the picture, is already saved in the DB
-			Set<Hashtag> newHashSet = pic.getHashtags();
-			List<Hashtag> testList = new ArrayList<Hashtag>();
-			testList.addAll(newHashSet);
-			for(int i = 0; i < testList.size(); i++){
-				resultHash = DatabaseHandler.returnHashtagIfAlreadyExists(testList.get(i));
+			Set<Hashtag> hashtagsFromPic = pic.getHashtags();
+			List<Hashtag> hashtagList = new ArrayList<Hashtag>();
+			hashtagList.addAll(hashtagsFromPic);
+			for(int i = 0; i < hashtagList.size(); i++){
+				resultHash = DatabaseHandler.returnHashtagIfAlreadyExists(hashtagList.get(i));
 				if(resultHash.size() == 1){
-					System.out.println("HAAAALLLOOOOOOO" + resultHash.get(0));
-					pic.remHashtag(testList.get(i));
+					pic.remHashtag(hashtagList.get(i));
 					pic.addHashtag(resultHash.get(0));
 				}
 			}
 
 			//Checks if a picture with the same ID is in DB, and updates the hashtags if exists
-			newHashSet = null;
-			newHashSet = pic.getHashtags();
+			hashtagsFromPic = pic.getHashtags();
 			resultPic = DatabaseHandler.returnPictureIfAlreadyExists(pic);
 			if(resultPic.size() == 1){
-				System.out.println(resultPic.get(0));
 				Set<Hashtag> hashtagsFromDB = resultPic.get(0).getHashtags();
-				newHashSet.addAll(hashtagsFromDB);
-				pic.setHashtags(newHashSet);
+				hashtagsFromPic.addAll(hashtagsFromDB);
+				pic.setHashtags(hashtagsFromPic);
 				session.merge(pic);
 			}else
 				session.saveOrUpdate(pic);
