@@ -59,7 +59,7 @@ public class ViewController {
 			getSortedList();
 
 		while ( true ) {
-			System.out.println("Hvor mange bilder igjen: " + sortedPictureList.size());
+			//System.out.println("Hvor mange bilder igjen: " + sortedPictureList.size());
 			
 			if ( (sortedPictureList.isEmpty() || randomPictureList.isEmpty()) ) {
 				break;
@@ -93,12 +93,13 @@ public class ViewController {
 		System.out.println("ViewController getSortedList");
 		
 		pictureDataList   = dbMan.getSortedPictureData();
+		/*
 		for ( PictureData p : pictureDataList ) {
-			System.out.println(p.getId());
-			for ( Hashtag htObj : p.getHashtags() )
-				System.out.println(" - " + htObj.getHashtag());
+			//System.out.println(p.getId());
+			for ( Hashtag htObj : p.getHashtags() );
+				//System.out.println(" - " + htObj.getHashtag());
 		}
-		
+		*/
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);
 		randomPictureList = new ArrayList<PictureData>(pictureDataList);
 		Collections.shuffle(randomPictureList);

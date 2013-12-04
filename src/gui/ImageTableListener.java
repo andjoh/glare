@@ -23,8 +23,8 @@ public class ImageTableListener implements ListSelectionListener {
 
 		if (!e.getValueIsAdjusting()) {
 
-			// clears previous flags
-			//model.clearFlags();
+			//clears previous flags
+			model.clearFlags();
 			// defines an area in which the selected cells are located in
 			// by getting min and max indices
 			// this narrows down the search in getCells()
@@ -41,15 +41,14 @@ public class ImageTableListener implements ListSelectionListener {
 
 	// iterates through the cells in the defined are
 	private void getCells() {
-     
 		for (int i = rStart; i <= rEnd; i++) {
 			for (int j = colIndexStart; j <= colIndexEnd; j++) {
 				if (table.isCellSelected(i, j)) {
              
-					model.setTempflagOnPicture(i, j, true);
+	              model.getSetPic(i, j).setIsTempFlagged(true);
 				}
+				
 			}
 		}
-
 	}
 }

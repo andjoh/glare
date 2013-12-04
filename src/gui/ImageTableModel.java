@@ -65,9 +65,10 @@ public class ImageTableModel extends AbstractTableModel {
 
 	public Object getValueAt(int row, int column) {
 		SettingsPicture pic = getSetPic(row,column);
-		if (pic.getIsFlagged())
-			return null;
+		if (pic.getIsFlagged()){
 		
+			return null;
+		}
 		else return  pic.getIcon(100, 100);
 			
 	}
@@ -86,7 +87,7 @@ public class ImageTableModel extends AbstractTableModel {
 
 	public boolean cellIsFlagged(int row, int col) {
          SettingsPicture pic=getSetPic(row,col);
-      return   pic.getIsTempFlagged();
+      return   pic.getIsTempFlagged() ;
     
 	}
 	public SettingsPicture getSetPic(int row, int col){
@@ -105,22 +106,12 @@ public class ImageTableModel extends AbstractTableModel {
 		fireTableDataChanged();
 	}
 
-
-
-	// Flags picture based on row, column
-	public void setflagOnPicture(int row, int column, boolean isFlagged) {
-	   getSetPic(row,column).setIsFlagged(isFlagged);
-	}
-	public void setTempflagOnPicture(int row, int column, boolean isTempFlagged) {
-		getSetPic(row,column).setIsTempFlagged(isTempFlagged);
-	}
-
 	public void clearFlags() {
 		for (int i = 0; i < getRowCount(); i++) {
 
 			for (int j = 0; j < getColumnCount(); j++) {
 
-					setTempflagOnPicture(i, j, false);
+					this.getSetPic(i, j).setIsTempFlagged(false);
 			}
 		}
 	}

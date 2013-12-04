@@ -6,6 +6,8 @@ import javax.swing.*;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.*;
 
+import bll.SettingsPicture;
+
 public class ImageTable extends JTable implements TableModelListener {
 
 	/**
@@ -27,12 +29,12 @@ public class ImageTable extends JTable implements TableModelListener {
 		this.dim = dim;
 		this.model = model;
 		listener = new ImageTableListener(this, model);
-		this.setPreferredSize(new Dimension(600, 300));
+		////this.setPreferredSize(new Dimension(600, 300));
 		// remove table header
 		setTableHeader(null);
 		// set table sizing properties
 		// setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		this.setAutoCreateColumnsFromModel(true);
+		
          this.setFocusable(true);
          this.setRequestFocusEnabled(true);
 		setColumnSize();
@@ -81,21 +83,16 @@ public class ImageTable extends JTable implements TableModelListener {
 		}
 	}
 
-	public void setSelected(Object[] sel) {
-
-	}
 
 	public void removeFlagged() {
-
+ SettingsPicture pic=null;
 		for (int i = 0; i < getRowCount(); i++) {
 			for (int j = 0; j < getColumnCount(); j++) {
-
+           System.out.println("WTF FLAGGED WITHOUT KEYPRESSED");
 				i = convertRowIndexToModel(i);
 				j = convertColumnIndexToModel(j);
-				if (model.cellIsFlagged(i, j)){
-					model.setflagOnPicture(i, j, true);
-				}
-					
+			     pic= model.getSetPic(i, j);
+			     if(pic.getIsTempFlagged())pic.setIsFlagged(true);
 					
 			}
 		}

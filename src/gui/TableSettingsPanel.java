@@ -75,10 +75,10 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 
 		tableScroller.setCursor(new Cursor(Cursor.MOVE_CURSOR));
 		tableScroller.setViewportView(thumbnailTable);
-		tableScroller
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		tableScroller
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		//tableScroller
+			//	.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		//tableScroller
+			//	.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		// removeButton Properties
 		System.out.println("Screensize : "
 				+ Toolkit.getDefaultToolkit().getScreenSize());

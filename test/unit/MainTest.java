@@ -69,6 +69,10 @@ public class MainTest {
 
 				hashtagsDummy.add("winter");
 				hashtagsDummy.add("raskebriller");
+				hashtagsDummy.add("fun");
+				hashtagsDummy.add("lol");
+				hashtagsDummy.add("happy");
+				hashtagsDummy.add("party");
 
 				// Set dummy sources and hashtag
 				dbManDum.setSources(sourcesDummy);

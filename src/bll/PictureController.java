@@ -51,9 +51,9 @@ public class PictureController {
 				System.out.println("");				
 				System.out.println("PictureController, getNewPictureData: All PictureData before save to db");
 				for ( PictureData pd : pictureDataNew ) {
-					System.out.println(pd.getId());
+					//System.out.println(pd.getId());
 				}
-				System.out.println("");				
+			//	System.out.println("");				
 
 				if ( !pictureDataModified.isEmpty() ) {			
 
@@ -62,9 +62,9 @@ public class PictureController {
 					System.out.println("");				
 					System.out.println("PictureController, getNewPictureData: Modified PictureData before save to db");
 					for ( PictureData pd : pictureDataModified ) {
-						System.out.println(pd.getId());
+						//System.out.println(pd.getId());
 					}
-					System.out.println("");				
+					//System.out.println("");				
 
 				}
 			}						
