@@ -23,9 +23,6 @@ public class Main {
 	 * @throws IOException 
 	 */
 	public static void main(String[] args) {
-
-		ThreadScheduler threadScheduler = new ThreadScheduler();
-		threadScheduler.run();
 		
 		try {
 			for (UIManager.LookAndFeelInfo info : UIManager
@@ -64,5 +61,8 @@ public class Main {
 				}
 			}
 		});
+		
+		ThreadScheduler threadScheduler = new ThreadScheduler();
+		threadScheduler.run();
 	}
 }
