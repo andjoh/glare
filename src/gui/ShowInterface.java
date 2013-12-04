@@ -197,7 +197,6 @@ public class ShowInterface extends JFrame {
 
 					// System.out.println("after thread");
 
-					
 					show.moveNext();
 					repaint();
 					Thread.sleep(d);
