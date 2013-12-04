@@ -108,42 +108,37 @@ public class ViewController {
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("IO EXEPTION !!!!!!! url: " + url);
 		}
 
 		return image;
 	}
 
 	public List<List<SettingsPicture>> getSettingsPictures(int rows, int cols) {
-//		System.out.println("");
-//		System.out.println("ViewController: getSettingsPictures. Print pictureDataList");
-//		System.out.println("Size: " + pictureDataList.size());
-//		for ( PictureData pd : pictureDataList) {
-//			System.out.println(pd.getId());
-//			for ( Hashtag htObj : pd.getHashtags() ) {
-//				System.out.println(" - " + htObj.getHashtag());
-//			}
-//		}
-//		System.out.println("");
 
+		BufferedImage image;
+		List<SettingsPicture> setPic = new ArrayList<SettingsPicture>();
+		
+		for ( PictureData p : pictureDataList ) {
+			image = getBufImage(p.getUrlThumb());
+			if ( image != null ) {
+				setPic.add(new SettingsPicture(p.getId(), image));
+			}
+		}
+				
 		List<List<SettingsPicture>> settingsPictures = new ArrayList<List<SettingsPicture>>();;
 		List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
 		
-		if ( !pictureDataList.isEmpty() ) {
-
-			PictureData pic=null;
-			String id="",url;
+		if ( !setPic.isEmpty() ) {
 			int s=0;
-			for (int r=0;r < pictureDataList.size()/cols; r++){
+			for (int r=0;r < setPic.size()/cols; r++) {
 				tmp= new ArrayList<SettingsPicture>();
-				for (int c=0;c<cols;c++){
-					pic=pictureDataList.get(s);
-					url=pic.getUrlThumb();
-					id=pic.getId();
-					tmp.add(new SettingsPicture(id,this.getBufImage(url)));
+				for (int c=0;c<cols;c++){					
+					tmp.add(setPic.get(s));
 					s++;
 				}
-				settingsPictures.add(tmp);				
+				settingsPictures.add(tmp);					
 			}
 		}
 		
@@ -151,6 +146,36 @@ public class ViewController {
 			settingsPictures.add(tmp);		
 
 		return settingsPictures;
+		
+////////////////////////////////////////////////////////////////////////////////////////////////
+// OLD CODE		
+//		List<List<SettingsPicture>> settingsPictures = new ArrayList<List<SettingsPicture>>();;
+//		List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
+		
+//		if ( !pictureDataList.isEmpty() ) {
+//
+//			PictureData pic=null;
+//			String id="",url;
+//			int s=0;
+//			for (int r=0;r < pictureDataList.size()/cols; r++){
+//				tmp= new ArrayList<SettingsPicture>();
+//				for (int c=0;c<cols;c++){
+//					pic=pictureDataList.get(s);
+//					url=pic.getUrlThumb();
+//					id=pic.getId();
+//					image = this.getBufImage(url);
+//					if ( image != null )
+//						tmp.add(new SettingsPicture(id,image));
+//					s++;
+//				}
+//				settingsPictures.add(tmp);				
+//			}
+//		}
+//		
+//		else 
+//			settingsPictures.add(tmp);		
+//
+//		return settingsPictures;
 	}
 
 	public void removePictures(List<List<SettingsPicture>> list2d) {
