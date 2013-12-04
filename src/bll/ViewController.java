@@ -148,7 +148,9 @@ public class ViewController {
 				setPic.add(new SettingsPicture(p.getId(), image));
 			}
 		}
-				
+			
+		System.out.println("Size settings picture objects before making 2D list: " + setPic.size());
+		
 		List<List<SettingsPicture>> settingsPictures = new ArrayList<List<SettingsPicture>>();;
 		List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
 		
@@ -167,6 +169,16 @@ public class ViewController {
 		else 
 			settingsPictures.add(tmp);		
 
+		// Testing
+		int countSettingsPictureObjects = 0;
+		for(List<SettingsPicture> list : settingsPictures){
+			for(SettingsPicture pic :list){
+				countSettingsPictureObjects++;
+			}
+		}
+		System.out.println("Size settings picture objects AFTER making 2D list: " + countSettingsPictureObjects);
+
+		
 		return settingsPictures;
 		
 ////////////////////////////////////////////////////////////////////////////////////////////////
