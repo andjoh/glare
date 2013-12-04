@@ -1,4 +1,4 @@
-package unit;
+package integration;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
