@@ -176,6 +176,7 @@ public class ViewController {
 				countSettingsPictureObjects++;
 			}
 		}
+		System.out.println("Dim settings picture objects AFTER making 2D list: " + settingsPictures.size() + "*" + settingsPictures.get(0).size());
 		System.out.println("Size settings picture objects AFTER making 2D list: " + countSettingsPictureObjects);
 
 		
