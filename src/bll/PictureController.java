@@ -47,7 +47,7 @@ public class PictureController {
 		// If found pictureData: Process the data and save to db
 		if ( success ) {
 			success = false;
-			
+
 			processPictureData();
 
 			List<PictureData> tmpPictureDataToSave = new ArrayList<PictureData>();
@@ -60,6 +60,8 @@ public class PictureController {
 				tmpPictureDataToSave.addAll(pictureDataModified);				
 
 			if ( !tmpPictureDataToSave.isEmpty() ) {
+				pictureDataToSave.addAll(pictureDataModified);
+
 
 				// Check if access to pictures
 				for ( PictureData pd : tmpPictureDataToSave ) {
