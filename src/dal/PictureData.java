@@ -84,6 +84,10 @@ public class PictureData {
 	public void remHashtag(Hashtag ht) {
 		hashtags.remove(ht);
 	}
+
+	public void remAllHashtags() {
+		hashtags = new HashSet<Hashtag>();
+	}
 	
 	@Override
 	public int hashCode() {
