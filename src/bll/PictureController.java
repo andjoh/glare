@@ -2,7 +2,16 @@ package bll;
 
 import glare.*;
 import dal.*;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.*;
+
+import javax.imageio.ImageIO;
 
 /**
  * Controller for getting, processing and sending picture data to database
@@ -11,13 +20,14 @@ import java.util.*;
 public class PictureController {
 	private DatabaseManager databaseManager;
 
-	private List<PictureData> pictureDataExisting;              // Contains all pictureData from db. New will be added to complete list 
-	private List<PictureData> pictureDataFromSources;           // PictureData from Instagram etc.
-	private List<PictureData> pictureDataNew;                   // PictureData not already in db
-	private List<PictureData> pictureDataModified;              // Existing pictureData which contains new- in addition to existing hashtags
-	private List<PictureIdHashtags> existingPicIdNewHashtags;   // List of objects containing existing pictureId and new hashtags
+	private List<PictureData> pictureDataFromSources;  // PictureData from Instagram etc.
+	private List<PictureData> pictureDataNew;          // PictureData not in db
+	private List<PictureData> pictureDataModified;     // Existing pictureData with new hashtag
 
-	
+	/**
+	 * Constructor
+	 * @param databaseManager
+	 */
 	public PictureController(DatabaseManager databaseManager) {
 		this.databaseManager = databaseManager;
 	}
@@ -30,59 +40,39 @@ public class PictureController {
 	 * @return - True if new or modified picture data are saved to db
 	 */
 	public boolean getNewPictureData() {
-		System.out.println("PictureController: getNewPictureData");
-		
+
 		// Search for pictureData
 		boolean success = searchPictureData();
 
 		// If found pictureData: Process the data and save to db
 		if ( success ) {
-			System.out.println("PictureController: getNewPictureData: success");
-
+			success = false;
+			
 			processPictureData();
 
-			List<PictureData> pictureDataToSave = new ArrayList<PictureData>();
+			List<PictureData> tmpPictureDataToSave = new ArrayList<PictureData>();
+			List<PictureData> pictureDataToSave    = new ArrayList<PictureData>();
 
-			if ( !pictureDataNew.isEmpty() || !pictureDataModified.isEmpty() ) {			
-				System.out.println("PictureController: getNewPictureData: not empty");
+			if ( !pictureDataNew.isEmpty() ) 
+				tmpPictureDataToSave.addAll(pictureDataNew);
 
-				pictureDataToSave.addAll(pictureDataNew);
+			if ( !pictureDataModified.isEmpty() )
+				tmpPictureDataToSave.addAll(pictureDataModified);				
 
-				System.out.println("");				
-				System.out.println("PictureController, getNewPictureData: All PictureData before save to db");
-				for ( PictureData pd : pictureDataNew ) {
-					System.out.println(pd.getId());
+			if ( !tmpPictureDataToSave.isEmpty() ) {
+
+				// Check if access to pictures
+				for ( PictureData pd : tmpPictureDataToSave ) {
+					if ( accessToPicture(pd) )
+						pictureDataToSave.add(pd);
 				}
-				System.out.println("");				
 
-				if ( !pictureDataModified.isEmpty() ) {			
-
-					pictureDataToSave.addAll(pictureDataModified);
-
-					System.out.println("");				
-					System.out.println("PictureController, getNewPictureData: Modified PictureData before save to db");
-					for ( PictureData pd : pictureDataModified ) {
-						System.out.println(pd.getId());
-					}
-					System.out.println("");				
-
+				if ( !pictureDataToSave.isEmpty() ) {
+					databaseManager.savePictureDataToDb(pictureDataToSave);
+					success = true;
 				}
-			}						
-
-			if ( !pictureDataToSave.isEmpty() ) {
-				databaseManager.savePictureDataToDb(pictureDataToSave);
-				success = true;
 			}
-			
-			// TODO: This might be used if new hashtags explicitly should be updated in database
-			// If new hashtags on existing pictureData: Save to db
-			//if ( !existingPicIdNewHashtags.isEmpty() ) {				
-			//	databaseManager.saveHashtagsToExistingPictureData(existingPicIdNewHashtags);
-			//  success = true;
-			//}	
-			
-			return false;
-		}
+		}			
 
 		return success;
 	}
@@ -94,6 +84,7 @@ public class PictureController {
 	 * @return - True if new picture data are found
 	 */
 	public boolean searchPictureData() {	
+		
 		pictureDataFromSources = new ArrayList<PictureData>();
 
 		// Get sources and hashtags
@@ -118,9 +109,6 @@ public class PictureController {
 		if ( pictureDataFromSources.isEmpty() )
 			return false;
 		
-		// Remove duplicates from pictureData got from sources
-		//pictureDataFromSources = removePictureDataDuplicates(pictureData);
-
 		return true;
 	}
 
@@ -131,7 +119,9 @@ public class PictureController {
 	 * @return
 	 */
 	private List<PictureData> searchPictureDataFromHashtags(IReader reader, String hashtag) {	
+		
 		ArrayList<PictureData> pictureData = null;
+		
 		try {
 			return (ArrayList<PictureData>) reader.getPictures(hashtag);
 
@@ -143,61 +133,17 @@ public class PictureController {
 	}
 
 	/**
-	 * Remove duplicated picture data from list
-	 * @param pictureData
-	 * @return - picture data without duplicates
-	 */
-	private List<PictureData> removePictureDataDuplicates(List<PictureData> pictureData) {
-		List<PictureData> pictureDataWithoutDuplicates = new ArrayList<PictureData>();
-		boolean pictureDataExists;
-
-		for ( PictureData pd : pictureData ) {
-			pictureDataExists = false;
-
-			for ( PictureData pdNotDuplicated : pictureDataWithoutDuplicates ) {
-
-				if ( pd.getId() == pdNotDuplicated.getId() ) {
-
-					pictureDataExists = true;
-
-					// PictureData exists. Need to check if there are new hashtags to add
-					Set<String> newHashtags = checkForNewHashtags(pdNotDuplicated, pd);
-
-					if ( !newHashtags.isEmpty() ) {
-						
-						// Add new hashtags to existing pictureData
-						for ( String ht : newHashtags ) {
-							pdNotDuplicated.addHashtag(new Hashtag(ht));
-						}
-					}					
-
-					break;
-				}
-			}
-
-			// Picture data doesn't exists - add to list containing new pictureData
-			if ( !pictureDataExists ) {
-				pictureDataWithoutDuplicates.add(pd);
-			}					
-		}
-
-		return pictureDataWithoutDuplicates;
-	}
-
-	/**
 	 * Find new pictureData and store in list pictureDataNew
 	 * Find existing pictureData which have got new hashtags and store in list pictureDataModified
-	 * List of existing pictureData will in the end of this method contain all pictureData objects with all hashtags
 	 */		
 	public void processPictureData() {
-		// Get pictureData from db. Assume no duplicates.
-		pictureDataExisting      = databaseManager.getPictureDataFromDb();
+		
+		// Get pictureData from db.
+		List<PictureData> pictureDataExisting = databaseManager.getPictureDataFromDb();
 
 		// Init lists
-		pictureDataNew           = new ArrayList<PictureData>();
-		pictureDataModified      = new ArrayList<PictureData>();
-		existingPicIdNewHashtags = new ArrayList<PictureIdHashtags>();
-		PictureData picMod;
+		pictureDataNew      = new ArrayList<PictureData>();
+		pictureDataModified = new ArrayList<PictureData>();
 		
 		// Iterate over picture data from sources
 		boolean pictureDataExists;
@@ -211,73 +157,58 @@ public class PictureController {
 				if ( pdPossibleNew.getId() == pdExisting.getId() ) {			
 					pictureDataExists = true;
 
-					// PictureData exist. Add this pictureData to modified list, but with only the new hashtag
-					picMod = new PictureData(pdExisting.getId(), pdExisting.getUrlStd(), 
-							pdExisting.getUrlThumb(),pdExisting.getCreatedTime(), pdExisting.isRemoveFlag() );
-					picMod.addHashtag(pdPossibleNew.getHashtags().iterator().next());
-					pictureDataModified.add(picMod);
-					
-//					// PictureData exists. Need to check if there are new hashtags to add
-//					Set<String> newHashtags = checkForNewHashtags(pdExisting, pdPossibleNew);
-//
-//					if ( !newHashtags.isEmpty() ) {
-//						// Add new hashtags to existing pictureData and add to modified list
-//						for ( String ht : newHashtags ) {
-//							pdExisting.addHashtag(new Hashtag(ht));
-//						}
-//						pictureDataModified.add(pdExisting);
-//						
-//						// Create object holding existing pictureId and new hashtags
-//						PictureIdHashtags idHash = new PictureIdHashtags(pdExisting.getId(), newHashtags);
-//						existingPicIdNewHashtags.add(idHash);	
-//					}
+					// PictureData exists. Add this pictureData to the modified list, containing only the new hashtag
+					pdExisting.remAllHashtags();
+					pdExisting.addHashtag(pdPossibleNew.getHashtags().iterator().next());
+					pictureDataModified.add(pdExisting);
 
 					break;
 				}				
 			}
 
-			// Picture data doesn't exist - add to lists
-			if ( !pictureDataExists ) {
+			// Picture data doesn't exist - add to list
+			if ( !pictureDataExists )
 				pictureDataNew.add(pdPossibleNew);
-				//pictureDataExisting.add(pdPossibleNew);
-			}
 		}	
-		// Sort - Don't think this is needed
-		//Collections.sort(pictureDataNew, new PictureDataComparator());
-		//Collections.sort(pictureDataModified, new PictureDataComparator());
 	}
 
-	private Set<String> checkForNewHashtags(PictureData pdExisting, PictureData pdNew) {
-		Set<String> newHashtags = new HashSet<String>();
-		String htPossibleNew;
-		boolean hashtagExists;
+	/**
+	 * Check to see if access to picture
+	 * @param pdPossibleNew
+	 * @return true/false
+	 */
+	private boolean accessToPicture(PictureData pdPossibleNew) {
 
-		for ( Hashtag htObjPossibleNew : pdNew.getHashtags() ){
-			htPossibleNew = htObjPossibleNew.getHashtag();
-			hashtagExists = false;
+		boolean accessToPicture = true;
+		List<String> urls = new ArrayList<String>();
+		urls.add(pdPossibleNew.getUrlStd());
+		urls.add(pdPossibleNew.getUrlThumb());
 
-			for ( Hashtag htObjExisting : pdExisting.getHashtags() ){
-
-				if ( htPossibleNew == htObjExisting.getHashtag() ) {
-					hashtagExists = true;
-					break;
-				}				
+		URL imageUrl;
+		BufferedImage image = null;
+		for ( String url : urls ) {
+			try {
+				imageUrl = new URL(url);
+				HttpURLConnection urlConn =( HttpURLConnection) imageUrl.openConnection();
+				InputStream is = urlConn.getInputStream();
+				image = ImageIO.read(is);
+				is.close();
+			} catch (MalformedURLException e) {
+				System.out.println("MalformedURLException IN PICTURECONTROLLER!!!!!!! url: " + url);
+				accessToPicture = false;
+				break;
+			} catch (IOException e) {
+				System.out.println("IO EXEPTION IN PICTURECONTROLLER!!!!!!! url: " + url);
+				accessToPicture = false;
+				break;
 			}	
-
-			if ( !hashtagExists ) {
-				newHashtags.add(htPossibleNew);
-			}
 		}
-
-		return newHashtags;
+		
+		return accessToPicture;
 	}
 
 	public List<PictureData> getPictureDataFromSources() {
 		return pictureDataFromSources;
-	}
-
-	public List<PictureData> getPictureDataExisting() {
-		return pictureDataExisting;
 	}
 
 	public List<PictureData> getPictureDataNew() {
