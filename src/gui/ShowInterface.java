@@ -155,7 +155,6 @@ public class ShowInterface extends JFrame {
 					"/resource/img/settingsbut.png")));
 			settingsButton.setBorderPainted(false);
 			settingsButton.setContentAreaFilled(false);
-			settingsButton.setVisible(true);
 			gbc.fill = GridBagConstraints.BOTH;
 			gbc.set(1, 10, 10, 10, 1, 1, new Insets(dim.height, 130, 120,
 					dim.height + 520), GridBagConstraints.NORTHWEST);
