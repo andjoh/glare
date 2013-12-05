@@ -101,6 +101,6 @@ public class PictureData {
 
 	@Override
 	public String toString() {
-		return "PictureData [id=" + id + ", hashtags=" + hashtags + "]";
+		return "PictureData [id=" + id + ", hashtags=" + hashtags + ", createdTime=" +createdTime+ "]";
 	}
 }

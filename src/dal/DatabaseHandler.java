@@ -102,8 +102,35 @@ public class DatabaseHandler {
 		try{
 			tx = session.beginTransaction();
 
-			result = session.createSQLQuery("from PictureData where removeFlag=0 order by createdTime desc limit 100").list();
+			result = session.createQuery("from PictureData").list();
 
+			tx.commit();
+		} catch(HibernateException e){
+			if (tx!= null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally{
+			session.close();
+		}
+		return result;
+	}
+	
+	/**
+	 * Returns a list of hundred newest pictures in DB
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<PictureData> listHundredNewestPicturesFromDB(){
+		Transaction tx = null;
+		List<PictureData> result = null;
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		try{
+			tx = session.beginTransaction();
+
+			result = session.createQuery("from PictureData pd where pd.removeFlag=0 order by pd.createdTime desc").setMaxResults(100).list();
+			
 			tx.commit();
 		} catch(HibernateException e){
 			if (tx!= null)
