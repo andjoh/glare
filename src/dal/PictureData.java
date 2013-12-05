@@ -7,7 +7,7 @@ import java.util.*;
  * @author Andreas Bjerga & Marius Vasshus
  */
 
-public class PictureData {
+public class PictureData implements Cloneable {
 	private String id;
 	private String urlStd;
 	private String urlThumb;
@@ -102,6 +102,16 @@ public class PictureData {
 		}
 		return false;
 	}
+	
+    @Override
+    public Object clone() {
+        try {
+        	PictureData a = (PictureData) super.clone();
+            return a;
+        } catch (CloneNotSupportedException e) {
+            throw new InternalError();
+        }
+    }
 
 	@Override
 	public String toString() {
