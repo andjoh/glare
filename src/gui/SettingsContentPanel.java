@@ -141,17 +141,14 @@ exitButton.setContentAreaFilled(false);
 		// here is the data to send, picture in row 4 colum 4 should be
 		// flagged
 
-		List<List<SettingsPicture>> datatosend = imtabmod.getTableModelData();
-		System.out.println("Data to send's size: "+datatosend.size()+" * "+
-				datatosend.get(0).size());
+		List<SettingsPicture> datatosend = imtabmod.getTableModelData();
+		
 		SettingsPicture pic=null;
 		for(int i=0;i<datatosend.size();i++){
-			for(int j=0;j< datatosend.get(0).size();j++){
-				pic=datatosend.get(i).get(j);
+				pic=datatosend.get(i);
 				if(pic==null)System.out.println("Picture is null..WTF?!");
-			 if (pic.getIsFlagged())
-					System.out.println("Flagged picture, ("+i+" , "+j+")");
-			}
+			 if (pic.getIsFlagged());
+			
 			
 		}
 		
