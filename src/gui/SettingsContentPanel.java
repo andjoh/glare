@@ -69,11 +69,11 @@ public class SettingsContentPanel<exitButton> extends JPanel implements ActionLi
 				dim.height * 3 / 4);
 		// DisplaySettingsPanel
 		dispset = new DisplaySettingsPanel(viewCtrl);
-		dispset.setBounds(dim.width * 1 / 16, dim.height * 4 / 5,
+		dispset.setBounds(dim.width * 1 / 20, dim.height * 4 / 5,
 				dim.width * 25 / 100, dim.height * 1 / 10);
 		// TableSettingsPanel declaration
 		tablepanel = new TableSettingsPanel(viewCtrl, dim);
-		tablepanel.setBounds(dim.width * 35 / 100, 10, dim.width * 2 / 3,
+		tablepanel.setBounds(dim.width * 30 / 100, 10, dim.width * 2 / 3,
 		dim.height * 4 / 3);
 		// exitButton properties
 		
