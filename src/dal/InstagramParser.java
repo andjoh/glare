@@ -35,8 +35,8 @@ public class InstagramParser {
 					int time = caption.getAsJsonObject().get("created_time").getAsInt();
 					picture.setCreatedTime(time);
 
-					String picID = caption.getAsJsonObject().get("id").getAsString();
-					picture.setId(picID);
+					String picId = jsonPicture.get("id").getAsString();
+					picture.setId(picId);
 
 					JsonElement images = jsonPicture.get("images");
 
