@@ -8,16 +8,21 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import dal.*;
 
 /**
  * Single point of contact for display and settings panel.
  * 
- * This controller gets picture data from database so that pictures
- * can be displayed in full screen.
- * This controller holds display time and view mode which can be
- * manipulated by the settings dialog.
- * This controller holds thumbnails to be used by settings dialog.
+ * This controller gets picture data from database so that pictures can be
+ * displayed in full screen. This controller holds display time and view mode
+ * which can be manipulated by the settings dialog. This controller holds
+ * thumbnails to be used by settings dialog.
  * 
  * @author Simen Sollie, Kristine Svaboe, Petter Austerheim
  * @since 2013-11-04
@@ -35,14 +40,15 @@ public class ViewController {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param dbMan
 	 */
 	public ViewController(DatabaseManager dbMan) {
-		this.dbMan        = dbMan;
+		this.dbMan = dbMan;
 		sortedPictureList = new ArrayList<PictureData>();
 
 		// Default settings
-		isRandom    = false;
+		isRandom = false;
 		displayTime = 1000;
 	}
 
@@ -52,53 +58,119 @@ public class ViewController {
 	 * @return BufferedImage
 	 */
 	public BufferedImage getCurrentPicture() {
-		
+
 		BufferedImage image = null;
-		
+
 		if (sortedPictureList.isEmpty() || randomPictureList.isEmpty())
 			getSortedList();
 
-		while ( true ) {
-			System.out.println("Hvor mange bilder igjen: " + sortedPictureList.size());
-			
-			if ( (sortedPictureList.isEmpty() || randomPictureList.isEmpty()) ) {
+		while (true) {
+			// System.out.println("Hvor mange bilder igjen: " +
+			// sortedPictureList.size());
+
+			if ((sortedPictureList.isEmpty() || randomPictureList.isEmpty())) {
 				break;
-			}	
-			
+			}
+
 			PictureData p;
 
-			if ( isRandom ) {
+			if (isRandom) {
 				p = randomPictureList.remove(0);
 				sortedPictureList.remove(p);
 			} else {
 				p = sortedPictureList.remove(0);
 				randomPictureList.remove(p);
 			}
-			
+
 			image = getBufImage(p.getUrlStd());
 
-			if ( image != null ) {
+			if (image != null) {
 				break;
-			}	
+			}
 		}
-		
+
 		return image;
 	}
 
+	public List<SettingsPicture> getSettingsPictures(int rows, int cols) {
+
+		final Set<SettingsPicture> setPic = Collections
+				.synchronizedSet(new HashSet<SettingsPicture>());
+		BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<Runnable>(
+				100);
+		ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 50, 3000,
+				TimeUnit.NANOSECONDS, blockingQueue);
+		executor.setRejectedExecutionHandler(new RejectedExecutionHandler() {
+			@Override
+			public void rejectedExecution(Runnable r,
+					ThreadPoolExecutor executor) {
+
+				// System.out.println("Waiting for a second");
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+				// executor.execute(r);
+			}
+		});
+		System.out.println("Size picture data list " + pictureDataList.size());
+		final Set<PictureData> picData = Collections
+				.synchronizedSet(new HashSet<PictureData>(pictureDataList));
+		final Set<String> triedPic = Collections
+				.synchronizedSet(new HashSet<String>());
+		// final Iterator<PictureData> iterator = picData.iterator();
+
+		while (picData.size() != triedPic.size()) {
+			for (final PictureData p : picData) {
+				
+				if (!triedPic.contains(p.getId())) {
+				;
+					
+					executor.execute(new Runnable() {
+
+						public void run() {
+							final SettingsPicture setp;
+				             final BufferedImage buf;
+                             
+							buf = getBufImage(p.getUrlThumb());
+
+							if (buf != null) {
+								// System.out.println("loaded image to buf");
+								setp=new SettingsPicture(p.getId(),buf);
+								setPic.add(setp);
+								triedPic.add(p.getId());
+							} else if (buf == null)
+								triedPic.add(p.getId());
+						}
+					});
+
+				}
+			}
+		}
+		executor.shutdownNow();
+		System.out.println("SetPic size after threads: " + setPic.size());
+		List<SettingsPicture> setPictures = new ArrayList<SettingsPicture>(
+				setPic);
+		return setPictures;
+
+	}
+
 	/**
-	 * Load list of picture data from database
-	 * Prepare lists for sequential - and random view
+	 * Load list of picture data from database Prepare lists for sequential -
+	 * and random view
 	 */
 	public void getSortedList() {
 		System.out.println("ViewController getSortedList");
-		
-		pictureDataList   = dbMan.getSortedPictureData();
-		for ( PictureData p : pictureDataList ) {
-			System.out.println(p.getId());
-			for ( Hashtag htObj : p.getHashtags() )
-				System.out.println(" - " + htObj.getHashtag());
-		}
-		
+
+		pictureDataList = dbMan.getSortedPictureData();
+		/*
+		 * for ( PictureData p : pictureDataList ) {
+		 * //System.out.println(p.getId()); for ( Hashtag htObj :
+		 * p.getHashtags() ); //System.out.println(" - " + htObj.getHashtag());
+		 * }
+		 */
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);
 		randomPictureList = new ArrayList<PictureData>(pictureDataList);
 		Collections.shuffle(randomPictureList);
@@ -106,16 +178,21 @@ public class ViewController {
 
 	/**
 	 * Get BufferedImage for current url
+	 * 
 	 * @param url
 	 * @return BufferedImage
 	 */
+
 	private BufferedImage getBufImage(String url) {
 		URL imageUrl;
 		BufferedImage image = null;
 
 		try {
+
 			imageUrl = new URL(url);
-			HttpURLConnection urlConn =( HttpURLConnection) imageUrl.openConnection();
+			HttpURLConnection urlConn = (HttpURLConnection) imageUrl
+					.openConnection();
+			urlConn.addRequestProperty("User-Agent", "Mozilla/4.0");
 			InputStream is = urlConn.getInputStream();
 			image = ImageIO.read(is);
 			is.close();
@@ -124,171 +201,102 @@ public class ViewController {
 			e.printStackTrace();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
+			// e.printStackTrace();
+
 			System.out.println("IO EXEPTION !!!!!!! url: " + url);
 		}
 
 		return image;
 	}
-	
+
 	/**
 	 * Get thumbnails to be displayed
+	 * 
 	 * @param rows
 	 * @param cols
 	 * @return 2d-list of settings picture objects
 	 */
-	public List<List<SettingsPicture>> getSettingsPictures(int rows, int cols) {
-
-		BufferedImage image;
-		List<SettingsPicture> setPic = new ArrayList<SettingsPicture>();
-		
-		for ( PictureData p : pictureDataList ) {
-			image = getBufImage(p.getUrlThumb());
-			if ( image != null ) {
-				setPic.add(new SettingsPicture(p.getId(), image));
-			}
-		}
-			
-		System.out.println("Size settings picture objects before making 2D list: " + setPic.size());
-		
-		List<List<SettingsPicture>> settingsPictures = new ArrayList<List<SettingsPicture>>();;
-		List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
-		
-		if ( !setPic.isEmpty() ) {
-			int s=0;
-			for (int r=0;r < setPic.size()/cols; r++) {
-				tmp= new ArrayList<SettingsPicture>();
-				for (int c=0;c<cols;c++){					
-					tmp.add(setPic.get(s));
-					s++;
-				}
-				settingsPictures.add(tmp);					
-			}
-		}
-		
-		else 
-			settingsPictures.add(tmp);		
-
-		// Testing
-		int countSettingsPictureObjects = 0;
-		for(List<SettingsPicture> list : settingsPictures){
-			for(SettingsPicture pic :list){
-				countSettingsPictureObjects++;
-			}
-		}
-		System.out.println("Dim settings picture objects AFTER making 2D list: " + settingsPictures.size() + "*" + settingsPictures.get(0).size());
-		System.out.println("Size settings picture objects AFTER making 2D list: " + countSettingsPictureObjects);
-
-		
-		return settingsPictures;
-		
-////////////////////////////////////////////////////////////////////////////////////////////////
-// OLD CODE		
-//		List<List<SettingsPicture>> settingsPictures = new ArrayList<List<SettingsPicture>>();;
-//		List<SettingsPicture> tmp= new ArrayList<SettingsPicture>();
-		
-//		if ( !pictureDataList.isEmpty() ) {
-//
-//			PictureData pic=null;
-//			String id="",url;
-//			int s=0;
-//			for (int r=0;r < pictureDataList.size()/cols; r++){
-//				tmp= new ArrayList<SettingsPicture>();
-//				for (int c=0;c<cols;c++){
-//					pic=pictureDataList.get(s);
-//					url=pic.getUrlThumb();
-//					id=pic.getId();
-//					image = this.getBufImage(url);
-//					if ( image != null )
-//						tmp.add(new SettingsPicture(id,image));
-//					s++;
-//				}
-//				settingsPictures.add(tmp);				
-//			}
-//		}
-//		
-//		else 
-//			settingsPictures.add(tmp);		
-//
-//		return settingsPictures;
-	}
-
 	/**
 	 * List of pictures to be marked inappropriate in database
+	 * 
 	 * @param list2d
 	 */
-	public void removePictures(List<List<SettingsPicture>> list2d) {
+	public void removePictures(List<SettingsPicture> list) {
 		Set<String> flaggedList = new HashSet<String>();
 		String id = null;
-		for(List<SettingsPicture> list:list2d){
 
-			for(SettingsPicture pic :list){
-				if ( pic == null )
-					System.out.println("Picture is null");
-				
-					//System.out.println("removePictures: before if(pic.getIsFlagged())");
+		for (SettingsPicture pic : list) {
+			if (pic == null)
+				System.out.println("Picture is null");
 
-				if(pic.getIsFlagged()){
-					id=pic.getId();
-					flaggedList.add(id);
-					System.out.println("Got a flagged SettingsPicture object, sending ID: "+id+"to dbMan");
-				}
+			// System.out.println("removePictures: before if(pic.getIsFlagged())");
+
+			if (pic.getIsFlagged()) {
+				id = pic.getId();
+				flaggedList.add(id);
+				System.out
+						.println("Got a flagged SettingsPicture object, sending ID: "
+								+ id + "to dbMan");
 			}
 		}
-		
+
 		// Remove picture data from current lists and database
 		removeCurrentPictureData(flaggedList);
-		dbMan.setRemoveFlag(flaggedList);		
+		dbMan.setRemoveFlag(flaggedList);
 	}
 
 	/**
 	 * Remove pictures from current lists
+	 * 
 	 * @param pictureIds
 	 */
 	private void removeCurrentPictureData(Set<String> pictureIds) {
-		
-		for ( String picId : pictureIds ) {
-			for ( PictureData pd : pictureDataList ) {						
-				
-				if ( pd.getId().equalsIgnoreCase(picId) ) {	
+
+		for (String picId : pictureIds) {
+			for (PictureData pd : pictureDataList) {
+
+				if (pd.getId().equalsIgnoreCase(picId)) {
 					pictureDataList.remove(pd);
 					sortedPictureList.remove(pd);
 					randomPictureList.remove(pd);
 					break;
 				}
-			}				
+			}
 		}
 	}
 
 	/**
 	 * Remove picture data, without hashtags, from current lists
+	 * 
 	 * @param hashtagsDeleted
 	 */
-	private void removeCurrentPicturesWithoutHashtags(Set<String> hashtagsDeleted) {
-		
+	private void removeCurrentPicturesWithoutHashtags(
+			Set<String> hashtagsDeleted) {
+
 		// Process current pictureData list
 		Set<String> pdToBeRemoved = new HashSet<String>();
 		Set<Hashtag> hashtagObj;
-		for ( PictureData pd : pictureDataList ) {
-			
+		for (PictureData pd : pictureDataList) {
+
 			// Check and remove hashtags for current picture data
 			hashtagObj = pd.getHashtags();
-			for ( String htDel : hashtagsDeleted) {
-				for ( Hashtag htObj : hashtagObj ) {
-					if ( htObj.getHashtag().equalsIgnoreCase(htDel) ) {
+			for (String htDel : hashtagsDeleted) {
+				for (Hashtag htObj : hashtagObj) {
+					if (htObj.getHashtag().equalsIgnoreCase(htDel)) {
 						hashtagObj.remove(htObj);
-					}				
+					}
 				}
 			}
-			
-			// Check if all hashtags for current picture is removed. If - Add to remove list
-			if ( pd.getHashtags().isEmpty() ) {
+
+			// Check if all hashtags for current picture is removed. If - Add to
+			// remove list
+			if (pd.getHashtags().isEmpty()) {
 				pdToBeRemoved.add(pd.getId());
 			}
 		}
 		removeCurrentPictureData(pdToBeRemoved);
 	}
-	
+
 	public Set<String> getHashtags() {
 		hashtags = dbMan.getHashtags();
 		return hashtags;
@@ -296,6 +304,7 @@ public class ViewController {
 
 	/**
 	 * Add and delete hashtags according to input
+	 * 
 	 * @param hashtagList
 	 */
 	public void updateHashtags(Set<String> hashtagList) {

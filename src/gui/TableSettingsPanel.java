@@ -33,7 +33,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	private final static int COLS = 5, ROWS = 20;
 	private ImageTableModel tablemodel;
 	private JButton removeButton;
-	private List<List<SettingsPicture>> settingsPictures;
+	private List<SettingsPicture> settingsPictures;
 	private Dimension dim;
     private InputMap input;
 	private ViewController viewCtrl;
@@ -60,8 +60,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 		settingsPictures=viewCtrl.getSettingsPictures(ROWS,
 				COLS);
 		System.out.println();
-		tablemodel = new ImageTableModel(viewCtrl.getSettingsPictures(ROWS,
-				COLS));
+		tablemodel = new ImageTableModel(settingsPictures);
 		thumbnailTable = new ImageTable(tablemodel, dim);
 
 		removeButton = new JButton("Remove");

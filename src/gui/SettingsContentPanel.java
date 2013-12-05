@@ -69,11 +69,11 @@ public class SettingsContentPanel<exitButton> extends JPanel implements ActionLi
 				dim.height * 3 / 4);
 		// DisplaySettingsPanel
 		dispset = new DisplaySettingsPanel(viewCtrl);
-		dispset.setBounds(dim.width * 1 / 16, dim.height * 4 / 5,
+		dispset.setBounds(dim.width * 1 / 20, dim.height * 4 / 5,
 				dim.width * 25 / 100, dim.height * 1 / 10);
 		// TableSettingsPanel declaration
 		tablepanel = new TableSettingsPanel(viewCtrl, dim);
-		tablepanel.setBounds(dim.width * 35 / 100, 10, dim.width * 2 / 3,
+		tablepanel.setBounds(dim.width * 30 / 100, 10, dim.width * 2 / 3,
 		dim.height * 4 / 3);
 		// exitButton properties
 		
@@ -141,17 +141,14 @@ exitButton.setContentAreaFilled(false);
 		// here is the data to send, picture in row 4 colum 4 should be
 		// flagged
 
-		List<List<SettingsPicture>> datatosend = imtabmod.getTableModelData();
-		System.out.println("Data to send's size: "+datatosend.size()+" * "+
-				datatosend.get(0).size());
+		List<SettingsPicture> datatosend = imtabmod.getTableModelData();
+		
 		SettingsPicture pic=null;
 		for(int i=0;i<datatosend.size();i++){
-			for(int j=0;j< datatosend.get(0).size();j++){
-				pic=datatosend.get(i).get(j);
+				pic=datatosend.get(i);
 				if(pic==null)System.out.println("Picture is null..WTF?!");
-			 if (pic.getIsFlagged())
-					System.out.println("Flagged picture, ("+i+" , "+j+")");
-			}
+			 if (pic.getIsFlagged());
+			
 			
 		}
 		

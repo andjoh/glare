@@ -17,31 +17,30 @@ public class ImageTableModel extends AbstractTableModel {
 	// The abstractmodel uses this object to create a
 	// table
 
-	private List<SettingsPicture> data;
+	private List<List<SettingsPicture>> data;
 	private List<String> header;
-	private int ROWS=20, COLS=5;
 
 	// Constructor. Receives the data object
 	// Creates a new object based on the data
-	ImageTableModel(List<SettingsPicture> data) {
+	ImageTableModel(List<List<SettingsPicture>> data) {
 
-		this.data = new ArrayList<SettingsPicture>(data);
-	
+		this.data = new ArrayList<List<SettingsPicture>>(data);
+		System.out.println("Size" + data.size());
 		header = new ArrayList<String>();
 		addColumns();
 	}
 
 	// Adds empty titles to the header
 	public void addColumns() {
-		for (int i = 0; i <COLS; i++) {
+		for (int i = 0; i < getColumnCount(); i++) {
 			header.add("");
 		}
+
 	}
 
 	// Returns number of columns
 	public int getColumnCount() {
-	
-		return COLS;
+		return data.get(0).size();
 	}
 
 	// Returns the name of a column
@@ -53,9 +52,12 @@ public class ImageTableModel extends AbstractTableModel {
 
 	// Gets number of rows, which is the number of lists in the list
 	public int getRowCount() {
-	
-
-		return  data.size()/COLS;
+		int total = 0;
+		for (@SuppressWarnings("unused")
+		final List<SettingsPicture> sublist : data) {
+			total++;
+		}
+		return total;
 	}
 
 	// Returns value based on row,column
@@ -77,7 +79,7 @@ public class ImageTableModel extends AbstractTableModel {
 
 		if (value != null) {
 			pic = (SettingsPicture) value;
-			data.set((COLS*row)+col,pic);
+			data.get(row).set(col, pic);
 		}
 		fireTableCellUpdated(row, col);
 	}
@@ -88,9 +90,7 @@ public class ImageTableModel extends AbstractTableModel {
     
 	}
 	public SettingsPicture getSetPic(int row, int col){
-		int i = (COLS*row)+col;
-		if(i>=data.size())System.out.println("I out of bounds in getSetPic(): v: "+i);
-		return data.get((COLS*row)+col);
+		  return data.get(row).get(col);
 	}
 
 	// Implementation from superclass
@@ -129,7 +129,7 @@ public class ImageTableModel extends AbstractTableModel {
 	// They are removed if they have the isFlagged property.
 
 	// returns the list
-	public List<SettingsPicture> getTableModelData() {
+	public List<List<SettingsPicture>> getTableModelData() {
 		return data;
 	}
 

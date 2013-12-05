@@ -90,6 +90,7 @@ public class ImageTable extends JTable implements TableModelListener {
 		for (int i = 0; i < getRowCount(); i++) {
 			for (int j = 0; j < getColumnCount(); j++) {
 
+
 				i = convertRowIndexToModel(i);
 				j = convertColumnIndexToModel(j);
 				if (model.cellIsFlagged(i, j)){
@@ -102,4 +103,3 @@ public class ImageTable extends JTable implements TableModelListener {
 
 	}
 
-}
