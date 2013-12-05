@@ -53,6 +53,24 @@ public class PictureController {
 			List<PictureData> tmpPictureDataToSave = new ArrayList<PictureData>();
 			List<PictureData> pictureDataToSave    = new ArrayList<PictureData>();
 
+			System.out.println("pictureDataNew");
+			for ( PictureData pd : pictureDataNew ) {
+				System.out.println(pd.getId());
+				for ( Hashtag ht : pd.getHashtags() ) {
+					System.out.println(" - " + ht.getHashtag());
+				}
+			}
+			System.out.println("");
+
+			System.out.println("pictureDataModified");
+			for ( PictureData pd : pictureDataModified ) {
+				System.out.println(pd.getId());
+				for ( Hashtag ht : pd.getHashtags() ) {
+					System.out.println(" - " + ht.getHashtag());
+				}
+			}
+			System.out.println("");
+			
 			if ( !pictureDataNew.isEmpty() ) 
 				tmpPictureDataToSave.addAll(pictureDataNew);
 
@@ -62,10 +80,9 @@ public class PictureController {
 			if ( !tmpPictureDataToSave.isEmpty() ) {
 				pictureDataToSave.addAll(pictureDataModified);
 
-
 				// Check if access to pictures
 				for ( PictureData pd : tmpPictureDataToSave ) {
-					if ( accessToPicture(pd) )
+					//if ( accessToPicture(pd) )
 						pictureDataToSave.add(pd);
 				}
 
@@ -85,14 +102,14 @@ public class PictureController {
 	 * 
 	 * @return - True if new picture data are found
 	 */
-	public boolean searchPictureData() {	
-		
+	private boolean searchPictureData() {	
+	
 		pictureDataFromSources = new ArrayList<PictureData>();
 
 		// Get sources and hashtags
 		List<String> sources = databaseManager.getSources();
 		Set<String> hashtags = databaseManager.getHashtags();	
-				
+		
 		if ( hashtags.isEmpty() || sources.isEmpty() )
 			return false;
 
@@ -103,10 +120,9 @@ public class PictureController {
 			String beanName = source.toLowerCase() + "Reader";		
 			IReader reader  = (IReader) ClassFactory.getBeanByName(beanName);	
 
-			for ( String hashtag : hashtags ) {				
-				pictureDataFromSources.addAll(searchPictureDataFromHashtags(reader, hashtag));	
-			}
-		}
+			for ( String hashtag : hashtags )			
+				pictureDataFromSources.addAll(searchPictureDataFromHashtags(reader, hashtag));
+		}	
 		
 		if ( pictureDataFromSources.isEmpty() )
 			return false;
@@ -138,14 +154,15 @@ public class PictureController {
 	 * Find new pictureData and store in list pictureDataNew
 	 * Find existing pictureData which have got new hashtags and store in list pictureDataModified
 	 */		
-	public void processPictureData() {
+	private void processPictureData() {
 		
 		// Get pictureData from db.
 		List<PictureData> pictureDataExisting = databaseManager.getPictureDataFromDb();
 
 		// Init lists
 		pictureDataNew      = new ArrayList<PictureData>();
-		pictureDataModified = new ArrayList<PictureData>();
+		pictureDataModified = new ArrayList<PictureData>();		
+		Set<String> newHashtags;
 		
 		// Iterate over picture data from sources
 		boolean pictureDataExists;
@@ -159,21 +176,76 @@ public class PictureController {
 				if ( pdPossibleNew.getId() == pdExisting.getId() ) {			
 					pictureDataExists = true;
 
-					// PictureData exists. Add this pictureData to the modified list, containing only the new hashtag
-					pdExisting.remAllHashtags();
-					pdExisting.addHashtag(pdPossibleNew.getHashtags().iterator().next());
-					pictureDataModified.add(pdExisting);
+					// Check if hashtag connected to possible new is already connected to existing picture data
+					newHashtags = new HashSet<String>();
+					newHashtags = checkForNewHashtags(pdExisting, pdPossibleNew);
+					
+					// If new hashtags - add to existing for further check of possible new picture data,
+					// and add possible new, with existing remove flag to modified list
+					if ( !newHashtags.isEmpty() ) {
+						for ( String ht : newHashtags ) 
+							pdExisting.addHashtag(new Hashtag(ht));
+						pdPossibleNew.setRemoveFlag(pdExisting.isRemoveFlag());
+						pictureDataModified.add(pdPossibleNew);
+					}
 
 					break;
 				}				
 			}
 
 			// Picture data doesn't exist - add to list
-			if ( !pictureDataExists )
+			if ( !pictureDataExists ) {
 				pictureDataNew.add(pdPossibleNew);
+
+//				// Create new object to add to existing list
+//				PictureData pd = new PictureData();
+//				pd.setId(pdPossibleNew.getId());
+//				pd.setCreatedTime(pdPossibleNew.getCreatedTime());
+//				pd.setHashtags(pdPossibleNew.getHashtags());
+//				pd.setUrlStd(pdPossibleNew.getUrlStd());
+//				pd.setUrlThumb(pdPossibleNew.getUrlThumb());
+//				
+//				//PictureData copyNew = (PictureData) pdPossibleNew.clone();
+//				pictureDataExisting.add(pd);
+			}
 		}	
+		
+		System.out.println("New picturedata after process");
+		for ( PictureData pd : pictureDataNew ) {
+			System.out.println(pd.getId());
+			for ( Hashtag ht : pd.getHashtags() ) {
+				System.out.println(" - " + ht.getHashtag());
+			}
+		}
+		System.out.println("End New picturedata after process");	
+		System.out.println("");
 	}
 
+	private Set<String> checkForNewHashtags(PictureData pdExisting, PictureData pdNew) {
+		Set<String> newHashtags = new HashSet<String>();
+		String htPossibleNew;
+		boolean hashtagExists;
+
+		for ( Hashtag htObjPossibleNew : pdNew.getHashtags() ){
+			htPossibleNew = htObjPossibleNew.getHashtag();
+			hashtagExists = false;
+
+			for ( Hashtag htObjExisting : pdExisting.getHashtags() ){
+
+				if ( htPossibleNew == htObjExisting.getHashtag() ) {
+					hashtagExists = true;
+					break;
+				}				
+			}	
+
+			if ( !hashtagExists ) {
+				newHashtags.add(htPossibleNew);
+			}
+		}
+
+		return newHashtags;
+	}
+	
 	/**
 	 * Check to see if access to picture
 	 * @param pdPossibleNew
