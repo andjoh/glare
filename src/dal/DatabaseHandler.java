@@ -102,7 +102,7 @@ public class DatabaseHandler {
 		try{
 			tx = session.beginTransaction();
 
-			result = session.createQuery("from PictureData").list();
+			result = session.createSQLQuery("from PictureData where removeFlag=0 order by createdTime desc limit 100").list();
 
 			tx.commit();
 		} catch(HibernateException e){
