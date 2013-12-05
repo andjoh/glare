@@ -114,6 +114,33 @@ public class DatabaseHandler {
 		}
 		return result;
 	}
+	
+	/**
+	 * Returns a list of hundred newest pictures in DB
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public static List<PictureData> listHundredNewestPicturesFromDB(){
+		Transaction tx = null;
+		List<PictureData> result = null;
+
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		try{
+			tx = session.beginTransaction();
+
+			result = session.createQuery("from PictureData pd where pd.removeFlag=0 order by pd.createdTime desc").setMaxResults(100).list();
+			
+			tx.commit();
+		} catch(HibernateException e){
+			if (tx!= null)
+				tx.rollback();
+			e.printStackTrace();
+		} finally{
+			session.close();
+		}
+		return result;
+	}
 
 	/**
 	 * Checks if hashtag is already saved to DB. If not, saves hashtag to DB.
