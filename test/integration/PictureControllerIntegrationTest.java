@@ -30,49 +30,49 @@ public class PictureControllerIntegrationTest {
 		DatabaseHandler dbHandler = new DatabaseHandler();
 		dbManager = new DatabaseManager(dbHandler);
 		dbManagerDummy = new DatabaseManagerDummy(dbHandler);
-		dbManagerDummyOnlySourcesAndHashtag = new DatabaseManagerDummyOnlySourcesAndHashtags(dbHandler);
+		//dbManagerDummyOnlySourcesAndHashtag = new DatabaseManagerDummyOnlySourcesAndHashtags(dbHandler);
 
 		// Set real sources
 		sourcesReal = new ArrayList<String>();
 		sourcesReal.add("instagram");
 		sourcesReal.add("twitter");
 		
-		// Set dummy sources
-		sourcesDummy = new ArrayList<String>();
-		sourcesDummy.add("dummyinstagram");
-		sourcesDummy.add("dummytwitter");
+//		// Set dummy sources
+//		sourcesDummy = new ArrayList<String>();
+//		sourcesDummy.add("dummyinstagram");
+//		sourcesDummy.add("dummytwitter");
 		
 		// Set dummy hashtag
 		hashtagsDummy = new HashSet<String>();
 		hashtagsDummy.add("winter");
 		hashtagsDummy.add("raskebriller");
 					
-		// Set dummy picturedata from db
-		pictureDataFromDbDummy = new ArrayList<PictureData>();
-
-		PictureData p = new PictureData();
-		p.setId("picID 1");
-		p.setCreatedTime(1);
-		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/3abc20ec398811e3b44322000a1f92df_8.jpg");
-		p.setUrlThumb("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_5.jpg");
-		p.addHashtag(new Hashtag("hashtag 1"));
-		pictureDataFromDbDummy.add(p);
-		
-		p = new PictureData();
-		p.setId("picID 3");
-		p.setCreatedTime(3);
-		p.setUrlStd("http://distilleryimage9.s3.amazonaws.com/bcb0a0d038d111e3911522000a9e087e_8.jpg");
-		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
-		p.addHashtag(new Hashtag("hashtag 3"));
-		pictureDataFromDbDummy.add(p);
-		
-		p = new PictureData();
-		p.setId("picID 4");
-		p.setCreatedTime(4);
-		p.setUrlStd("http://distilleryimage9.s3.amazonaws.com/77ef4eca367811e3a4cb22000a9e0859_8.jpg");
-		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
-		p.addHashtag(new Hashtag("hashtag 4"));
-		pictureDataFromDbDummy.add(p);			
+//		// Set dummy picturedata from db
+//		pictureDataFromDbDummy = new ArrayList<PictureData>();
+//
+//		PictureData p = new PictureData();
+//		p.setId("picID 1");
+//		p.setCreatedTime(1);
+//		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/3abc20ec398811e3b44322000a1f92df_8.jpg");
+//		p.setUrlThumb("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_5.jpg");
+//		p.addHashtag(new Hashtag("hashtag 1"));
+//		pictureDataFromDbDummy.add(p);
+//		
+//		p = new PictureData();
+//		p.setId("picID 3");
+//		p.setCreatedTime(3);
+//		p.setUrlStd("http://distilleryimage9.s3.amazonaws.com/bcb0a0d038d111e3911522000a9e087e_8.jpg");
+//		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
+//		p.addHashtag(new Hashtag("hashtag 3"));
+//		pictureDataFromDbDummy.add(p);
+//		
+//		p = new PictureData();
+//		p.setId("picID 4");
+//		p.setCreatedTime(4);
+//		p.setUrlStd("http://distilleryimage9.s3.amazonaws.com/77ef4eca367811e3a4cb22000a9e0859_8.jpg");
+//		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
+//		p.addHashtag(new Hashtag("hashtag 4"));
+//		pictureDataFromDbDummy.add(p);			
 	}
 	
 
@@ -203,7 +203,10 @@ public class PictureControllerIntegrationTest {
 //		
 //		assertThat(pictureData.isEmpty(),is(false));
 //	}
-	
+
+	/**
+	 * Db must contain hashtags before running this method
+	 */
 	@Test
 	public void GetNewPictureData_SearchInstagramAndTwitter_SaveToDb_GetFromDb_WhenCalled_ReturnsListOfPictureData() {
 		
