@@ -153,7 +153,7 @@ exitButton.setContentAreaFilled(false);
 		}
 		
 		
-		//viewCtrl.removePictures(datatosend);
+		viewCtrl.removePictures(datatosend);
 		// TODO: send id of pic to DAL } 
 	}
 
