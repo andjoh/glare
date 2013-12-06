@@ -2,6 +2,7 @@ package dal;
 
 /**
  * Klasse lånt av Chris Håland
+ * Klassen leser fra en fil og returnerer innholdet.
  */
 
 import java.io.FileInputStream;
@@ -34,15 +35,6 @@ public class ConfigurationReader {
 			} catch (NullPointerException e) {
 				e.printStackTrace();
 			}
-		}
-		
+		}	
 	}
-	
-	/*public static void main(String[] args) {
-		ConfigurationReader reader = new ConfigurationReader("src/resource/conf.ini");
-		System.out.println(reader.read("consumer_key"));
-		System.out.println(reader.read("consumer_secret"));
-		System.out.println(reader.read("access_token"));
-		System.out.println(reader.read("access_token_secret"));
-	}*/
 }
