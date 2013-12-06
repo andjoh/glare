@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,7 +28,8 @@ public class InstagramReader implements IReader{
 	public List<PictureData> getPictures(String searchTag) {
 		confReader.setPath("src/resource/conf.ini");
 		String instagramURL = "https://api.instagram.com/v1/tags/"+searchTag+"/media/recent?client_id=" + confReader.read("client_id");
-
+		List<PictureData> pictures = new ArrayList<PictureData>();
+		
 		URL url;
 		HttpURLConnection connection = null;
 		InputStreamReader reader = null;
@@ -40,9 +42,10 @@ public class InstagramReader implements IReader{
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
+			return pictures;
 		}
 
-		List<PictureData> pictures = parser.parse(reader, searchTag);
+		pictures = parser.parse(reader, searchTag);
 
 		return pictures;
 	}
