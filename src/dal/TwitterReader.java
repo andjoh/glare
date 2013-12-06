@@ -17,21 +17,23 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterReader  implements IReader {
 
-	/**
-	 * Search for tweets with a specific hashtag.
-	 * @param args
-	 */
-
 	private ConfigurationReader confReader;
 	private ConfigurationBuilder cb;
 	private Twitter twitter;
 	
+	/**
+	 * Search for tweets with a specific hashtag.
+	 * @param confReader
+	 */
 	public TwitterReader(ConfigurationReader confReader){
 		this.confReader = confReader;
 	}
 
+	/**
+	 * Authenticates with access tokens
+	 * @throws TwitterException
+	 */
 	public void TwitterAuth() throws TwitterException{
-//		ConfigurationReader reader = new ConfigurationReader("src/resource/conf.ini");
 		confReader.setPath("src/resource/conf.ini");
 		cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
@@ -41,6 +43,12 @@ public class TwitterReader  implements IReader {
 		.setOAuthAccessTokenSecret(confReader.read("access_token_secret"));
 	}
 
+	/**
+	 * Converts from Date-type to UNIX-time
+	 * @param time
+	 * @return timestamp/1000
+	 * @throws ParseException
+	 */
 	private long DateConvert(Date time) throws ParseException{
 		DateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
 		String sDate = sdf.format(time);
@@ -48,6 +56,12 @@ public class TwitterReader  implements IReader {
 		return (timestamp/1000);
 	}
 
+	/**
+	 * Gets pictures from Twitter and creates a PictureData-object and puts it in the list.
+	 * @param searchTag
+	 * @return ArrayList<PictureData>
+	 * @throws Exception
+	 */
 	public List<PictureData> getPictures(String searchTag) throws Exception {
 
 		TwitterAuth();
@@ -67,16 +81,11 @@ public class TwitterReader  implements IReader {
 					if (media[0].getType().equals("photo")){
 						String id = String.valueOf(media[0].getId());
 						pd.setId(id);
-//						System.out.println(pd.getId());
 						pd.setUrlStd(media[0].getMediaURL() + ":large");
-//						System.out.println(pd.getUrlStd());
 						pd.setUrlThumb(media[0].getMediaURL() + ":thumb");
-//						System.out.println(pd.getUrlThumb());
 						pd.setCreatedTime(DateConvert(date));
-//						System.out.println(pd.getCreatedTime());
 						pd.setRemoveFlag(false);
 						pd.addHashtag(new Hashtag(searchTag));
-//						System.out.println(pd.getHashtags());
 						pictures.add(pd);
 					}
 				}
