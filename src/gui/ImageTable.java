@@ -100,6 +100,6 @@ public class ImageTable extends JTable implements TableModelListener {
 					
 			}
 		}
-
 	}
+}
 
