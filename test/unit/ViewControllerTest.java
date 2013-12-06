@@ -31,15 +31,15 @@ public class ViewControllerTest {
 		System.out.println("BufferedImage " + bi.getHeight());
 		System.out.println("");
 		
-		List<List<SettingsPicture>> sp2d = vc.getSettingsPictures(20,5);
+		List<SettingsPicture> sp2d = vc.getSettingsPictures(20,5);
 		
 		// Additional output
 		System.out.println("SettingsPicture");
-		for ( List<SettingsPicture> spl : sp2d ) {
+		for ( SettingsPicture spl : sp2d ) {
 			
-			for(SettingsPicture s: spl){
-				System.out.println(s.getId());
-			}
+			
+				System.out.println(spl.getId());
+			
 			
 		}
 		System.out.println("");

@@ -27,7 +27,7 @@ public class ImageTable extends JTable implements TableModelListener {
 		this.dim = dim;
 		this.model = model;
 		listener = new ImageTableListener(this, model);
-		this.setPreferredSize(new Dimension(600, 300));
+		//this.setPreferredSize(new Dimension(600, 300));
 		// remove table header
 		setTableHeader(null);
 		// set table sizing properties
@@ -101,5 +101,5 @@ public class ImageTable extends JTable implements TableModelListener {
 			}
 		}
 
-	}
+	}}
 

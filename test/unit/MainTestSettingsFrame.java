@@ -54,7 +54,15 @@ public class MainTestSettingsFrame  {
 
 		hashtagsDummy.add("winter");
 		hashtagsDummy.add("raskebriller");
-
+		hashtagsDummy.add("sun");
+		hashtagsDummy.add("lol");
+		hashtagsDummy.add("sad");
+		hashtagsDummy.add("happy");
+		hashtagsDummy.add("party");
+		hashtagsDummy.add("cat");
+		hashtagsDummy.add("hello");
+		hashtagsDummy.add("christmas");
+		hashtagsDummy.add("football");
 		// Set dummy sources and hashtag
 		dbManDum.setSources(sourcesDummy);
 		dbManDum.setHashtags(hashtagsDummy);
