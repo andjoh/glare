@@ -74,39 +74,39 @@ public class SettingsContentPanel<exitButton> extends JPanel implements ActionLi
 		// TableSettingsPanel declaration
 		tablepanel = new TableSettingsPanel(viewCtrl, dim);
 		tablepanel.setBounds(dim.width * 30 / 100, 10, dim.width * 2 / 3,
-		dim.height * 4 / 3);
+				dim.height * 4 / 3);
 		// exitButton properties
-		
-	exitButton= new JButton("Exit");
-	
-	exitButton.addActionListener(this);
-	
+
+		exitButton= new JButton("Exit");
+
+		exitButton.addActionListener(this);
+
 
 		BufferedImage img=null;
 		URL  url = this.getClass().getResource("/resource/img/exit.png");
-		 int w=dim.width/20,h=dim.height/20;
+		int w=dim.width/20,h=dim.height/20;
 		try {
-   
-      img= ImageIO.read(url);
-     img=Thumbnails.of(img).size(w, h)
+
+			img= ImageIO.read(url);
+			img=Thumbnails.of(img).size(w, h)
 			.asBufferedImage();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		ImageIcon ic = new ImageIcon(img);
-	
+
 		exitButton.setIcon(ic);
-exitButton.setBorderPainted(false);
-exitButton.setContentAreaFilled(false);
+		exitButton.setBorderPainted(false);
+		exitButton.setContentAreaFilled(false);
 		exitButton.setBounds(dim.width-w*2/3,0,w,h);
-		
-		
+
+
 		// Background Image declaration
 
 		backgroundImageLabel = new JLabel();
 		backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
-				"/resource/img/backgr.jpg")));
+		"/resource/img/backgr.jpg")));
 		backgroundImageLabel.setIconTextGap(0);
 		backgroundImageLabel.setBounds(0, 0, dim.width, dim.height);
 
@@ -128,7 +128,7 @@ exitButton.setContentAreaFilled(false);
 		System.out.println("Calld saveBeforExit");
 		updateDisplaySettings();
 		updateHashtags();
-	   updateTableSettings();
+		updateTableSettings();
 	}
 
 	public void updateTableSettings() {
@@ -137,34 +137,34 @@ exitButton.setContentAreaFilled(false);
 		// flag them yet.
 		// This can be done here for test purposes
 		// f.ex we want to flag picture in row 4 column 4:
-		
+
 		// here is the data to send, picture in row 4 colum 4 should be
 		// flagged
 
 		List<SettingsPicture> datatosend = imtabmod.getTableModelData();
-		
+
 		SettingsPicture pic=null;
 		for(int i=0;i<datatosend.size();i++){
-				pic=datatosend.get(i);
-				if(pic==null)System.out.println("Picture is null..WTF?!");
-			 if (pic.getIsFlagged());
-			
-			
+			pic=datatosend.get(i);
+			if(pic==null)System.out.println("Picture is null..WTF?!");
+			if (pic.getIsFlagged());
+
+
 		}
-		
-		
+
+
 		viewCtrl.removePictures(datatosend);
 		// TODO: send id of pic to DAL } 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-	  if(e.getSource().equals(exitButton)){
-		  saveBeforeExit();
-		  parent.setVisible(false);
-		  parent.dispatchEvent(new WindowEvent( parent, WindowEvent.WINDOW_CLOSING));
-	  }
-		
+		if(e.getSource().equals(exitButton)){
+			saveBeforeExit();
+			parent.setVisible(false);
+			parent.dispatchEvent(new WindowEvent( parent, WindowEvent.WINDOW_CLOSING));
+		}
+
 	}
 
 }
