@@ -61,8 +61,7 @@ public class GetPictureDataAndSaveToDbTest {
 //		hashtagsDummy.add("raskebriller");
 //		dbMan.addHashtags(hashtagsDummy);
 		
-		picCtrl.searchPictureData();
-		picCtrl.processPictureData();
+		picCtrl.getNewPictureData();
 		
 		List<PictureData> pictureData = dbMan.getPictureDataFromDb();
 
