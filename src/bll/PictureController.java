@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.util.*;
 
@@ -53,23 +54,27 @@ public class PictureController {
 			List<PictureData> tmpPictureDataToSave = new ArrayList<PictureData>();
 			List<PictureData> pictureDataToSave    = new ArrayList<PictureData>();
 
-			System.out.println("pictureDataNew");
+			System.out.println("");			
+			System.out.println("");			
+			System.out.println("getNewPictureData: pictureDataNew");
 			for ( PictureData pd : pictureDataNew ) {
 				System.out.println(pd.getId());
+				System.out.println(pd.isRemoveFlag());
 				for ( Hashtag ht : pd.getHashtags() ) {
 					System.out.println(" - " + ht.getHashtag());
 				}
 			}
-			System.out.println("");
+			System.out.println("");			
 
-			System.out.println("pictureDataModified");
+			System.out.println("getNewPictureData: pictureDataModified");
 			for ( PictureData pd : pictureDataModified ) {
 				System.out.println(pd.getId());
+				System.out.println(pd.isRemoveFlag());
 				for ( Hashtag ht : pd.getHashtags() ) {
 					System.out.println(" - " + ht.getHashtag());
 				}
 			}
-			System.out.println("");
+			System.out.println("");	
 			
 			if ( !pictureDataNew.isEmpty() ) 
 				tmpPictureDataToSave.addAll(pictureDataNew);
@@ -78,12 +83,11 @@ public class PictureController {
 				tmpPictureDataToSave.addAll(pictureDataModified);				
 
 			if ( !tmpPictureDataToSave.isEmpty() ) {
-				pictureDataToSave.addAll(pictureDataModified);
-
 				// Check if access to pictures
 				for ( PictureData pd : tmpPictureDataToSave ) {
-					//if ( accessToPicture(pd) )
+					if ( accessToPicture(pd) ) {
 						pictureDataToSave.add(pd);
+					}
 				}
 
 				if ( !pictureDataToSave.isEmpty() ) {
@@ -126,7 +130,7 @@ public class PictureController {
 		
 		if ( pictureDataFromSources.isEmpty() )
 			return false;
-		
+	
 		return true;
 	}
 
@@ -154,31 +158,62 @@ public class PictureController {
 	 * Find new pictureData and store in list pictureDataNew
 	 * Find existing pictureData which have got new hashtags and store in list pictureDataModified
 	 */		
-	public void processPictureData() {
-		
+
+	private void processPictureData() {
+
+
 		// Get pictureData from db.
 		List<PictureData> pictureDataExisting = databaseManager.getPictureDataFromDb();
 
+		System.out.println("processPictureData: pictureDataExisting");
+		for ( PictureData pd : pictureDataExisting ) {
+			System.out.println(pd.getId());
+			System.out.println(pd.isRemoveFlag());
+			for ( Hashtag ht : pd.getHashtags() ) {
+				System.out.println(" - " + ht.getHashtag());
+			}
+		}
+		System.out.println("");
+
+		System.out.println("processPictureData: pictureDataFromSources");
+		for ( PictureData pd : pictureDataFromSources ) {
+			System.out.println(pd.getId());
+			System.out.println(pd.isRemoveFlag());
+			for ( Hashtag ht : pd.getHashtags() ) {
+				System.out.println(" - " + ht.getHashtag());
+			}
+		}
+		System.out.println("");
+		
 		// Init lists
 		pictureDataNew      = new ArrayList<PictureData>();
 		pictureDataModified = new ArrayList<PictureData>();		
 		Set<String> newHashtags;
-		
+
 		// Iterate over picture data from sources
 		boolean pictureDataExists;
 		for ( PictureData pdPossibleNew : pictureDataFromSources ) {
-
+			System.out.println("");
+			System.out.println("ID from pictureDataFromSources to be processed: " + pdPossibleNew.getId());
 			pictureDataExists = false;
-
+			
 			// Check if this pictureData already exists in the db
 			for ( PictureData pdExisting : pictureDataExisting ) {
+				System.out.println("Check if id from pdExisting, " + pdExisting.getId() + ", is equal to new " + pdPossibleNew.getId());
 
-				if ( pdPossibleNew.getId() == pdExisting.getId() ) {			
+				if ( pdPossibleNew.getId().equals(pdExisting.getId()) ) {			
 					pictureDataExists = true;
+					System.out.println("Id from pdExisting, " + pdExisting.getId() + ", IS EQUAL to new " + pdPossibleNew.getId() + "\n");
 
 					// Check if hashtag connected to possible new is already connected to existing picture data
 					newHashtags = new HashSet<String>();
 					newHashtags = checkForNewHashtags(pdExisting, pdPossibleNew);
+
+					System.out.println("Do we have new hashtags?");
+					for ( String ht : newHashtags ) {
+						System.out.println(ht);
+					}
+					System.out.println("End Do we have new hashtags?");
 					
 					// If new hashtags - add to existing for further check of possible new picture data,
 					// and add possible new, with existing remove flag to modified list
@@ -186,39 +221,27 @@ public class PictureController {
 						for ( String ht : newHashtags ) 
 							pdExisting.addHashtag(new Hashtag(ht));
 						pdPossibleNew.setRemoveFlag(pdExisting.isRemoveFlag());
+						System.out.println("ADD to pictureDataModified\n");
 						pictureDataModified.add(pdPossibleNew);
 					}
-
+					System.out.println("BREAK");
 					break;
-				}				
+				}
 			}
 
+			for ( PictureData p : pictureDataNew ) {
+				if ( p.getHashtags().size() > 1 ) {
+					System.out.println("Picture id " + p.getId() + " has more than 1 hashtag");
+				}
+			}
+			
 			// Picture data doesn't exist - add to list
-			if ( !pictureDataExists ) {
+			if ( !pictureDataExists ) {				
 				pictureDataNew.add(pdPossibleNew);
 
-//				// Create new object to add to existing list
-//				PictureData pd = new PictureData();
-//				pd.setId(pdPossibleNew.getId());
-//				pd.setCreatedTime(pdPossibleNew.getCreatedTime());
-//				pd.setHashtags(pdPossibleNew.getHashtags());
-//				pd.setUrlStd(pdPossibleNew.getUrlStd());
-//				pd.setUrlThumb(pdPossibleNew.getUrlThumb());
-//				
-//				//PictureData copyNew = (PictureData) pdPossibleNew.clone();
-//				pictureDataExisting.add(pd);
+				System.out.println("Id from pdExisting is NOT equal to new " + pdPossibleNew.getId() + " ADD to pictureDataNew\n");
 			}
 		}	
-		
-		System.out.println("New picturedata after process");
-		for ( PictureData pd : pictureDataNew ) {
-			System.out.println(pd.getId());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}
-		}
-		System.out.println("End New picturedata after process");	
-		System.out.println("");
 	}
 
 	private Set<String> checkForNewHashtags(PictureData pdExisting, PictureData pdNew) {
@@ -247,7 +270,7 @@ public class PictureController {
 	}
 	
 	/**
-	 * Check to see if access to picture
+	 * Check URL to see if we have access to picture
 	 * @param pdPossibleNew
 	 * @return true/false
 	 */
@@ -258,26 +281,32 @@ public class PictureController {
 		urls.add(pdPossibleNew.getUrlStd());
 		urls.add(pdPossibleNew.getUrlThumb());
 
-		URL imageUrl;
-		BufferedImage image = null;
-		for ( String url : urls ) {
+	    for (String url : urls) {
 			try {
-				imageUrl = new URL(url);
-				HttpURLConnection urlConn =( HttpURLConnection) imageUrl.openConnection();
-				InputStream is = urlConn.getInputStream();
-				image = ImageIO.read(is);
-				is.close();
-			} catch (MalformedURLException e) {
-				System.out.println("MalformedURLException IN PICTURECONTROLLER!!!!!!! url: " + url);
+				URL u = new URL(url);
+				HttpURLConnection huc = (HttpURLConnection) u.openConnection();
+				huc.setRequestMethod("HEAD");
+				accessToPicture = ( huc.getResponseCode() == HttpURLConnection.HTTP_OK );
+			} catch (MalformedURLException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 				accessToPicture = false;
-				break;
-			} catch (IOException e) {
-				System.out.println("IO EXEPTION IN PICTURECONTROLLER!!!!!!! url: " + url);
+			} catch (ProtocolException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 				accessToPicture = false;
-				break;
-			}	
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+				accessToPicture = false;
+			}
+			
+			if (!accessToPicture) {
+				System.out.println("Exception IN PICTURECONTROLLER!!!!!!! url: " + url);
+				break; 
+			}		
 		}
-		
+	    		
 		return accessToPicture;
 	}
 

@@ -32,14 +32,6 @@ public class InstagramReaderDummy implements IReader{
 		p.setUrlThumb("http://distilleryimage5.s3.amazonaws.com/b50b6e1097bd11e2934722000a9f3cae_7.jpg");
 		p.addHashtag(new Hashtag(searchTag));
 		pictureData.add(p);
-
-		p = new PictureData();
-		p.setId("picID 2");
-		p.setCreatedTime(2);
-		p.setUrlStd("http://distilleryimage5.s3.amazonaws.com/b50b6e1097bd11e2934722000a9f3cae_7.jpg");
-		p.setUrlThumb("http://distilleryimage5.s3.amazonaws.com/b50b6e1097bd11e2934722000a9f3cae_7.jpg");
-		p.addHashtag(new Hashtag(searchTag));
-		pictureData.add(p);
 		
 		return pictureData;
 	}

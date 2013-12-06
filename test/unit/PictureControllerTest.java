@@ -43,14 +43,16 @@ public class PictureControllerTest {
 
 		PictureData p = new PictureData();
 		p.setId("picID 1");
+		p.setRemoveFlag(true);
 		p.setCreatedTime(1);
 		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/3abc20ec398811e3b44322000a1f92df_8.jpg");
-		p.setUrlThumb("http://distilleryimage3.s3.amazonaws.com/ef1236282adb11e3a9b322000a9e5afc_5.jpg");
+		p.setUrlThumb("http://distilleryimage5.s3.amazonaws.com/b50b6e1097bd11e2934722000a9f3cae_7.jpg");
 		p.addHashtag(new Hashtag("hashtag 1"));
 		pictureDataFromDbDummy.add(p);
 		
 		p = new PictureData();
 		p.setId("picID 3");
+		p.setRemoveFlag(false);
 		p.setCreatedTime(3);
 		p.setUrlStd("http://distilleryimage9.s3.amazonaws.com/bcb0a0d038d111e3911522000a9e087e_8.jpg");
 		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
@@ -59,9 +61,10 @@ public class PictureControllerTest {
 		
 		p = new PictureData();
 		p.setId("picID 4");
+		p.setRemoveFlag(true);
 		p.setCreatedTime(4);
-		p.setUrlStd("http://distilleryimage9.s3.amazonaws.com/77ef4eca367811e3a4cb22000a9e0859_8.jpg");
-		p.setUrlThumb("http://images.ak.instagram.com/profiles/profile_186344368_75sq_1380238572.jpg");
+		p.setUrlStd("http://distilleryimage5.s3.amazonaws.com/b50b6e1097bd11e2934722000a9f3cae_7.jpg");
+		p.setUrlThumb("http://distilleryimage5.s3.amazonaws.com/b50b6e1097bd11e2934722000a9f3cae_7.jpg");
 		p.addHashtag(new Hashtag("hashtag 4"));
 		pictureDataFromDbDummy.add(p);			
 	}
@@ -75,50 +78,15 @@ public class PictureControllerTest {
 		pictureDataFromDbDummy = null;
 	}
 	
-//	@Test
-//	public void SearchPictureData_UsingDummyHashtags_UsingDummyPictureData_WhenCalled_ReturnsListOfPictureData() {
-//		
-//		// Set dummy sources and hashtag
-//		dbManagerDummy.setSources(sourcesDummy);
-//		dbManagerDummy.setHashtags(hashtagsDummy);
-//		
-//		// Run test
-//		picCtrl.searchPictureData();
-//		
-//		List<PictureData> pictureData = picCtrl.getPictureDataFromSources();
-//
-//		// Additional output
-//		System.out.println("5 Dummy Picturedata from Instagram and Twitter");
-//		for ( PictureData pd : pictureData ) {
-//			System.out.println(pd.getId());
-//			for ( Hashtag ht : pd.getHashtags() ) {
-//				System.out.println(" - " + ht.getHashtag());
-//			}
-//		}
-//		System.out.println("");
-//		
-//		assertThat(pictureData.isEmpty(),is(false));
-//	}	
-	
 	@Test
-	public void GetNewPictureData_UsingDummyHashtags_UsingDummyPictureData_NoPictureDataFromDb_WhenCalled_5PictureDataAreSavedToDb() {
+	public void GetNewPictureData_UsingDummyHashtags_UsingDummyPictureData_NoPictureDataFromDb_WhenCalled_ReturnListOfPictureData() {
 		
 		// Set dummy sources and hashtag
 		dbManagerDummy.setSources(sourcesDummy);
 		dbManagerDummy.setHashtags(hashtagsDummy);
 		
 		// Run test
-		picCtrl.getNewPictureData();	
-
-		// Additional output
-		System.out.println("PictureData from sources");
-		for ( PictureData pd : picCtrl.getPictureDataFromSources() ) {
-			System.out.println(pd.getId());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}
-		}
-		System.out.println("");		
+		picCtrl.getNewPictureData();
 		
 		List<PictureData> pictureData = dbManagerDummy.getPictureDataFromDb();
 
@@ -132,11 +100,11 @@ public class PictureControllerTest {
 		}
 		System.out.println("");
 			
-		assertThat(pictureData.size() == 5,is(true));
+		assertThat(pictureData.isEmpty(),is(false));
 	}
 	
 	@Test
-	public void GetNewPictureData_UsingDummyHashtags_UsingDummyPictureData_DummyPictureDataFromDb_WhenCalled_TotalNumberPictureDataIs6() {
+	public void GetNewPictureData_UsingDummyHashtags_UsingDummyPictureData_DummyPictureDataFromDb_WhenCalled_ReturnListOfPictureData() {
 
 		// Set dummy sources, hashtag and picturedata
 		dbManagerDummy.setSources(sourcesDummy);
@@ -152,27 +120,18 @@ public class PictureControllerTest {
 		System.out.println("All available PictureData after get from sources and db");
 		for ( PictureData pd : pictureData ) {
 			System.out.println(pd.getId());
+			System.out.println(pd.isRemoveFlag());
 			for ( Hashtag ht : pd.getHashtags() ) {
 				System.out.println(" - " + ht.getHashtag());
 			}
 		}
 		System.out.println("");
 		
-		assertThat(pictureData.size() == 6,is(true));
+		assertThat(pictureData.isEmpty(),is(false));
 	}
 
 	@Test
 	public void GetNewPictureData_NoSources_NoHashtags_WhenCalled_ReturnsNotSuccess() {
-		
-		boolean success = picCtrl.getNewPictureData();
-		
-		assertThat(success,is(false));
-	}
-	
-	@Test
-	public void GetNewPictureData_NoHashtags_WhenCalled_ReturnsNotSuccess() {
-		// Set dummy sources
-		dbManagerDummy.setSources(sourcesDummy);
 		
 		boolean success = picCtrl.getNewPictureData();
 		

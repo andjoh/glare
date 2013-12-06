@@ -14,6 +14,13 @@ public class ThreadScheduler implements Runnable{
 
 	@Override
 	public void run() {
+		try {
+			Thread.sleep(30000);
+			System.out.println("Scheduler running");
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		while(true){
 			try {
 				System.out.println("HENTER NYE BILDER!!!!!!!!!!!!!!!!!!!!!!!!");
