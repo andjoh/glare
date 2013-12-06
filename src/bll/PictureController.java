@@ -54,27 +54,27 @@ public class PictureController {
 			List<PictureData> tmpPictureDataToSave = new ArrayList<PictureData>();
 			List<PictureData> pictureDataToSave    = new ArrayList<PictureData>();
 
-			System.out.println("");			
-			System.out.println("");			
-			System.out.println("getNewPictureData: pictureDataNew");
-			for ( PictureData pd : pictureDataNew ) {
-				System.out.println(pd.getId());
-				System.out.println(pd.isRemoveFlag());
-				for ( Hashtag ht : pd.getHashtags() ) {
-					System.out.println(" - " + ht.getHashtag());
-				}
-			}
-			System.out.println("");			
-
-			System.out.println("getNewPictureData: pictureDataModified");
-			for ( PictureData pd : pictureDataModified ) {
-				System.out.println(pd.getId());
-				System.out.println(pd.isRemoveFlag());
-				for ( Hashtag ht : pd.getHashtags() ) {
-					System.out.println(" - " + ht.getHashtag());
-				}
-			}
-			System.out.println("");	
+//			System.out.println("");			
+//			System.out.println("");			
+//			System.out.println("getNewPictureData: pictureDataNew");
+//			for ( PictureData pd : pictureDataNew ) {
+//				System.out.println(pd.getId());
+//				System.out.println(pd.isRemoveFlag());
+//				for ( Hashtag ht : pd.getHashtags() ) {
+//					System.out.println(" - " + ht.getHashtag());
+//				}
+//			}
+//			System.out.println("");			
+//
+//			System.out.println("getNewPictureData: pictureDataModified");
+//			for ( PictureData pd : pictureDataModified ) {
+//				System.out.println(pd.getId());
+//				System.out.println(pd.isRemoveFlag());
+//				for ( Hashtag ht : pd.getHashtags() ) {
+//					System.out.println(" - " + ht.getHashtag());
+//				}
+//			}
+//			System.out.println("");	
 			
 			if ( !pictureDataNew.isEmpty() ) 
 				tmpPictureDataToSave.addAll(pictureDataNew);
@@ -165,25 +165,25 @@ public class PictureController {
 		// Get pictureData from db.
 		List<PictureData> pictureDataExisting = databaseManager.getPictureDataFromDb();
 
-		System.out.println("processPictureData: pictureDataExisting");
-		for ( PictureData pd : pictureDataExisting ) {
-			System.out.println(pd.getId());
-			System.out.println(pd.isRemoveFlag());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}
-		}
-		System.out.println("");
-
-		System.out.println("processPictureData: pictureDataFromSources");
-		for ( PictureData pd : pictureDataFromSources ) {
-			System.out.println(pd.getId());
-			System.out.println(pd.isRemoveFlag());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}
-		}
-		System.out.println("");
+//		System.out.println("processPictureData: pictureDataExisting");
+//		for ( PictureData pd : pictureDataExisting ) {
+//			System.out.println(pd.getId());
+//			System.out.println(pd.isRemoveFlag());
+//			for ( Hashtag ht : pd.getHashtags() ) {
+//				System.out.println(" - " + ht.getHashtag());
+//			}
+//		}
+//		System.out.println("");
+//
+//		System.out.println("processPictureData: pictureDataFromSources");
+//		for ( PictureData pd : pictureDataFromSources ) {
+//			System.out.println(pd.getId());
+//			System.out.println(pd.isRemoveFlag());
+//			for ( Hashtag ht : pd.getHashtags() ) {
+//				System.out.println(" - " + ht.getHashtag());
+//			}
+//		}
+//		System.out.println("");
 		
 		// Init lists
 		pictureDataNew      = new ArrayList<PictureData>();
@@ -193,27 +193,27 @@ public class PictureController {
 		// Iterate over picture data from sources
 		boolean pictureDataExists;
 		for ( PictureData pdPossibleNew : pictureDataFromSources ) {
-			System.out.println("");
-			System.out.println("ID from pictureDataFromSources to be processed: " + pdPossibleNew.getId());
+//			System.out.println("");
+//			System.out.println("ID from pictureDataFromSources to be processed: " + pdPossibleNew.getId());
 			pictureDataExists = false;
 			
 			// Check if this pictureData already exists in the db
 			for ( PictureData pdExisting : pictureDataExisting ) {
-				System.out.println("Check if id from pdExisting, " + pdExisting.getId() + ", is equal to new " + pdPossibleNew.getId());
+//				System.out.println("Check if id from pdExisting, " + pdExisting.getId() + ", is equal to new " + pdPossibleNew.getId());
 
 				if ( pdPossibleNew.getId().equals(pdExisting.getId()) ) {			
 					pictureDataExists = true;
-					System.out.println("Id from pdExisting, " + pdExisting.getId() + ", IS EQUAL to new " + pdPossibleNew.getId() + "\n");
+//					System.out.println("Id from pdExisting, " + pdExisting.getId() + ", IS EQUAL to new " + pdPossibleNew.getId() + "\n");
 
 					// Check if hashtag connected to possible new is already connected to existing picture data
 					newHashtags = new HashSet<String>();
 					newHashtags = checkForNewHashtags(pdExisting, pdPossibleNew);
 
-					System.out.println("Do we have new hashtags?");
-					for ( String ht : newHashtags ) {
-						System.out.println(ht);
-					}
-					System.out.println("End Do we have new hashtags?");
+//					System.out.println("Do we have new hashtags?");
+//					for ( String ht : newHashtags ) {
+//						System.out.println(ht);
+//					}
+//					System.out.println("End Do we have new hashtags?");
 					
 					// If new hashtags - add to existing for further check of possible new picture data,
 					// and add possible new, with existing remove flag to modified list
@@ -221,25 +221,25 @@ public class PictureController {
 						for ( String ht : newHashtags ) 
 							pdExisting.addHashtag(new Hashtag(ht));
 						pdPossibleNew.setRemoveFlag(pdExisting.isRemoveFlag());
-						System.out.println("ADD to pictureDataModified\n");
+//						System.out.println("ADD to pictureDataModified\n");
 						pictureDataModified.add(pdPossibleNew);
 					}
-					System.out.println("BREAK");
+//					System.out.println("BREAK");
 					break;
 				}
 			}
 
-			for ( PictureData p : pictureDataNew ) {
-				if ( p.getHashtags().size() > 1 ) {
-					System.out.println("Picture id " + p.getId() + " has more than 1 hashtag");
-				}
-			}
+//			for ( PictureData p : pictureDataNew ) {
+//				if ( p.getHashtags().size() > 1 ) {
+//					System.out.println("Picture id " + p.getId() + " has more than 1 hashtag");
+//				}
+//			}
 			
 			// Picture data doesn't exist - add to list
 			if ( !pictureDataExists ) {				
 				pictureDataNew.add(pdPossibleNew);
 
-				System.out.println("Id from pdExisting is NOT equal to new " + pdPossibleNew.getId() + " ADD to pictureDataNew\n");
+//				System.out.println("Id from pdExisting is NOT equal to new " + pdPossibleNew.getId() + " ADD to pictureDataNew\n");
 			}
 		}	
 	}
