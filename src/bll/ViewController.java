@@ -139,7 +139,7 @@ public class ViewController {
 	 */
 	
 	public void getSortedList() {
-		System.out.println("ViewController getSortedList");
+		
 
 		pictureDataList = dbMan.getSortedPictureData();
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);

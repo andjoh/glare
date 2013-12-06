@@ -24,7 +24,7 @@ public class ImageTableListener implements ListSelectionListener {
 		if (!e.getValueIsAdjusting()) {
 
 			// clears previous flags
-			//model.clearFlags();
+			model.clearFlags();
 			// defines an area in which the selected cells are located in
 			// by getting min and max indices
 			// this narrows down the search in getCells()

@@ -53,9 +53,10 @@ public class ImageTableModel extends AbstractTableModel {
 
 	// Gets number of rows, which is the number of lists in the list
 	public int getRowCount() {
-	
-
-		return  data.size()/COLS;
+	 int size= data.size();
+	 int modulus=size%COLS;
+	 if(modulus!=0)size++;
+	 return size;
 	}
 
 	// Returns value based on row,column

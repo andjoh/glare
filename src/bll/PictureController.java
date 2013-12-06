@@ -53,10 +53,6 @@ public class PictureController {
 
 			List<PictureData> tmpPictureDataToSave = new ArrayList<PictureData>();
 			List<PictureData> pictureDataToSave    = new ArrayList<PictureData>();
-
-			System.out.println("");			
-			System.out.println("");			
-			System.out.println("getNewPictureData: pictureDataNew");
 			for ( PictureData pd : pictureDataNew ) {
 				System.out.println(pd.getId());
 				System.out.println(pd.isRemoveFlag());
@@ -64,14 +60,13 @@ public class PictureController {
 					System.out.println(" - " + ht.getHashtag());
 				}
 			}
-			System.out.println("");			
-
-			System.out.println("getNewPictureData: pictureDataModified");
+	
+		
 			for ( PictureData pd : pictureDataModified ) {
 				System.out.println(pd.getId());
 				System.out.println(pd.isRemoveFlag());
 				for ( Hashtag ht : pd.getHashtags() ) {
-					System.out.println(" - " + ht.getHashtag());
+				
 				}
 			}
 			System.out.println("");	
@@ -167,20 +162,18 @@ public class PictureController {
 
 		System.out.println("processPictureData: pictureDataExisting");
 		for ( PictureData pd : pictureDataExisting ) {
-			System.out.println(pd.getId());
-			System.out.println(pd.isRemoveFlag());
+	
 			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
+		
 			}
 		}
-		System.out.println("");
+	
 
-		System.out.println("processPictureData: pictureDataFromSources");
+	
 		for ( PictureData pd : pictureDataFromSources ) {
-			System.out.println(pd.getId());
-			System.out.println(pd.isRemoveFlag());
+		
 			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
+		
 			}
 		}
 		System.out.println("");
