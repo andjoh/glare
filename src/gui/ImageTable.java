@@ -33,8 +33,8 @@ public class ImageTable extends JTable implements TableModelListener {
 		// set table sizing properties
 		// setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		this.setAutoCreateColumnsFromModel(true);
-         this.setFocusable(true);
-         this.setRequestFocusEnabled(true);
+		this.setFocusable(true);
+		this.setRequestFocusEnabled(true);
 		setColumnSize();
 		setRowSize();
 		// set grid and spacing properties
@@ -64,7 +64,7 @@ public class ImageTable extends JTable implements TableModelListener {
 
 	public void setRowSize() {
 		for (int i = 0; i < model.getRowCount(); i++) {
-         
+
 			this.setRowHeight(i, 60);
 			this.setRowMargin(5);
 		}
@@ -96,15 +96,9 @@ public class ImageTable extends JTable implements TableModelListener {
 				if (model.cellIsFlagged(i, j)){
 					model.setflagOnPicture(i, j, true);
 				}
-					
-					
+
+
 			}
 		}
-<<<<<<< HEAD
-
-	}}
-=======
 	}
 }
->>>>>>> f92d6c55afba2abe84578c3b85209b5bb7574466
-
