@@ -10,6 +10,12 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -43,7 +49,7 @@ public class ViewController {
 	 * 
 	 * @param dbMan
 	 */
-	public ViewController(DatabaseManager dbMan) {
+	public ViewController(DatabaseManager dbMan)  {
 		this.dbMan = dbMan;
 		sortedPictureList = new ArrayList<PictureData>();
 
@@ -65,9 +71,6 @@ public class ViewController {
 			getSortedList();
 
 		while (true) {
-			// System.out.println("Hvor mange bilder igjen: " +
-			// sortedPictureList.size());
-
 			if ((sortedPictureList.isEmpty() || randomPictureList.isEmpty())) {
 				break;
 			}
@@ -92,85 +95,53 @@ public class ViewController {
 		return image;
 	}
 
-	public List<SettingsPicture> getSettingsPictures(int rows, int cols) {
 
-		final Set<SettingsPicture> setPic = Collections
-				.synchronizedSet(new HashSet<SettingsPicture>());
-		BlockingQueue<Runnable> blockingQueue = new ArrayBlockingQueue<Runnable>(
-				100);
-		ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 50, 3000,
-				TimeUnit.NANOSECONDS, blockingQueue);
-		executor.setRejectedExecutionHandler(new RejectedExecutionHandler() {
-			@Override
-			public void rejectedExecution(Runnable r,
-					ThreadPoolExecutor executor) {
 
-				// System.out.println("Waiting for a second");
-				try {
-					Thread.sleep(1);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+	
+	public List<SettingsPicture> getSettingsPictures(){
+		
+		//CopyOnWriteArrayList<String> cpList=new CopyOnWriteArrayList<String>(new ArrayList<String>());
+		List<SettingsPicture> setPics = new ArrayList<SettingsPicture>();
+		 ExecutorService executor = Executors.newFixedThreadPool(10);
+		    List<Future<SettingsPicture>> list = new ArrayList<Future<SettingsPicture>>();
+		    for (PictureData  pd: pictureDataList) {
+		      Callable<SettingsPicture> worker = new CallableSettingsPictureTask(pd.getId(),pd.getUrlThumb());
+		      Future<SettingsPicture> submit = executor.submit(worker);
+		      list.add(submit);
+		    }
 
-				// executor.execute(r);
-			}
-		});
-		System.out.println("Size picture data list " + pictureDataList.size());
-		final Set<PictureData> picData = Collections
-				.synchronizedSet(new HashSet<PictureData>(pictureDataList));
-		final Set<String> triedPic = Collections
-				.synchronizedSet(new HashSet<String>());
-		// final Iterator<PictureData> iterator = picData.iterator();
-
-		while (picData.size() != triedPic.size()) {
-			for (final PictureData p : picData) {
-				
-				if (!triedPic.contains(p.getId())) {
-				;
-					
-					executor.execute(new Runnable() {
-
-						public void run() {
-							final SettingsPicture setp;
-				             final BufferedImage buf;
-                             
-							buf = getBufImage(p.getUrlThumb());
-
-							if (buf != null) {
-								// System.out.println("loaded image to buf");
-								setp=new SettingsPicture(p.getId(),buf);
-								setPic.add(setp);
-								triedPic.add(p.getId());
-							} else if (buf == null)
-								triedPic.add(p.getId());
-						}
-					});
-
-				}
-			}
-		}
-		executor.shutdownNow();
-		System.out.println("SetPic size after threads: " + setPic.size());
-		List<SettingsPicture> setPictures = new ArrayList<SettingsPicture>(
-				setPic);
-		return setPictures;
-
+		    System.out.println(list.size());
+		    SettingsPicture pic;
+		    for (Future<SettingsPicture> future : list) {
+		      try {
+		    	pic= future.get();
+		    	if(pic!=null)
+		       setPics.add(future.get());
+		      } catch (InterruptedException e) {
+		        e.printStackTrace();
+		      } catch (ExecutionException e) {
+		        e.printStackTrace();
+		      }
+		    }
+		 
+		    executor.shutdown();
+		
+		System.out.println("After threads, setPics Size"+setPics.size());
+		return setPics;
+		
+		
+		
 	}
-
 	/**
-	 * Load list of picture data from database Prepare lists for sequential -
+	 * Load list of pict
+	 * ure data from database Prepare lists for sequential -
 	 * and random view
 	 */
+	
 	public void getSortedList() {
 		System.out.println("ViewController getSortedList");
 
 		pictureDataList = dbMan.getSortedPictureData();
-		/*
-		 * for ( PictureData p : pictureDataList ) {
-		 * //System.out.println(p.getId()); for ( Hashtag htObj :
-		 * p.getHashtags() ); //System.out.println(" - " + htObj.getHashtag());
-		 * }
-		 */
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);
 		randomPictureList = new ArrayList<PictureData>(pictureDataList);
 		Collections.shuffle(randomPictureList);
@@ -191,17 +162,19 @@ public class ViewController {
 
 			imageUrl = new URL(url);
 			HttpURLConnection urlConn = (HttpURLConnection) imageUrl
-					.openConnection();
-			urlConn.addRequestProperty("User-Agent", "Mozilla/4.0");
-			InputStream is = urlConn.getInputStream();
-			image = ImageIO.read(is);
-			is.close();
+			.openConnection();
+
+    InputStream is = urlConn.getInputStream();
+	image = ImageIO.read(is);
+		is.close();
+	
+			
+	
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+	
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
+	
 
 			System.out.println("IO EXEPTION !!!!!!! url: " + url);
 		}
@@ -210,16 +183,9 @@ public class ViewController {
 	}
 
 	/**
-	 * Get thumbnails to be displayed
-	 * 
-	 * @param rows
-	 * @param cols
-	 * @return 2d-list of settings picture objects
-	 */
-	/**
 	 * List of pictures to be marked inappropriate in database
 	 * 
-	 * @param list2d
+	 * @param list
 	 */
 	public void removePictures(List<SettingsPicture> list) {
 		Set<String> flaggedList = new HashSet<String>();
@@ -229,7 +195,7 @@ public class ViewController {
 			if (pic == null)
 				System.out.println("Picture is null");
 
-			// System.out.println("removePictures: before if(pic.getIsFlagged())");
+		
 
 			if (pic.getIsFlagged()) {
 				id = pic.getId();
@@ -359,4 +325,6 @@ public class ViewController {
 		System.out.println("Set DisplayTime: " + displayTime);
 		this.displayTime = displayTime * 1000;
 	}
+
+	
 }

@@ -57,8 +57,7 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 
 	private void init() {
 		// thumbnailTable properties
-		settingsPictures=viewCtrl.getSettingsPictures(ROWS,
-				COLS);
+		settingsPictures=viewCtrl.getSettingsPictures();
 		System.out.println();
 		tablemodel = new ImageTableModel(settingsPictures);
 		thumbnailTable = new ImageTable(tablemodel, dim);

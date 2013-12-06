@@ -66,7 +66,7 @@ public class ImageTableModel extends AbstractTableModel {
 		if (pic.getIsFlagged())
 			return null;
 		
-		else return  pic.getIcon(100, 100);
+		else return  pic.getIcon(100,50);
 			
 	}
 

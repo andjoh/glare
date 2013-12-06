@@ -106,7 +106,7 @@ public class PictureController {
 	 * 
 	 * @return - True if new picture data are found
 	 */
-	private boolean searchPictureData() {	
+	public boolean searchPictureData() {	
 	
 		pictureDataFromSources = new ArrayList<PictureData>();
 
@@ -158,7 +158,9 @@ public class PictureController {
 	 * Find new pictureData and store in list pictureDataNew
 	 * Find existing pictureData which have got new hashtags and store in list pictureDataModified
 	 */		
+
 	private void processPictureData() {
+
 
 		// Get pictureData from db.
 		List<PictureData> pictureDataExisting = databaseManager.getPictureDataFromDb();

@@ -45,7 +45,7 @@ public class SettingsPicture {
 		return ic;
 	}
 	public void setIsTempFlagged(boolean isTempFlagged){
-		this.isFlagged=isTempFlagged;
+		this.isTempFlagged=isTempFlagged;
 	}
 	public boolean getIsTempFlagged(){
 		return isTempFlagged;
