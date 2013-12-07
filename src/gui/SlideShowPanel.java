@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -31,9 +32,12 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 	private ImageShow show;    // A class which updates pictures during slideshow
 	private ViewController viewCtrl; // the ViewController
 	private volatile Thread th;   // Thread to run slides in
-    private BufferedImage currImg,backgroundImage;
+    private BufferedImage image1,image2,currImg,backgroundImage;
     private Dimension dim;
     private int w,h;
+    private float alphaS = (float)0.0;
+    private static boolean alphaAdd = true;
+    private static int counter=0;
     private final static double SCALE_FACTOR=1.4;
 	/**
 	 * @param parent
@@ -81,7 +85,7 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 	 *  (non-Javadoc)
 	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
 	 */
-		
+	/*	
 		@Override
 		public void paint(Graphics g) {
 			super.paint(g);
@@ -104,7 +108,7 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 		g2.dispose();
 		}
 	
-
+*/
 	/**
 	 * Stop slideshow
 	 */
@@ -118,15 +122,83 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 		}
 
 	}
-
+	//public void paint(Graphics g){
+	//	 super.paintChildren(g);
+	//}
+	public void paint(Graphics g) {
+        super.paint(g);
+        Graphics2D g2 = (Graphics2D)g;
+       image1=image1==null?backgroundImage:image1;
+       image2=image2==null?backgroundImage:image2;
+		
+       int dw=dim.width,dh=dim.height;
+			int
+			w1 = (w - image1.getWidth()) / 2,
+			h1 = (h - image1.getHeight()) / 2,
+			w2 = (w - image2.getWidth()) / 2,
+			h2 = (h - image2.getHeight()) / 2;
+		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+				RenderingHints.VALUE_INTERPOLATION_BICUBIC)	;
+		
+		g2.drawImage(image1, w1, h1, null);
+        AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaS);
+        g2.setComposite(ac);
+        g2.drawImage(image2, w2, h2,null);
+		
+    //    super.paintChildren(g);
+    }
 	/**
 	 * The run method, slideshow shuffle through images in its own
 	 * Thread
 	 * (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
-	@Override
 	public void run() {
+		stop = false;
+		int d = viewCtrl.getDisplayTime() * 1000;
+        float step = (float)0.02;
+        while(stop==false) {
+            if(alphaS >= 0.98){
+                try {
+                    Thread.sleep(d);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                try {
+                    image1 = getNext();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                
+                alphaAdd = false;
+            }
+            else if (alphaS <= 0.02){
+                try {
+                    Thread.sleep(d);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    image2 = getNext();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+               
+                alphaAdd = true;
+            }
+            if (alphaAdd)
+                alphaS += step;
+            else
+                alphaS -= step;
+            repaint();
+            try {
+                Thread.sleep(30);
+            } catch (InterruptedException ex) {}
+        }
+    }  
+//	@Override
+	/*public void run() {
 		stop = false;
 		//get new display time
 		int d = viewCtrl.getDisplayTime() * 1000;
@@ -142,21 +214,17 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 			// th.join();
 
 		} catch (InterruptedException ie) {
-			System.out.println("Slideshow was interrupted");
+		
 		} catch (IOException e) {
 			
 			e.printStackTrace();
 		}
 
-	}
-	public void moveNext() throws IOException {
+	}*/
+	public BufferedImage getNext() throws IOException {
 		BufferedImage bf = viewCtrl.getCurrentPicture();
-		
-		if (bf != null)
-			currImg = Thumbnails.of(bf).scale(SCALE_FACTOR).asBufferedImage();
-		else
-			currImg = null;
-
+			
+		return bf;
 	}
 
 	@Override
