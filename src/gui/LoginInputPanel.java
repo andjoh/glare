@@ -10,19 +10,26 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+/**
+ * @author Andreas Johnstad
+ *
+ */
 public class LoginInputPanel extends JPanel {
 
-	private JTextField usernameInputField;
-	private Dimension dim;
-	private JLabel usernameLabel, passwordLabel;
-	private JPasswordField passwordInputField;
-	private Constraints gbc;
+	private JTextField usernameInputField; // field to enter username
+	private Dimension dim;  // dimensions for this panel
+	private JLabel usernameLabel, passwordLabel; // labels 
+	private JPasswordField passwordInputField; // field to enter password
+	private Constraints gbc; // object used for setting layout constraints
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * @param dim
+	 */
 	public LoginInputPanel(Dimension dim) {
 		this.dim = dim;
 		gbc = new Constraints();
@@ -34,25 +41,37 @@ public class LoginInputPanel extends JPanel {
 
 	}
 
+	/**
+	 *  (non-Javadoc)
+	 * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 	}
 
+	/**
+	 * Method called by constructor to initialize components
+	 */
 	private void init() {
+		// usernameLabel properties
 		usernameLabel = new JLabel("Username: ");
 		usernameLabel.setFont(new Font("Tahoma", 0, 14));
 		usernameLabel.setForeground(new Color(255, 255, 255));
-		//
+		// passwordLabel properties
 		passwordLabel = new JLabel("Password: ");
 		passwordLabel.setFont(new Font("Tahoma", 0, 14));
 		passwordLabel.setForeground(new Color(255, 255, 255));
-		//
+		// usernameInputField properties
 		usernameInputField = new JTextField(20);
+		// passwordInputField properties
 		passwordInputField = new JPasswordField(20);
 
 	}
 
+	/**
+	 * @return  // boolean indicating if both fields contain text
+	 */
 	public boolean checkFieldsFull() {
 
 		if (!getUsername().isEmpty() && !getPassword().isEmpty()) {
@@ -63,6 +82,9 @@ public class LoginInputPanel extends JPanel {
 
 	}
 
+	/**
+	 * @return 
+	 */
 	public JTextField getUserField() {
 		return usernameInputField;
 	}
@@ -72,8 +94,8 @@ public class LoginInputPanel extends JPanel {
 
 	}
 
-	/*
-	 * Sets GUI objects with GB Layout using the Constraint class
+	/**
+	 * Sets GUI objects with GridBag Layout using the Constraint class
 	 */
 	private void setConstraints() {
 
@@ -87,14 +109,23 @@ public class LoginInputPanel extends JPanel {
 		add(passwordInputField, gbc);
 	}
 
+	/**
+	 * @return   // data currently in the username field
+	 */
 	public String getUsername() {
 		return usernameInputField.getText().trim();
 	}
 
+	/**
+	 * @return  //data currently in the passwordfield
+	 */
 	public String getPassword() {
 		return new String(passwordInputField.getPassword());
 	}
 
+	/**
+	 * Clears input fields
+	 */
 	public void resetFields() {
 		usernameInputField.setText("");
 		passwordInputField.setText("");

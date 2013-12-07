@@ -1,21 +1,16 @@
 package unit;
 
+import glare.ClassFactory;
+import gui.SettingsFrame;
+import gui.ShowInterface;
+
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import resources.DatabaseManagerDummy;
-import dal.DatabaseHandler;
-import dal.IReader;
-import bll.*;
-import glare.*;
-import gui.*;
+import bll.ViewController;
 
 
 public class MainTestFromDb {
@@ -53,10 +48,11 @@ public class MainTestFromDb {
 			@Override
 			public void run() {
 				ViewController vc  = (ViewController) ClassFactory.getBeanByName("viewController");
-				ShowInterface showInterface =null;
+			
 
 				try {
-					showInterface = new ShowInterface(vc);
+					@SuppressWarnings("unused")
+					ShowInterface  showInterface= new ShowInterface(vc);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -2,138 +2,228 @@ package gui;
 
 import javax.swing.ImageIcon;
 import javax.swing.table.AbstractTableModel;
-
 import bll.SettingsPicture;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Andreas Johnstad
+ * 
+ */
 public class ImageTableModel extends AbstractTableModel {
 	/**
 	 * author Andreas J
 	 */
 	private static final long serialVersionUID = 1L;
-	// The data. A list of lists.
-	// The abstractmodel uses this object to create a
-	// table
 
-	private List<SettingsPicture> data;
-	private List<String> header;
-	private int ROWS=20, COLS=5;
-
-	// Constructor. Receives the data object
-	// Creates a new object based on the data
-	ImageTableModel(List<SettingsPicture> data) {
+	/**
+	 * 
+	 */
+	private List<SettingsPicture> data; // data for the table
+	private List<String> header; // table header
+	private int COLS = 5; // fixed number of columns
+    private Dimension dim;
+	/**
+	 * Constructor. Receives the data object /* Creates a new object based on
+	 * the data
+	 * 
+	 * @param data
+	 */
+	ImageTableModel(List<SettingsPicture> data, Dimension dim) {
 
 		this.data = new ArrayList<SettingsPicture>(data);
-	
+		this.dim=dim;
+		;
 		header = new ArrayList<String>();
 		addColumns();
 	}
 
-	// Adds empty titles to the header
+	/**
+	 * Adds empty titles to the header
+	 */
 	public void addColumns() {
-		for (int i = 0; i <COLS; i++) {
+		for (int i = 0; i < COLS; i++) {
 			header.add("");
 		}
 	}
 
-	// Returns number of columns
+	/**
+	 * Returns number of columns (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.TableModel#getColumnCount()
+	 */
 	public int getColumnCount() {
-	
+
 		return COLS;
 	}
 
-	// Returns the name of a column
-	// Defined in the abstract superclass, has to be implemented
-
+	/**
+	 * Returns the name of a column
+	 * <p>
+	 * Returns value from header
+	 * <p>
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.AbstractTableModel#getColumnName(int)
+	 */
 	public String getColumnName(int column) {
 		return header.get(column);
 	}
 
-	// Gets number of rows, which is the number of lists in the list
+	/**
+	 * 
+	 * Gets number of rows
+	 * <p>
+	 * This is the size of the data The list of SettingsPicture objects Divided
+	 * by columns
+	 * <p>
+	 * 
+	 * @see javax.swing.table.TableModel#getRowCount()
+	 */
+	@Override
 	public int getRowCount() {
-	 int size= data.size();
-	 int modulus=size%COLS;
-	 if(modulus!=0)size++;
-	 return size;
+		int size = data.size();
+		return size / COLS;
 	}
 
-	// Returns value based on row,column
-	// The value is the icon returned from SettingsPicture's getIcon
-
+	//
+	/**
+	 * Returns value based on row,column The value is the icon returned from
+	 * SettingsPicture's getIcon
+	 * <p>
+	 * Returns null if the SettingsPicture is flagged Returns null if the value
+	 * is null
+	 * <p>
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.TableModel#getValueAt(int, int)
+	 */
 	public Object getValueAt(int row, int column) {
-		SettingsPicture pic = getSetPic(row,column);
-		if (pic.getIsFlagged())
+		SettingsPicture pic = getSetPic(row, column);
+		if (pic == null) return null;
+		else if (pic.getIsFlagged())
 			return null;
-		
-		else return  pic.getIcon(100,50);
-			
+        
+		else
+			return pic.getIcon(dim.width/COLS, dim.height/COLS);
+
 	}
 
-	// Sets value - a SettingsPicture object into the data object
-
+	/**
+	 * 
+	 * Sets value at row,col
+	 * <p>
+	 * Only if value is not null Call method to update tableCell
+	 * <p>
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.AbstractTableModel#setValueAt(java.lang.Object,
+	 *      int, int)
+	 */
 	public void setValueAt(Object value, int row, int col) {
 		SettingsPicture pic;
 
 		if (value != null) {
 			pic = (SettingsPicture) value;
-			data.set((COLS*row)+col,pic);
+			data.set((COLS * row) + col, pic);
+
 		}
 		fireTableCellUpdated(row, col);
 	}
 
+	/**
+	 * @param row
+	 * @param col
+	 * @return
+	 */
 	public boolean cellIsFlagged(int row, int col) {
-         SettingsPicture pic=getSetPic(row,col);
-      return   pic.getIsTempFlagged();
-    
-	}
-	public SettingsPicture getSetPic(int row, int col){
-		int i = (COLS*row)+col;
-		if(i>=data.size())System.out.println("I out of bounds in getSetPic(): v: "+i);
-		return data.get((COLS*row)+col);
+		SettingsPicture pic = getSetPic(row, col);
+		if (pic == null)
+			return false;
+		else
+			return pic.getIsTempFlagged();
+
 	}
 
-	// Implementation from superclass
-	// Returns true for all cells so they cannot be edited
+	/**
+	 * Obtain SettingsPictue object
+	 * <p>
+	 * Calculates index in list to get object from based on parameters
+	 * <p>
+	 * 
+	 * @param row
+	 * @param col
+	 * @return
+	 */
+	public SettingsPicture getSetPic(int row, int col) {
+		SettingsPicture pic=null ;
+		int ind = (COLS * row) + col;
+		if(ind>=0 && ind <data.size()){
+			pic =data.get(ind);
+			
+		}
+       return pic;
+	}
+
+	/**
+	 * Returns true for all cells so they cannot be edited (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.AbstractTableModel#isCellEditable(int, int)
+	 */
 	public boolean isCellEditable(int row, int col) {
 		return false;
 	}
 
-	// Removes a row, fires event to update table
+	/**
+	 * Removes a row, fires event to update table
+	 * 
+	 * @param row
+	 */
 	public void removeRow(int row) {
-		data.remove(row);
+		for (int c = 0; c < COLS; c++) {
+
+			data.remove(row * COLS + c);
+		}
 		fireTableDataChanged();
 	}
 
-
-
-	// Flags picture based on row, column
-	public void setflagOnPicture(int row, int column, boolean isFlagged) {
-	   getSetPic(row,column).setIsFlagged(isFlagged);
-	}
-	public void setTempflagOnPicture(int row, int column, boolean isTempFlagged) {
-		getSetPic(row,column).setIsTempFlagged(isTempFlagged);
-	}
-
+	/**
+	 * Clear all pictures temporary flags
+	 * <p>
+	 * Called by TableListener
+	 * <p>
+	 * 
+	 */
 	public void clearFlags() {
+		SettingsPicture pic = null;
 		for (int i = 0; i < getRowCount(); i++) {
 
 			for (int j = 0; j < getColumnCount(); j++) {
-
-					setTempflagOnPicture(i, j, false);
+				pic = getSetPic(i, j);
+				if (pic != null)
+					pic.setIsTempFlagged(false);
 			}
 		}
 	}
 
-	// Iterates through all the objects in the arraylist
-	// They are removed if they have the isFlagged property.
-
-	// returns the list
+	/**
+	 * @return
+	 */
 	public List<SettingsPicture> getTableModelData() {
 		return data;
 	}
 
+	/**
+	 * Gets the class type for eacb cell
+	 * <p>
+	 * If null value in column Specify that the returned class Be ImageIcon
+	 * 
+	 * (non-Javadoc)
+	 * 
+	 * @see javax.swing.table.AbstractTableModel#getColumnClass(int)
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Class getColumnClass(int column) {
 		Object value = this.getValueAt(0, column);

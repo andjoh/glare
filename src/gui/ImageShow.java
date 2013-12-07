@@ -19,7 +19,7 @@ public class ImageShow extends JPanel {
 	 * @author Andreas J
 	 */
 	private static final long serialVersionUID = 1L;
-	private BufferedImage currImg, backgroundImage;
+	public BufferedImage currImg, backgroundImage;
 	private static int SCREEN_W, SCREEN_H;
 	private static double SCALE_FACTOR;
 	private ViewController ctrl;
@@ -27,6 +27,12 @@ public class ImageShow extends JPanel {
 	/*
 	 * Class to shuffle trough images in the slideshow. Images are drawn to the
 	 * screen in this class Uses LoadImages to extract images from urls.
+	 */
+	/**
+	 * @param ctrl
+	 * @param w
+	 * @param h
+	 * @throws IOException
 	 */
 	public ImageShow(ViewController ctrl, int w, int h) throws IOException {
 		this.ctrl = ctrl;
@@ -38,6 +44,10 @@ public class ImageShow extends JPanel {
 		backgroundImage = loadBackground();
 	}
 
+	/**
+	 * @return
+	 * @throws IOException
+	 */
 	public BufferedImage loadBackground() throws IOException {
 		URL url = this.getClass().getResource("/resource/img/glare.png");
 		backgroundImage = ImageIO.read(url);
@@ -50,8 +60,12 @@ public class ImageShow extends JPanel {
 	// Resizes currImage, adds rendering hints, draws and dispose of Graphics
 	// object
 	//
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
+	 */
 	@Override
 	public void paint(Graphics g) {
+		
 		int w = 0, h = 0;
 		Graphics2D g2 = (Graphics2D) g;
 		if(currImg==null){
@@ -64,15 +78,21 @@ public class ImageShow extends JPanel {
 		
 		g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
 				RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-		g2.drawImage(currImg, w, h, null);
+		//g2.drawImage(currImg, w, h, null);
 		g2.dispose();
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.JComponent#update(java.awt.Graphics)
+	 */
 	@Override
 	public void update(Graphics g) {
 		paint(g);
 	}
 
+	/**
+	 * @throws IOException
+	 */
 	public void moveNext() throws IOException {
 		BufferedImage bf = ctrl.getCurrentPicture();
 

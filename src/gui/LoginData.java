@@ -1,12 +1,25 @@
 package gui;
 
+/**
+ * @author Andreas Johnstad
+ *
+ */
 public class LoginData {
+	private final static String USER_NAME = "root", PASSWORD = "root";  //correct username and password
+	
 
-	public static boolean authenticate(String username, String password) {
+	/**
+	 * Method to compare user submittet login data
+	 * With hardcoded data 
+	 * @param username
+	 * @param password
+	 * @return
+	 */
+	public static boolean checkLoginInfo(String usrname, String pwd) {
 
-		if (username.equals("root") && password.equals("root")) {
+		if (usrname.equals(USER_NAME) && pwd.equals(PASSWORD))
 			return true;
-		}
-		return false;
+		else
+			return false;
 	}
 }

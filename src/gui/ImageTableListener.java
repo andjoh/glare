@@ -3,18 +3,34 @@ package gui;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class ImageTableListener implements ListSelectionListener {
-	private ImageTable table;
-	private ImageTableModel model;
-	private static int rStart = 0, rEnd = 0, colIndexStart = 0,
-			colIndexEnd = 0;
+import bll.SettingsPicture;
 
+/**
+ * @author Andreas Johnstad
+ *
+ */ 
+public class ImageTableListener implements ListSelectionListener {
+	private ImageTable table; // reference to table
+	private ImageTableModel model; // reference to table model
+	private static int 
+	        rStart = 0, rEnd = 0,  //indices indicating the are in which selected colunmns are
+	        colIndexStart = 0,    // r stands for row, c for column
+			colIndexEnd = 0;     
+
+	/**
+	 * @param table
+	 * @param model
+	 */
 	public ImageTableListener(ImageTable table, ImageTableModel model) {
 		this.table = table;
 		this.model = model;
 
 	}
 
+	/**
+	 *  (non-Javadoc)
+	 * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+	 */
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 
@@ -39,14 +55,20 @@ public class ImageTableListener implements ListSelectionListener {
 
 	}
 
-	// iterates through the cells in the defined are
+	
+	/**
+	 * // iterates through the cells in the defined area
+	 */
 	private void getCells() {
-     
-		for (int i = rStart; i <= rEnd; i++) {
-			for (int j = colIndexStart; j <= colIndexEnd; j++) {
-				if (table.isCellSelected(i, j)) {
-             
-					model.setTempflagOnPicture(i, j, true);
+     SettingsPicture pic;
+		for (int r = rStart; r <= rEnd; r++) {
+			for (int c = colIndexStart;c <= colIndexEnd;c++) {
+				// if the cell is selected
+				if (table.isCellSelected(r, c)) {
+                  
+					// set temporary flag
+					pic = model.getSetPic(r, c);
+					if(pic!=null)pic.setIsTempFlagged(true);
 				}
 			}
 		}

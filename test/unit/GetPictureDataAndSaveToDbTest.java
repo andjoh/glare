@@ -1,18 +1,21 @@
 package unit;
 
-import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
-import org.junit.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import resources.DatabaseManagerDummy;
-
-import glare.ClassFactory;
-
-import java.util.*;
-
-import bll.*;
-import dal.*;
+import bll.PictureController;
+import dal.DatabaseHandler;
+import dal.PictureData;
 
 public class GetPictureDataAndSaveToDbTest {
 

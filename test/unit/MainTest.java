@@ -1,5 +1,8 @@
 package unit;
 
+import gui.SettingsFrame;
+import gui.ShowInterface;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -10,10 +13,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import dal.*;
-import bll.*;
-import gui.*;
-import resources.*;
+import resources.DatabaseManagerDummy;
+import bll.PictureController;
+import bll.ViewController;
+import dal.DatabaseHandler;
 
 public class MainTest {
 	/**
@@ -77,6 +80,7 @@ public class MainTest {
 				// Run test
 				picCtrl.getNewPictureData();
 				ViewController vc = new ViewController(dbManDum);
+				@SuppressWarnings("unused")
 				ShowInterface showInterface =null;
 
 				try {
