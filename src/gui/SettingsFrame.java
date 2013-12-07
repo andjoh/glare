@@ -16,11 +16,10 @@ final public class SettingsFrame extends JDialog {
 	/**
 	 * Modal JDialog box that contains GUI for settings
 	 */
-	
 	private SettingsContentPanel contp; // Panel that contains all settings GUI
 
-	private JFrame parent;
-	private Dimension dim;
+	private JFrame parent; // the parent : showinterface
+	private Dimension dim; // dimensions of this Dialog
 
 	/**
 	 * @param viewCtrl

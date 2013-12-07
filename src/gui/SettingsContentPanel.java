@@ -31,7 +31,7 @@ import bll.ViewController;
  *
  * @param <exitButton>
  */
-public class SettingsContentPanel<exitButton> extends JPanel implements
+public class SettingsContentPanel extends JPanel implements
 		ActionListener {
 	/**
 	 * @author Andreas J
@@ -164,21 +164,18 @@ public class SettingsContentPanel<exitButton> extends JPanel implements
 	 */
 	public void updateTableSettings() {
 		ImageTableModel imtabmod = tablepanel.getImageTableModel();
-		// not implemented a method to get selected SettingsPicture object and
-		// flag them yet.
-		// This can be done here for test purposes
-		// f.ex we want to flag picture in row 4 column 4:
-
-		// here is the data to send, picture in row 4 colum 4 should be
-		// flagged
-		//
+		//data to send to view controller
 		List<SettingsPicture> datatosend = imtabmod.getTableModelData();
-		System.out.println("Data to send's size: " + datatosend.size());
-		SettingsPicture pic = null;
+		// sends data to viewcontroller who checks for flagged
+		// SettingsPictures 
 		viewCtrl.removePictures(datatosend);
 
 	}
 
+	/**
+	 *  (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(exitButton)) {

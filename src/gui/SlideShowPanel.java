@@ -25,20 +25,19 @@ import bll.ViewController;
 class ImageSlider extends JPanel implements Runnable, ActionListener {
 
 	/**
-	 * 
+	 * Class that shuffles through images obtained from Instagram
+	 * And twitter. 
 	 */
 	private static final long serialVersionUID = 1;
 	private volatile boolean stop = false; // indicates that slideshow is stopped
-	private ImageShow show;    // A class which updates pictures during slideshow
 	private ViewController viewCtrl; // the ViewController
 	private volatile Thread th;   // Thread to run slides in
-    private BufferedImage image1,image2,currImg,backgroundImage;
-    private Dimension dim;
-    private int w,h;
-    private float alphaS = (float)0.0;
+    private BufferedImage image1,image2,backgroundImage;  // two images from view controller to fade in and out  between, and a background image with the project logo
+    private Dimension dim; // dimension properties
+    private int w,h; // width and height of this panel and also the screen
+    private float alphaS = (float)0.0; // alpha values used for fading
     private static boolean alphaAdd = true;
-    private static int counter=0;
-    private final static double SCALE_FACTOR=1.4;
+    private final static double SCALE_FACTOR=1.4; // the factor in which pictures are increased with. The picture keeps its original proportions
 	/**
 	 * @param parent
 	 * @param viewCtrl
@@ -55,7 +54,6 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 		loadBackground();
 		
         this.viewCtrl=viewCtrl;
-   	    show= new ImageShow(viewCtrl, dim.width, dim.height);
 		setPreferredSize(new Dimension(dim.width, dim.height));
 		
 		setBackground(Color.black);
@@ -63,6 +61,11 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 		start();
 
 	}
+	/**
+	 * Load default background image from resource folder
+	 * @return
+	 * @throws IOException
+	 */
 	public BufferedImage loadBackground() throws IOException {
 		URL url = this.getClass().getResource("/resource/img/glare.png");
 		backgroundImage = ImageIO.read(url);
@@ -73,7 +76,7 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 	}
 
 	/**
-	 * 
+	 * start a new thread to run the slide show in
 	 */
 	public void start() {
 		th = new Thread(this);
@@ -81,34 +84,6 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 
 	}
 
-	/**
-	 *  (non-Javadoc)
-	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
-	 */
-	/*	
-		@Override
-		public void paint(Graphics g) {
-			super.paint(g);
-			int w = 0, h = 0;
-			Graphics2D g2 = (Graphics2D) g;
-			if(currImg==null){
-				
-				currImg = backgroundImage;
-			}
-				w = (dim.width - currImg.getWidth()) / 2;
-				h = (dim.height - currImg.getHeight()) / 2;
-
-			
-			g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-					RenderingHints.VALUE_INTERPOLATION_BICUBIC)	
-		;
-			g2.drawImage(currImg, w, h, null);
-			
-		super.paintChildren(g);
-		g2.dispose();
-		}
-	
-*/
 	/**
 	 * Stop slideshow
 	 */
@@ -122,9 +97,11 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 		}
 
 	}
-	//public void paint(Graphics g){
-	//	 super.paintChildren(g);
-	//}
+	
+	/**
+	 *  (non-Javadoc)
+	 * @see javax.swing.JComponent#paint(java.awt.Graphics)
+	 */
 	public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2 = (Graphics2D)g;
@@ -141,7 +118,7 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 		g2.drawImage(image1, w1, h1, null);
         AlphaComposite ac = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaS);
         g2.setComposite(ac);
-        g2.drawImage(image2, w2, h2,null);
+        g2.drawImage(image2, w2, h2,this);
 		
     //    super.paintChildren(g);
     }
@@ -201,6 +178,12 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
         }
     }  
 
+	/**
+	 * Get the next picture
+	 * Scale using external library
+	 * @return
+	 * @throws IOException
+	 */
 	public BufferedImage getNext() throws IOException {
 		BufferedImage bf = viewCtrl.getCurrentPicture();
 

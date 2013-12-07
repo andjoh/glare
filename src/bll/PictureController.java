@@ -53,24 +53,6 @@ public class PictureController {
 			List<PictureData> tmpPictureDataToSave = new ArrayList<PictureData>();
 			List<PictureData> pictureDataToSave    = new ArrayList<PictureData>();
 
-			System.out.println("pictureDataNew");
-			for ( PictureData pd : pictureDataNew ) {
-				System.out.println(pd.getId());
-				for ( Hashtag ht : pd.getHashtags() ) {
-					System.out.println(" - " + ht.getHashtag());
-				}
-			}
-			System.out.println("");
-
-			System.out.println("pictureDataModified");
-			for ( PictureData pd : pictureDataModified ) {
-				System.out.println(pd.getId());
-				for ( Hashtag ht : pd.getHashtags() ) {
-					System.out.println(" - " + ht.getHashtag());
-				}
-			}
-			System.out.println("");
-			
 			if ( !pictureDataNew.isEmpty() ) 
 				tmpPictureDataToSave.addAll(pictureDataNew);
 
@@ -210,15 +192,9 @@ public class PictureController {
 			}
 		}	
 		
-		System.out.println("New picturedata after process");
-		for ( PictureData pd : pictureDataNew ) {
-			System.out.println(pd.getId());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}
-		}
-		System.out.println("End New picturedata after process");	
-		System.out.println("");
+
+	
+	
 	}
 
 	private Set<String> checkForNewHashtags(PictureData pdExisting, PictureData pdNew) {
