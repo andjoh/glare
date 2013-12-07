@@ -2,9 +2,13 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.TableModelListener;
-import javax.swing.table.*;
+import javax.swing.table.TableColumn;
+
+import bll.SettingsPicture;
 
 public class ImageTable extends JTable implements TableModelListener {
 
@@ -12,22 +16,18 @@ public class ImageTable extends JTable implements TableModelListener {
 	 * @author Andreas J
 	 */
 	private static final long serialVersionUID = 1L;
-	// private static DefaultTableModel model = new DefaultTableModel();
 	private ImageTableModel model;
 	private ImageTableListener listener;
-	private Dimension dim;
-
-	// private static List<SettingsPicture> selected;
-	/*
-	 * Constructor for the ImageTableSet number of rows, columns, renderer
+	/** Constructor for the ImageTableSet number of rows, columns, renderer
+	 * @param model
+	 * @param dim
 	 */
 	public ImageTable(ImageTableModel model, Dimension dim) {
 		// call super class and initialize objects
 		super(model);
-		this.dim = dim;
 		this.model = model;
 		listener = new ImageTableListener(this, model);
-		//this.setPreferredSize(new Dimension(600, 300));
+		// this.setPreferredSize(new Dimension(600, 300));
 		// remove table header
 		setTableHeader(null);
 		// set table sizing properties
@@ -60,19 +60,24 @@ public class ImageTable extends JTable implements TableModelListener {
 
 	}
 
-	// sets Size of rows based on tabledimensions
+	
+	/**
+	 * // sets Size of rows based on tabledimensions
 
+	 */
 	public void setRowSize() {
 		for (int i = 0; i < model.getRowCount(); i++) {
 
 			this.setRowHeight(i, 60);
 			this.setRowMargin(5);
 		}
-		System.out.println("Row count" + getRowCount());
-
+		
 	}
 
-	// sets Size of columns based on tabledimensions
+	
+	/**
+	 * // sets Size of columns based on table dimensions
+	 */
 	public void setColumnSize() {
 		TableColumn column = null;
 		for (int i = 0; i < model.getColumnCount(); i++) {
@@ -81,22 +86,28 @@ public class ImageTable extends JTable implements TableModelListener {
 		}
 	}
 
-	public void setSelected(Object[] sel) {
 
-	}
-
+	/**
+	 *  Iterates through all cells
+	 *  <p>Check if cell was selected 
+	 *  if selected it should have a temp flag
+	 *  then set a permanent flag
+	 *  This will cause the thumbnail in the cell not be shown
+	 *  as defined by the table model
+	 *  <p>
+	 */
 	public void removeFlagged() {
+		SettingsPicture pic;
+		for (int r = 0; r < getRowCount(); r++) {
+			for (int c = 0; c < getColumnCount(); c++) {
 
-		for (int i = 0; i < getRowCount(); i++) {
-			for (int j = 0; j < getColumnCount(); j++) {
-
-
-				i = convertRowIndexToModel(i);
-				j = convertColumnIndexToModel(j);
-				if (model.cellIsFlagged(i, j)){
-					model.setflagOnPicture(i, j, true);
+				int i = 0, j = 0;
+				i = convertRowIndexToModel(r);
+				j = convertColumnIndexToModel(c);
+				pic = model.getSetPic(i, j);
+				if (pic!=null && pic.getIsTempFlagged()) {
+					pic.setIsFlagged(true);
 				}
-
 
 			}
 		}

@@ -9,15 +9,17 @@ import java.util.List;
 
 /**
  * A class that connects to instagram
+ * 
  * @author Marius Vasshus
- *
+ * 
  */
-public class InstagramReader implements IReader{
+public class InstagramReader implements IReader {
 
 	InstagramParser parser;
 	ConfigurationReader confReader;
 
-	public InstagramReader(InstagramParser parser, ConfigurationReader confReader){
+	public InstagramReader(InstagramParser parser,
+			ConfigurationReader confReader) {
 		this.parser = parser;
 		this.confReader = confReader;
 	}
@@ -27,20 +29,22 @@ public class InstagramReader implements IReader{
 	 */
 	public List<PictureData> getPictures(String searchTag) {
 		confReader.setPath("src/resource/conf.ini");
-		String instagramURL = "https://api.instagram.com/v1/tags/"+searchTag+"/media/recent?client_id=" + confReader.read("client_id");
+
+		String instagramURL = "https://api.instagram.com/v1/tags/" + searchTag
+				+ "/media/recent?client_id=" + confReader.read("client_id");
 		List<PictureData> pictures = new ArrayList<PictureData>();
 		
+
 		URL url;
 		HttpURLConnection connection = null;
 		InputStreamReader reader = null;
 		try {
 			url = new URL(instagramURL);
-			connection = (HttpURLConnection)url.openConnection();
+			connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.connect();
 			reader = new InputStreamReader(connection.getInputStream());
-		} 
-		catch (IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 			return pictures;
 		}

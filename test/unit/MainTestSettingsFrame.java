@@ -1,6 +1,5 @@
 package unit;
 
-import glare.ClassFactory;
 import gui.SettingsFrame;
 
 import java.awt.EventQueue;
@@ -9,12 +8,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.swing.*;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import resources.DatabaseManagerDummy;
+import bll.PictureController;
+import bll.ViewController;
 import dal.DatabaseHandler;
-
-import bll.*;
 
 /*
  * Show SettingsFrame and perform tests regarding hashtags, view mode and display time

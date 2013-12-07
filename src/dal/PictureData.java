@@ -4,6 +4,7 @@ import java.util.*;
 
 /**
  * A class that represents all metadata in a picture
+ * 
  * @author Andreas Bjerga & Marius Vasshus
  */
 
@@ -13,14 +14,15 @@ public class PictureData implements Cloneable {
 	private String urlThumb;
 	private long createdTime;
 	private boolean removeFlag;
-	
+
 	private Set<Hashtag> hashtags;
-	
-	public PictureData(){
+
+	public PictureData() {
 		hashtags = new HashSet<Hashtag>();
 	}
-	
-	public PictureData(String id, String urlStd, String urlThumb, long createdTime, boolean removeFlag){
+
+	public PictureData(String id, String urlStd, String urlThumb,
+			long createdTime, boolean removeFlag) {
 		this.id = id;
 		this.urlStd = urlStd;
 		this.urlThumb = urlThumb;
@@ -68,19 +70,20 @@ public class PictureData implements Cloneable {
 	public void setRemoveFlag(boolean removeFlag) {
 		this.removeFlag = removeFlag;
 	}
-	
+
 	public Set<Hashtag> getHashtags() {
 		return hashtags;
 	}
-	public void setHashtags(Set<Hashtag> hashtags){
-		this.hashtags=hashtags;
+
+	public void setHashtags(Set<Hashtag> hashtags) {
+		this.hashtags = hashtags;
 	}
 
 	public void addHashtag(Hashtag ht) {
 		hashtags.add(ht);
 		ht.getPictures().add(this);
 	}
-	
+
 	public void remHashtag(Hashtag ht) {
 		hashtags.remove(ht);
 	}
@@ -88,7 +91,7 @@ public class PictureData implements Cloneable {
 	public void remAllHashtags() {
 		hashtags = new HashSet<Hashtag>();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return id.hashCode();
@@ -96,22 +99,23 @@ public class PictureData implements Cloneable {
 
 	@Override
 	public boolean equals(Object o) {
-		if(o instanceof PictureData){
-			PictureData p = (PictureData)o;
-			if(p.id.equals(id)) return true;
+		if (o instanceof PictureData) {
+			PictureData p = (PictureData) o;
+			if (p.id.equals(id))
+				return true;
 		}
 		return false;
 	}
-	
-    @Override
-    public Object clone() {
-        try {
-        	PictureData a = (PictureData) super.clone();
-            return a;
-        } catch (CloneNotSupportedException e) {
-            throw new InternalError();
-        }
-    }
+
+	@Override
+	public Object clone() {
+		try {
+			PictureData a = (PictureData) super.clone();
+			return a;
+		} catch (CloneNotSupportedException e) {
+			throw new InternalError();
+		}
+	}
 
 	@Override
 	public String toString() {

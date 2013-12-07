@@ -3,8 +3,10 @@ package unit;
 import glare.ClassFactory;
 import gui.SettingsFrame;
 import java.awt.EventQueue;
-import javax.swing.*;
-import bll.*;
+import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import bll.ViewController;
 
 
 /*
@@ -25,14 +27,18 @@ import bll.*;
  *    a) Set Displaytime - OK    
  */
 public class MainTestSettingsFrameUsingSpringAndDb  extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	SettingsFrame settingsFrame;
 	
 	public MainTestSettingsFrameUsingSpringAndDb() {
 
-		ViewController vc = (ViewController) ClassFactory.getBeanByName("viewController");
-		vc.getSortedList(); 
+		ViewController vc = (ViewController) ClassFactory
+				.getBeanByName("viewController");
+		vc.getSortedList();
 		settingsFrame = new SettingsFrame(vc);
-		boolean suc =  settingsFrame.validationExit();
 
 	}
 	

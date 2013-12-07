@@ -7,250 +7,183 @@ import javax.swing.*;
 
 import bll.*;
 
-public class ShowInterface extends JFrame {
+/**
+ * @author Andreas Johnstad
+ *
+ */
+
+public class ShowInterface extends JFrame implements ActionListener {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	/**
-	 * 
-	 * @author Andreas J
-	 */
-	private ViewController viewCtrl;
-	private JButton settingsButton;
-	private LoginDialog ld = null;
-	private Dimension dim = null;
-	private ImageSlider slider;
-	private SettingsFrame settingsFrame;
-	private JFrame parent = null;
-	private ImageShow show;
+	private Dimension dim = null; // Dimensions for this Fram
+	private LoginDialog ld = null; // LoginDialog: dialog box for login
+	private ShowInterface parent = null; // reference to this class
+	private JButton settingsButton; // Button to open login
+	@SuppressWarnings("unused")
+	private SettingsFrame settingsFrame; // SettingsFrame
+	private ImageSlider slider; // Subclass to shoe imges i
+	private ViewController viewCtrl; // The View Controller
 
 	public ShowInterface(ViewController viewCtrl) throws IOException {
 		this.dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.parent = this;
 		this.viewCtrl = viewCtrl;
 		settingsFrame = null;
-		slider = new ImageSlider(this.dim);
+
+		slider = new ImageSlider(viewCtrl, dim);
+
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		// setAutoRequestFocus(true);
+		setAutoRequestFocus(true);
 		requestFocusInWindow();
-		getContentPane().add(slider);
-
-		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-				System.out.println("Window  iconified");
-
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-
-				System.out.println("Window  deiconified");
-			}
-
-		});
-		addWindowFocusListener(new WindowAdapter() {
-
-			@Override
-			public void windowLostFocus(WindowEvent e) {
-				System.out.println("Window lost focus");
-
-			}
-		});
+		init();
+		
+		//getContentPane().add(settingsButton);
+		//getContentPane().add(slider);
+		setContentPane(slider);   
+		add(settingsButton);   
+		// Add windowlistener with overriden methods
+		// To get wanted behavior on closing, and icconifying
 
 		setUndecorated(true);
 		pack();
 		setVisible(true);
 		setFullScreen();
 		setResizable(false);
+		
+		addListeners();
 
 	}
 
-	private void setFullScreen() {
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource().equals(settingsButton)
+				&& (ld == null || !ld.isVisible())) {
+			openLoginBox();
 
-	public void openSettingsFrame() {
-		settingsFrame = new SettingsFrame(viewCtrl);
-
-		boolean suc = settingsFrame.validationExit();
-		if (suc) {
-			unhideComponent(settingsButton);
-			slider.start();
 		}
+	}
+	/**
+	 * 
+	 */
+	private void addListeners() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+
+				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			}
+
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {
+
+			}
+
+			@Override
+			public void windowIconified(WindowEvent arg0) {
+
+			}
+		});
+
+		addWindowFocusListener(new WindowAdapter() {
+			@Override
+			public void windowLostFocus(WindowEvent e) {
+			
+			}
+		});
+		
+		// listener for key inputs : listens for escape
+		@SuppressWarnings("serial")
+		Action actionListener = new AbstractAction() {
+			// user pressed ecape : stop slideshow,call closeWindow.
+			public void actionPerformed(ActionEvent actionEvent) {
+				slider.stopClick();
+				closeWindow();
+			}
+		};
+        // casts getContentPane() to a jpanel
+		// gets input map
+		JPanel pane = (JPanel) this.getContentPane();
+		KeyStroke stroke = KeyStroke.getKeyStroke("ESCAPE");
+
+		InputMap inputMap = pane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		inputMap.put(stroke, "ESCAPE");
+		pane.getActionMap().put("ESCAPE", actionListener);
 
 	}
 
-	public void openLoginBox() {
+	private void init(){
+			settingsButton = new JButton();
+			settingsButton.addActionListener(this);
+			settingsButton.setIcon(new ImageIcon(getClass().getResource(
+					"/resource/img/settingsbut.png")));
+			settingsButton.setRolloverIcon(new ImageIcon(getClass().getResource(
+			"/resource/img/settingshover.png")));
+			settingsButton.setPressedIcon(new ImageIcon(getClass().getResource(
+					"/resource/img/settingsbut.png")));
+		settingsButton.setBorderPainted(false);
+			settingsButton.setContentAreaFilled(false);
+		    int w=dim.width/10,  h=dim.height/15,x=0,y=dim.height-h;
+		    getContentPane().setLayout(null);
+		    settingsButton.setBounds(x,y,w,h);
+		   
+		
+
+
+		
+	}
+	/**
+	 * Dispatch and Close 
+	 */
+	private void closeWindow() {
+		this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+	}
+
+	/**
+	 * Stop slideshow,hide settings button open login window,h
+	 * <p>
+	 * Open settings dialog if correct info entered If not. Show button, start
+	 * slideshow
+	 * <p>
+	 */
+	private void openLoginBox() {
 		slider.stopClick();
-		hideComponent(settingsButton);
+		showButton(true);
 		ld = new LoginDialog(parent);
 		boolean suc = ld.getSucceeded();
 		if (suc)
 			openSettingsFrame();
 		else {
 			slider.start();
-			unhideComponent(settingsButton);
+			showButton(true);
 		}
-
 	}
 
-	private void hideComponent(Component c) {
-		c.setVisible(false);
-		c.setEnabled(false);
+	/**
+	 * Open setting window, hide settingsbutton Stop slideshow
+	 */
+	private void openSettingsFrame() {
+		settingsFrame = new SettingsFrame(viewCtrl);
+		showButton(true);
+		slider.start();
 	}
 
-	private void unhideComponent(Component c) {
-		c.setVisible(true);
-		c.setEnabled(true);
+	/**
+	 * // Set the full screen
+	 */
+	private void setFullScreen() {
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 	}
 
-	class ImageSlider extends JPanel implements Runnable, ActionListener {
-		Constraints gbc = new Constraints();
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1;
-		private volatile boolean stop = false;
-		private Dimension dim;
-		private volatile Thread th;
-
-		private Action escapeAction;
-
-		public ImageSlider(Dimension dim) throws IOException {
-
-			this.dim = dim;
-			show = new ImageShow(viewCtrl, (int) dim.getWidth(),
-					(int) dim.getHeight());
-
-			setPreferredSize(new Dimension(dim.width, dim.height));
-			escapeAction = new EscapeAction();
-			getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),
-					"doEscapeAction");
-			getActionMap().put("doEscapeAction", escapeAction);
-			setBackground(Color.black);
-			setDoubleBuffered(true);
-			setLayout(new GridBagLayout());
-			init();
-			start();
-
-		}
-
-		private void init() {
-			Constraints gbc = new Constraints();
-			settingsButton = new JButton();
-			settingsButton.addActionListener(this);
-			settingsButton.setIcon(new ImageIcon(getClass().getResource(
-					"/resource/img/settingsbut.png")));
-			settingsButton.setRolloverIcon(new ImageIcon(getClass().getResource(
-					"/resource/img/settingshover.png")));
-			settingsButton.setPressedIcon(new ImageIcon(getClass().getResource(
-					"/resource/img/settingsbut.png")));
-			settingsButton.setBorderPainted(false);
-			settingsButton.setContentAreaFilled(false);
-			gbc.fill = GridBagConstraints.BOTH;
-			gbc.set(1, 10, 10, 10, 1, 1, new Insets(dim.height, 130, 120,
-					dim.height + 520), GridBagConstraints.NORTHWEST);
-			add(settingsButton, gbc);
-		}
-
-		public void start() {
-			th = new Thread(this);
-			th.start();
-
-		}
-
-		@Override
-		public void paint(Graphics g) {
-			super.paint(g);
-			if (show != null) {
-				show.paint(g);
-
-			}
-			// uper.paintComponent(g);
-		}
-
-		public void stopClick() {
-			stop = true;
-			try {
-				th.join();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-
-		@Override
-		public void run() {
-			System.out.println("run()");
-			stop = false;
-			int d = viewCtrl.getDisplayTime() * 1000;
-			System.out.println("Display time: " + d);
-			try {
-				while (stop != true) {
-
-					// System.out.println("before thread");
-
-					// System.out.println("after thread");
-
-					show.moveNext();
-					repaint();
-					Thread.sleep(d);
-					// System.out.println("ShowINterface, kaller moveNext()");
-
-				}
-				// th.join();
-
-			} catch (InterruptedException ie) {
-				System.out.println("Interrupted slide show...");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-
-		class EscapeAction extends AbstractAction {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			public void actionPerformed(ActionEvent tf) {
-
-				closeWindow();
-			}
-
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			if (e.getSource().equals(settingsButton)
-					&& (ld == null || !ld.isVisible())) {
-				openLoginBox();
-
-			}
-
-		}
-
-	}
-
-	public void closeWindow() {
-		if (ShowInterface.this != null) {
-			slider.stopClick();
-			show = null;
-			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-
-		}
-
+	/**
+	 * Hide or unhide settings button
+	 * 
+	 * @param shouldHide
+	 */
+	private void showButton(boolean shouldHide) {
+		settingsButton.setVisible(shouldHide);
+		settingsButton.setEnabled(shouldHide);
 	}
 
 }

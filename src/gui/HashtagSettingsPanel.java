@@ -31,25 +31,33 @@ import javax.swing.event.DocumentListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+/**
+ * @author Andreas Johnstad
+ *
+ */
+
 public class HashtagSettingsPanel extends JPanel implements ActionListener,
 		DocumentListener, ListSelectionListener {
 
-	/**
-	 * @author Andreas J
-	 */
 	private static final long serialVersionUID = 1L;
 	private DefaultListModel<String> listModel;
 	private JTextField addhashField;
 	private JList<String> hashJList;
-    private InputMap input;
+	private InputMap input;
 	private JLabel hashsignLabel;
 	private JButton delhashButton, addhashButton;
 	private JScrollPane jlistScroller;
 
+	/**
+	 * 
+	 */
 	private Constraints[] gbcs = new Constraints[] { new Constraints(),
 			new Constraints(), new Constraints(), new Constraints(),
 			new Constraints() };
 
+	/**
+	 * 
+	 */
 	public HashtagSettingsPanel() {
 
 		setAutoscrolls(true);
@@ -59,33 +67,44 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 		init();
 		setConstraints();
 		addKeyBindings();
-	    
-	}private void addKeyBindings(){
-		
-		input= getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+	}
+
+	/**
+	 * 
+	 */
+	private void addKeyBindings() {
+
+		input = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enter");
 		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
-         getActionMap().put("enter", new AbstractAction() {
-			            /**
+		getActionMap().put("enter", new AbstractAction() {
+			/**
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
 
-						@Override
-			            public void actionPerformed(ActionEvent e) {
+			@Override
+			public void actionPerformed(ActionEvent e) {
 
-			            	if(addhashButton.isEnabled())addhashButton.doClick();
-			            }
-			        });
-         getActionMap().put("delete", new AbstractAction() {
-	            @Override
-	            public void actionPerformed(ActionEvent e) {
+				if (addhashButton.isEnabled())
+					addhashButton.doClick();
+			}
+		});
+		getActionMap().put("delete", new AbstractAction() {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
 
-	            	if(delhashButton.isEnabled())delhashButton.doClick();
-	            }
-	        });
-		
-		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (delhashButton.isEnabled())
+					delhashButton.doClick();
+			}
+		});
+
 	}
 
 	private void init() {
@@ -161,7 +180,11 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 
 	}
 
+
 	// listeners for add and remove button
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object c;
@@ -184,6 +207,9 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 	}
 
 	// jlist listener. Disables remove button if no elements
+	/* (non-Javadoc)
+	 * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
+	 */
 	public void valueChanged(ListSelectionEvent e) {
 		if (e.getValueIsAdjusting() == false) {
 
@@ -199,12 +225,18 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 		repaint();
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+	 */
 	@Override
 	public void changedUpdate(DocumentEvent arg0) {
 		checkFieldsFull();
 
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+	 */
 	@Override
 	public void insertUpdate(DocumentEvent arg0) {
 		checkFieldsFull();
@@ -217,6 +249,9 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 
 	}
 
+	/**
+	 * 
+	 */
 	private void checkFieldsFull() {
 
 		if (addhashField.getText().trim().isEmpty()) {
@@ -228,10 +263,16 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 
 	}
 
+	/**
+	 * @return
+	 */
 	public DefaultListModel<String> getListModel() {
 		return listModel;
 	}
 
+	/**
+	 * @return
+	 */
 	public Set<String> getHashtagList() {
 		Object[] stringList = listModel.toArray();
 		Set<String> hashtagList = new HashSet<String>();
@@ -242,6 +283,9 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 		return hashtagList;
 	}
 
+	/**
+	 * @param hashtags
+	 */
 	public void setHashtagList(Set<String> hashtags) {
 		for (String ht : hashtags) {
 			listModel.addElement(ht);
