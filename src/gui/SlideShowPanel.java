@@ -19,7 +19,7 @@ import net.coobird.thumbnailator.Thumbnails;
 import bll.ViewController;
 
 /**
- * @author Andreas Johnstad
+ * @author Andreas Johnstad, Andreas B
  *
  */
 class ImageSlider extends JPanel implements Runnable, ActionListener {
@@ -130,8 +130,6 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
         Graphics2D g2 = (Graphics2D)g;
        image1=image1==null?backgroundImage:image1;
        image2=image2==null?backgroundImage:image2;
-		
-       int dw=dim.width,dh=dim.height;
 			int
 			w1 = (w - image1.getWidth()) / 2,
 			h1 = (h - image1.getHeight()) / 2,
@@ -149,20 +147,25 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
     }
 	/**
 	 * The run method, slideshow shuffle through images in its own
+	 * 
 	 * Thread
 	 * (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
 	public void run() {
 		stop = false;
+		// gets display time from viewcontroller
 		int d = viewCtrl.getDisplayTime() * 1000;
         float step = (float)0.02;
         while(stop==false) {
-            if(alphaS >= 0.98){
+           // logic to adjust alpha values 
+           // used for creating fade in and fade out
+      
+        	if(alphaS >= 0.98){
                 try {
                     Thread.sleep(d);
                 } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
+               
                     e.printStackTrace();
                 }
                 try {
@@ -197,30 +200,7 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
             } catch (InterruptedException ex) {}
         }
     }  
-//	@Override
-	/*public void run() {
-		stop = false;
-		//get new display time
-		int d = viewCtrl.getDisplayTime() * 1000;
-		try {
-			while (stop != true) {
-				//moce to next picture
-				moveNext();
-				repaint();
-				Thread.sleep(d);
 
-
-			}
-			// th.join();
-
-		} catch (InterruptedException ie) {
-		
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
-
-	}*/
 	public BufferedImage getNext() throws IOException {
 		BufferedImage bf = viewCtrl.getCurrentPicture();
 			
