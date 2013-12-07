@@ -49,7 +49,7 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 	public ImageSlider(ViewController viewCtrl,
 		Dimension dim) throws IOException {
 		this.dim=dim;
-		w=dim.width;
+		w=this.dim.width;
 		h= dim.height;
 		setLayout(null);
 		loadBackground();
@@ -203,7 +203,8 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 
 	public BufferedImage getNext() throws IOException {
 		BufferedImage bf = viewCtrl.getCurrentPicture();
-			
+
+		if (bf != null)bf = Thumbnails.of(bf).scale(SCALE_FACTOR).asBufferedImage();
 		return bf;
 	}
 
