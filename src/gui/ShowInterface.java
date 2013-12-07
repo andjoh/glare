@@ -118,8 +118,8 @@ public class ShowInterface extends JFrame implements ActionListener {
 			settingsButton.addActionListener(this);
 			settingsButton.setIcon(new ImageIcon(getClass().getResource(
 					"/resource/img/settingsbut.png")));
-			settingsButton.setRolloverIcon(new ImageIcon(getClass().getResource(
-			"/resource/img/settingshover.png")));
+		//	settingsButton.setRolloverIcon(new ImageIcon(getClass().getResource(
+		//	"/resource/img/settingshover.png")));
 			settingsButton.setPressedIcon(new ImageIcon(getClass().getResource(
 					"/resource/img/settingsbut.png")));
 		settingsButton.setBorderPainted(false);
