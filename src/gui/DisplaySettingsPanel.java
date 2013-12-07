@@ -159,7 +159,6 @@ public class DisplaySettingsPanel extends JPanel {
 	public void setViewDelay(int delay) {
 		if (delay >= SPINNER_MINIMUM && delay <= SPINNER_MAXIMUM) {
 			delaySpinner.setValue(new Integer(delay));
-			SPINNER_DEFAULT = delay;
 		}
 	}
 

@@ -90,6 +90,7 @@ public class SettingsContentPanel extends JPanel implements ActionListener {
 	
 		// TableSettingsPanel declaration
 		tablepanel = new TableSettingsPanel(viewCtrl, dim);
+
 		
 		// exitButton properties
 
@@ -100,6 +101,14 @@ public class SettingsContentPanel extends JPanel implements ActionListener {
 		exitButton.setBorderPainted(false);
 		exitButton.setContentAreaFilled(false);
 		exitButton.setBounds(dim.width - w * 2 / 3, 0, w, h);
+
+		tablepanel.setBounds(dim.width * 30 / 100, 10, dim.width * 2 / 3,
+				dim.height * 4 / 3);
+		// exitButton properties
+
+		exitButton= new JButton("Exit");
+
+		exitButton.addActionListener(this);
 
 		// Background Image declaration
 
@@ -142,6 +151,7 @@ public class SettingsContentPanel extends JPanel implements ActionListener {
         // the method to send them
 		viewCtrl.updateHashtags(hashtagList);
 	}
+
 	/**
 	 * Passes the current state of the table
 	 * To viewController: Sends a list of the contained SettingsPicture 
@@ -161,13 +171,14 @@ public class SettingsContentPanel extends JPanel implements ActionListener {
 	 * Calls methods to pass the current states 
 	 * To the ViewController before exiting
 	 */
+
 	public void saveBeforeExit() {
+	
 		updateDisplaySettings();
 		updateHashtags();
 		updateTableSettings();
 	}
 
-	
     /**
 	 * 
 	 * (non-Javadoc)
@@ -175,6 +186,7 @@ public class SettingsContentPanel extends JPanel implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		// If exit button is clicked 
 		// Save and dispatch 
 		if (e.getSource().equals(exitButton)) {
@@ -182,8 +194,14 @@ public class SettingsContentPanel extends JPanel implements ActionListener {
 			parent.setVisible(false);
 			parent.dispatchEvent(new WindowEvent(parent,
 					WindowEvent.WINDOW_CLOSING));
+			
+		if(e.getSource().equals(exitButton)){
+			saveBeforeExit();
+			parent.setVisible(false);
+			parent.dispatchEvent(new WindowEvent( parent, WindowEvent.WINDOW_CLOSING));
+
 		}
 
 	}
 
-}
+}}

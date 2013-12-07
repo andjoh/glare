@@ -11,6 +11,10 @@ import dal.Hashtag;
 import dal.IReader;
 import dal.PictureData;
 
+import glare.*;
+import dal.*;
+import java.util.*;
+
 /**
  * Controller for getting, processing and sending picture data to database
  * 
@@ -52,6 +56,7 @@ public class PictureController {
 
 			processPictureData();
 
+
 			List<PictureData> tmpPictureDataToSave = new ArrayList<PictureData>();
 			List<PictureData> pictureDataToSave = new ArrayList<PictureData>();
 
@@ -64,21 +69,23 @@ public class PictureController {
 			if (!tmpPictureDataToSave.isEmpty()) {
 				// Check if access to pictures
 				for (PictureData pd : tmpPictureDataToSave) {
-					if (accessToPicture(pd)) {
+					
 						pictureDataToSave.add(pd);
-					}
+					
 				}
 
 				if (!pictureDataToSave.isEmpty()) {
 					databaseManager.savePictureDataToDb(pictureDataToSave);
 					success = true;
 				}
-			}
+			
+
+		
 		}
 
-		return success;
+		
+	}return success;
 	}
-
 	/**
 	 * Search for picture data on sources with given hashtags Save list, without
 	 * duplicates, to class variable pictureDataFromSources.
@@ -142,36 +149,39 @@ public class PictureController {
 	 * pictureDataModified
 	 */
 
+
 	private void processPictureData() {
 
 		// Get pictureData from db.
-		List<PictureData> pictureDataExisting = databaseManager
-				.getPictureDataFromDb();
-
-		// Init lists
-		pictureDataNew = new ArrayList<PictureData>();
-		pictureDataModified = new ArrayList<PictureData>();
+		List<PictureData> pictureDataExisting = databaseManager.getPictureDataFromDb();
+		
+		pictureDataNew      = new ArrayList<PictureData>();
+		pictureDataModified = new ArrayList<PictureData>();		
 		Set<String> newHashtags;
 
 		// Iterate over picture data from sources
 		boolean pictureDataExists;
-		for (PictureData pdPossibleNew : pictureDataFromSources) {
+
+
+
+		for ( PictureData pdPossibleNew : pictureDataFromSources ) {
 
 			pictureDataExists = false;
 
 			// Check if this pictureData already exists in the db
-			for (PictureData pdExisting : pictureDataExisting) {
+
+
+			for ( PictureData pdExisting : pictureDataExisting ) {
+
 
 				if (pdPossibleNew.getId().equals(pdExisting.getId())) {
 					pictureDataExists = true;
-					// System.out.println("Id from pdExisting, " +
-					// pdExisting.getId() + ", IS EQUAL to new " +
-					// pdPossibleNew.getId() + "\n");
 
 					// Check if hashtag connected to possible new is already
 					// connected to existing picture data
 					newHashtags = new HashSet<String>();
 					newHashtags = checkForNewHashtags(pdExisting, pdPossibleNew);
+
 
 					System.out.println("Do we have new hashtags?");
 					for (String ht : newHashtags) {
@@ -183,17 +193,19 @@ public class PictureController {
 					// possible new picture data,
 					// and add possible new, with existing remove flag to
 					// modified list
-					if (!newHashtags.isEmpty()) {
-						for (String ht : newHashtags)
+
+
+					// If new hashtags - add to existing for further check of possible new picture data,
+					// and add possible new, with existing remove flag to modified list
+					if ( !newHashtags.isEmpty() ) {
+						for ( String ht : newHashtags ) 
 							pdExisting.addHashtag(new Hashtag(ht));
 						pdPossibleNew.setRemoveFlag(pdExisting.isRemoveFlag());
-						System.out.println("ADD to pictureDataModified\n");
 						pictureDataModified.add(pdPossibleNew);
 					}
-					System.out.println("BREAK");
 					break;
 				}
-			}
+
 
 			for (PictureData p : pictureDataNew) {
 				if (p.getHashtags().size() > 1) {
@@ -206,11 +218,19 @@ public class PictureController {
 				pictureDataNew.add(pdPossibleNew);
 
 			}
-		}
+			}}
 	}
 
-	private Set<String> checkForNewHashtags(PictureData pdExisting,
-			PictureData pdNew) {
+
+
+
+	/**
+	 * Check if new picture data has new hashtags compared with the same existing picture data
+	 * @param pdExisting
+	 * @param pdNew
+	 * @return List of hashtags as string
+	 */
+	private Set<String> checkForNewHashtags(PictureData pdExisting, PictureData pdNew) {
 		Set<String> newHashtags = new HashSet<String>();
 		String htPossibleNew;
 		boolean hashtagExists;
@@ -265,6 +285,7 @@ public class PictureController {
 		 */
 		return accessToPicture;
 	}
+
 
 	public List<PictureData> getPictureDataFromSources() {
 		return pictureDataFromSources;

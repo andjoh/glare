@@ -114,8 +114,6 @@ public class ShowInterface extends JFrame implements ActionListener {
 	}
 
 	private void init(){
-	
-
 			settingsButton = new JButton();
 			settingsButton.addActionListener(this);
 			settingsButton.setIcon(new ImageIcon(getClass().getResource(
