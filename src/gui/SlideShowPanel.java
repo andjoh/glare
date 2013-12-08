@@ -11,6 +11,8 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -37,6 +39,7 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
     private int w,h; // width and height of this panel and also the screen
     private float alphaS = (float)0.0; // alpha values used for fading
     private static boolean alphaAdd = true;
+    private Timer newImageTimer;
     private final static double SCALE_FACTOR=1.4; // the factor in which pictures are increased with. The picture keeps its original proportions
 	/**
 	 * @param parent
@@ -89,6 +92,7 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 	 */
 	public void stopClick() {
 		stop = true;
+		newImageTimer.cancel();
 		try {
 			th.join();
 		} catch (InterruptedException e) {
@@ -131,14 +135,80 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
 	 */
 	public void run() {
 		stop = false;
+		newImageTimer = new Timer();
+		newImageTimer.schedule(new NewImageTask(), 0, 30);
 		// gets display time from viewcontroller
+//		int d = viewCtrl.getDisplayTime() * 1000;
+//        float step = (float)0.02;
+//        while(stop==false) {
+//           // logic to adjust alpha values 
+//           // used for creating fade in and fade out
+//      
+//        	if(alphaS >= 0.98){
+//                try {
+//                    Thread.sleep(d);
+//                } catch (InterruptedException e) {
+//               
+//                    e.printStackTrace();
+//                }
+//                try {
+//                    image1 = getNext();
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                }
+//                
+//                alphaAdd = false;
+//            }
+//            else if (alphaS <= 0.02){
+//                try {
+//                    Thread.sleep(d);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                try {
+//                    image2 = getNext();
+//                } catch (IOException ex) {
+//                    ex.printStackTrace();
+//                }
+//               
+//                alphaAdd = true;
+//            }
+//            if (alphaAdd)
+//                alphaS += step;
+//            else
+//                alphaS -= step;
+//            repaint();
+//            try {
+//                Thread.sleep(30);
+//            } catch (InterruptedException ex) {}
+//        }
+    }  
+
+	/**
+	 * Get the next picture
+	 * Scale using external library
+	 * @return
+	 * @throws IOException
+	 */
+	public BufferedImage getNext() throws IOException {
+		BufferedImage bf = viewCtrl.getCurrentPicture();
+
+		if (bf != null)bf = Thumbnails.of(bf).scale(SCALE_FACTOR).asBufferedImage();
+		return bf;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+
+	}
+	
+	class NewImageTask extends TimerTask{
+		private float step = (float)0.02;
 		int d = viewCtrl.getDisplayTime() * 1000;
-        float step = (float)0.02;
-        while(stop==false) {
-           // logic to adjust alpha values 
-           // used for creating fade in and fade out
-      
-        	if(alphaS >= 0.98){
+
+		@Override
+		public void run() {
+			if(alphaS >= 0.98){
                 try {
                     Thread.sleep(d);
                 } catch (InterruptedException e) {
@@ -172,28 +242,11 @@ class ImageSlider extends JPanel implements Runnable, ActionListener {
             else
                 alphaS -= step;
             repaint();
-            try {
-                Thread.sleep(30);
-            } catch (InterruptedException ex) {}
-        }
-    }  
-
-	/**
-	 * Get the next picture
-	 * Scale using external library
-	 * @return
-	 * @throws IOException
-	 */
-	public BufferedImage getNext() throws IOException {
-		BufferedImage bf = viewCtrl.getCurrentPicture();
-
-		if (bf != null)bf = Thumbnails.of(bf).scale(SCALE_FACTOR).asBufferedImage();
-		return bf;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-
+//            try {
+//                Thread.sleep(30);
+//            } catch (InterruptedException ex) {}
+		}
+		
 	}
 
 }
