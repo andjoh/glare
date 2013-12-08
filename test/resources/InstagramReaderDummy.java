@@ -1,7 +1,6 @@
 package resources;
 
 import java.util.*;
-
 import dal.*;
 
 public class InstagramReaderDummy implements IReader{
