@@ -65,8 +65,6 @@ public class ImageTable extends JTable implements TableModelListener {
 			this.setRowHeight(i, 60);
 			this.setRowMargin(5);
 		}
-		System.out.println("Row count" + getRowCount());
-
 	}
 
 	// sets Size of columns based on tabledimensions

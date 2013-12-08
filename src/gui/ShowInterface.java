@@ -154,10 +154,8 @@ public class ShowInterface extends JFrame {
 
 		@Override
 		public void run() {
-			System.out.println("run()");
 			stop = false;
 			int d = viewCtrl.getDisplayTime() * 1000;
-			System.out.println("Display time: " + d);
 			try {
 				while (stop != true) {
 					show.moveNext();
