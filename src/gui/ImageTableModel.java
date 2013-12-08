@@ -19,7 +19,7 @@ public class ImageTableModel extends AbstractTableModel {
 
 	private List<SettingsPicture> data;
 	private List<String> header;
-	private int ROWS=20, COLS=5;
+	private int COLS=5;
 
 	// Constructor. Receives the data object
 	// Creates a new object based on the data
@@ -88,8 +88,6 @@ public class ImageTableModel extends AbstractTableModel {
     
 	}
 	public SettingsPicture getSetPic(int row, int col){
-		int i = (COLS*row)+col;
-		if(i>=data.size())System.out.println("I out of bounds in getSetPic(): v: "+i);
 		return data.get((COLS*row)+col);
 	}
 

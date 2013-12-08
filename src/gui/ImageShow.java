@@ -41,8 +41,7 @@ public class ImageShow extends JPanel {
 	public BufferedImage loadBackground() throws IOException {
 		URL url = this.getClass().getResource("/resource/img/glare.png");
 		backgroundImage = ImageIO.read(url);
-		backgroundImage = Thumbnails.of(backgroundImage).scale(1.7)
-				.asBufferedImage();
+		backgroundImage = Thumbnails.of(backgroundImage).scale(1.7).asBufferedImage();
 		return backgroundImage;
 
 	}

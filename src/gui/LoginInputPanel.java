@@ -21,10 +21,6 @@ public class LoginInputPanel extends JPanel {
 	private JLabel usernameLabel, passwordLabel; // labels 
 	private JPasswordField passwordInputField; // field to enter password
 	private Constraints gbc; // object used for setting layout constraints
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -82,9 +78,6 @@ public class LoginInputPanel extends JPanel {
 
 	}
 
-	/**
-	 * @return 
-	 */
 	public JTextField getUserField() {
 		return usernameInputField;
 	}

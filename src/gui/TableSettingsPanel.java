@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -25,12 +24,8 @@ import bll.SettingsPicture;
 import bll.ViewController;
 
 public class TableSettingsPanel extends JPanel implements ActionListener {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Constraints[] gbc;
-	private final static int COLS = 5, ROWS = 20;
 	private ImageTableModel tablemodel;
 	private JButton removeButton;
 	private List<SettingsPicture> settingsPictures;
@@ -50,7 +45,6 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 		this.setRequestFocusEnabled(true);
 	
 		init();
-		System.out.println("TableSettingsPanel" + super.getSize());
 		setConstraints();
 		addKeyBindings();
 	}
@@ -58,7 +52,6 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	private void init() {
 		// thumbnailTable properties
 		settingsPictures=viewCtrl.getSettingsPictures();
-		System.out.println();
 		tablemodel = new ImageTableModel(settingsPictures);
 		thumbnailTable = new ImageTable(tablemodel, dim);
 
@@ -73,42 +66,29 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 
 		tableScroller.setCursor(new Cursor(Cursor.MOVE_CURSOR));
 		tableScroller.setViewportView(thumbnailTable);
-		tableScroller
-				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		tableScroller
-				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		// removeButton Properties
-		System.out.println("Screensize : "
-				+ Toolkit.getDefaultToolkit().getScreenSize());
-
-		;
+		tableScroller.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		tableScroller.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	}
 private void addKeyBindings(){
 		
 		input= getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "backspace");
          getActionMap().put("backspace", new AbstractAction() {
-			            /**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 						@Override
 			            public void actionPerformed(ActionEvent e) {
-                            System.out.println("Table KeyBindings");
 			            	removeButton.doClick();
 			            }
 			        });	
 	}
 	private void setConstraints() {
 		gbc[0].fill = GridBagConstraints.BOTH;
-		gbc[0].set(0, 0, 1, 1, dim.width, dim.height * 3 / 4, 1.0, 1.0,
-				new Insets(11, 10, 0, 18), GridBagConstraints.NORTHWEST);
+		gbc[0].set(0, 0, 1, 1, dim.width, dim.height * 3 / 4, 1.0, 1.0, new Insets(11, 10, 0, 18), GridBagConstraints.NORTHWEST);
 
 		add(tableScroller, gbc[0]);
 
-		gbc[1].set(0, 1, 1, 1, 0, 0, 1.0, 1.0, new Insets(6, dim.width / 2,
-				150, 18), GridBagConstraints.NORTHWEST);
+		gbc[1].set(0, 1, 1, 1, 0, 0, 1.0, 1.0, new Insets(6, dim.width / 2, 150, 18), GridBagConstraints.NORTHWEST);
 		add(removeButton, gbc[1]);
 	}
 
@@ -119,7 +99,6 @@ private void addKeyBindings(){
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(removeButton)) {
-
 			thumbnailTable.removeFlagged();
 			repaint();
 		}

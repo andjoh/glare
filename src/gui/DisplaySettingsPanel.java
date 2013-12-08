@@ -49,15 +49,13 @@ public class DisplaySettingsPanel extends JPanel {
 		// delaySpinner properties
 		delaySpinner = new JSpinner();
 		delaySpinner.setEditor(new JSpinner.DefaultEditor(delaySpinner));
-		delaySpinner.setModel(new SpinnerNumberModel(SPINNER_DEFAULT,
-				SPINNER_MINIMUM, SPINNER_MAXIMUM, 1));
+		delaySpinner.setModel(new SpinnerNumberModel(SPINNER_DEFAULT, SPINNER_MINIMUM, SPINNER_MAXIMUM, 1));
 		delaySpinner.setOpaque(false);
 		delaySpinner.setBorder(null);
 
 		// viewmodeCombo properties
 		viewmodeCombo = new JComboBox<String>();
-		viewmodeCombo.setModel(new DefaultComboBoxModel<String>(new String[] {
-				"sequential", "randomly" }));
+		viewmodeCombo.setModel(new DefaultComboBoxModel<String>(new String[] { "sequential", "randomly" }));
 		viewmodeCombo.setBorder(BorderFactory.createEtchedBorder());
 		viewmodeCombo.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		viewmodeCombo.setOpaque(false);

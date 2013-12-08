@@ -37,8 +37,7 @@ public class LoginDialog extends JDialog {
 		this.parent = parent;
 		// sets dim to a portion of the screen dimensions
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		this.dim = new Dimension((int) (dim.getWidth() / 3),
-				(int) dim.getHeight() / 4);
+		this.dim = new Dimension((int) (dim.getWidth() / 3), (int) dim.getHeight() / 4);
 
 		jp = new LPanel();
 		getContentPane().add(jp);
@@ -88,18 +87,14 @@ public class LoginDialog extends JDialog {
 		 * Method called by constructor to initialize components
 		 */
 		public void init() {
-			inputpanel = new LoginInputPanel(new Dimension(dim.width,
-					dim.height * 2 / 3));
+			inputpanel = new LoginInputPanel(new Dimension(dim.width, dim.height * 2 / 3));
 			// ButtonPanel properties
 
-			buttonPanel = new ButtonPanel(logd, inputpanel, new Dimension(
-					new Dimension(dim.width, dim.height)));
-			;
+			buttonPanel = new ButtonPanel(logd, inputpanel, new Dimension(new Dimension(dim.width, dim.height)));
 
 			// backgroundImageLabel properties
 			backgroundImageLabel = new JLabel();
-			backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
-					"/resource/img/backgr.jpg")));
+			backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource("/resource/img/backgr.jpg")));
 			backgroundImageLabel.setIconTextGap(0);
 			backgroundImageLabel.setBounds(0, 0, dim.width, dim.height);
 
@@ -117,9 +112,6 @@ public class LoginDialog extends JDialog {
 
 	}
 
-	/**
-	 * @return
-	 */
 	public boolean getSucceeded() {
 		return buttonPanel.getSucceeded();
 	}

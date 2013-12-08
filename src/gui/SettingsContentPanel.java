@@ -31,8 +31,7 @@ import bll.ViewController;
  *
  * @param <exitButton>
  */
-public class SettingsContentPanel extends JPanel implements
-		ActionListener {
+public class SettingsContentPanel extends JPanel implements ActionListener {
 	/**
 	 * @author Andreas J
 	 */
@@ -51,8 +50,7 @@ public class SettingsContentPanel extends JPanel implements
 	 * @param parent
 	 * @param dim
 	 */
-	public SettingsContentPanel(ViewController viewCtrl, SettingsFrame parent,
-			Dimension dim) {
+	public SettingsContentPanel(ViewController viewCtrl, SettingsFrame parent, Dimension dim) {
 		this.viewCtrl = viewCtrl;
 		this.parent = parent;
 		this.dim = new Dimension(dim.width * 2 / 3, dim.height * 7 / 10);
@@ -69,9 +67,6 @@ public class SettingsContentPanel extends JPanel implements
 
 	}
 
-	/**
-	 * 
-	 */
 	public void addComponents() {
 		setLayout(null);
 		add(dispset);
@@ -81,23 +76,17 @@ public class SettingsContentPanel extends JPanel implements
 		add(backgroundImageLabel);
 	}
 
-	/**
-	 * 
-	 */
 	private void initComponents() {
 
 		// HashSettingsPanel declaration
 		hashpan = new HashtagSettingsPanel();
-		hashpan.setBounds(dim.width * 1 / 16, 0, dim.width * 25 / 100,
-				dim.height * 3 / 4);
+		hashpan.setBounds(dim.width * 1 / 16, 0, dim.width * 25 / 100, dim.height * 3 / 4);
 		// DisplaySettingsPanel
 		dispset = new DisplaySettingsPanel(viewCtrl);
-		dispset.setBounds(dim.width * 1 / 20, dim.height * 4 / 5,
-				dim.width * 25 / 100, dim.height * 1 / 10);
+		dispset.setBounds(dim.width * 1 / 20, dim.height * 4 / 5, dim.width * 25 / 100, dim.height * 1 / 10);
 		// TableSettingsPanel declaration
 		tablepanel = new TableSettingsPanel(viewCtrl, dim);
-		tablepanel.setBounds(dim.width * 30 / 100, 10, dim.width * 2 / 3,
-				dim.height * 4 / 3);
+		tablepanel.setBounds(dim.width * 30 / 100, 10, dim.width * 2 / 3, dim.height * 4 / 3);
 		// exitButton properties
 
 		exitButton = new JButton("Exit");
@@ -108,7 +97,6 @@ public class SettingsContentPanel extends JPanel implements
 		URL url = this.getClass().getResource("/resource/img/exit.png");
 		int w = dim.width / 20, h = dim.height / 20;
 		try {
-
 			img = ImageIO.read(url);
 			img = Thumbnails.of(img).size(w, h).asBufferedImage();
 		} catch (IOException e) {
@@ -125,16 +113,12 @@ public class SettingsContentPanel extends JPanel implements
 		// Background Image declaration
 
 		backgroundImageLabel = new JLabel();
-		backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource(
-				"/resource/img/backgr.jpg")));
+		backgroundImageLabel.setIcon(new ImageIcon(getClass().getResource("/resource/img/backgr.jpg")));
 		backgroundImageLabel.setIconTextGap(0);
 		backgroundImageLabel.setBounds(0, 0, dim.width, dim.height);
 
 	}
 
-	/**
-	 * 
-	 */
 	public void updateDisplaySettings() {
 		viewCtrl.setRandom(dispset.getViewMode());
 		viewCtrl.setDisplayTime(dispset.getViewDelay());
@@ -149,19 +133,12 @@ public class SettingsContentPanel extends JPanel implements
 		viewCtrl.updateHashtags(hashtagList);
 	}
 
-	/**
-	 * 
-	 */
 	public void saveBeforeExit() {
-		System.out.println("Calld saveBeforExit");
 		updateDisplaySettings();
 		updateHashtags();
 		updateTableSettings();
 	}
 
-	/**
-	 * 
-	 */
 	public void updateTableSettings() {
 		ImageTableModel imtabmod = tablepanel.getImageTableModel();
 		//data to send to view controller
