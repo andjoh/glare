@@ -1,9 +1,7 @@
 package resources;
 
 import java.util.*;
-
 import dal.*;
-
 
 public class DatabaseManagerDummyOnlySourcesAndHashtags extends DatabaseManager {
 	private List<String> sources;
