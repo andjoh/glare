@@ -2,8 +2,6 @@ package resources;
 
 import java.util.*;
 
-import bll.PictureDataComparator;
-
 import dal.*;
 
 public class DatabaseManagerDummy extends DatabaseManager {
@@ -139,4 +137,10 @@ public class DatabaseManagerDummy extends DatabaseManager {
 	public void setHashtags(Set<String> hashtags) {
 		this.hashtags = hashtags;
 	}	
+	
+	private class PictureDataComparator implements Comparator<PictureData> {
+		public int compare(PictureData pd1, PictureData pd2) {
+			return (int) (pd2.getCreatedTime() - pd1.getCreatedTime());
+		}
+	}
 }
