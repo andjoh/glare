@@ -8,18 +8,11 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import dal.*;
 
 /**
@@ -33,7 +26,6 @@ import dal.*;
  * @author Simen Sollie, Kristine Svaboe, Petter Austerheim
  * @since 2013-11-04
  */
-
 public class ViewController {
 
 	private DatabaseManager dbMan;
@@ -44,12 +36,7 @@ public class ViewController {
 	private boolean isRandom;
 	private int displayTime;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param dbMan
-	 */
-	public ViewController(DatabaseManager dbMan)  {
+	public ViewController(DatabaseManager dbMan) {
 		this.dbMan = dbMan;
 		sortedPictureList = new ArrayList<PictureData>();
 
@@ -59,7 +46,8 @@ public class ViewController {
 	}
 
 	/**
-	 * Get picture to display
+	 * If picture data is present: Get picture to display
+	 * New list of picture data is fetched from db when needed
 	 * 
 	 * @return BufferedImage
 	 */
@@ -95,52 +83,45 @@ public class ViewController {
 		return image;
 	}
 
-
-
-	
+	/**
+	 * Process picture data using threads and make list of SettingsPictures
+	 * @return List of SettingsPictures
+	 */
 	public List<SettingsPicture> getSettingsPictures(){
-		
-		//CopyOnWriteArrayList<String> cpList=new CopyOnWriteArrayList<String>(new ArrayList<String>());
-		List<SettingsPicture> setPics = new ArrayList<SettingsPicture>();
-		 ExecutorService executor = Executors.newFixedThreadPool(10);
-		    List<Future<SettingsPicture>> list = new ArrayList<Future<SettingsPicture>>();
-		    for (PictureData  pd: pictureDataList) {
-		      Callable<SettingsPicture> worker = new CallableSettingsPictureTask(pd.getId(),pd.getUrlThumb());
-		      Future<SettingsPicture> submit = executor.submit(worker);
-		      list.add(submit);
-		    }
 
-		    System.out.println(list.size());
-		    SettingsPicture pic;
-		    for (Future<SettingsPicture> future : list) {
-		      try {
-		    	pic= future.get();
-		    	if(pic!=null)
-		       setPics.add(future.get());
-		      } catch (InterruptedException e) {
-		        e.printStackTrace();
-		      } catch (ExecutionException e) {
-		        e.printStackTrace();
-		      }
-		    }
-		 
-		    executor.shutdown();
-		
-		System.out.println("After threads, setPics Size"+setPics.size());
-		return setPics;
-		
-		
-		
+		List<SettingsPicture> setPics = new ArrayList<SettingsPicture>();
+		ExecutorService executor = Executors.newFixedThreadPool(10);
+		List<Future<SettingsPicture>> list = new ArrayList<Future<SettingsPicture>>();
+		for (PictureData  pd: pictureDataList) {
+			Callable<SettingsPicture> worker = new CallableSettingsPictureTask(pd.getId(),pd.getUrlThumb());
+			Future<SettingsPicture> submit = executor.submit(worker);
+			list.add(submit);
+		}
+
+		SettingsPicture pic;
+		for (Future<SettingsPicture> future : list) {
+			try {
+				pic= future.get();
+				if(pic!=null)
+					setPics.add(future.get());
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			}
+		}
+
+		executor.shutdown();
+
+		return setPics;	
 	}
+
 	/**
 	 * Load list of pict
-	 * ure data from database Prepare lists for sequential -
-	 * and random view
+	 * Use data from database 
+	 * Prepare lists for sequential and random view
 	 */
-	
 	public void getSortedList() {
-		System.out.println("ViewController getSortedList");
-
 		pictureDataList = dbMan.getSortedPictureData();
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);
 		randomPictureList = new ArrayList<PictureData>(pictureDataList);
@@ -153,7 +134,6 @@ public class ViewController {
 	 * @param url
 	 * @return BufferedImage
 	 */
-
 	private BufferedImage getBufImage(String url) {
 		URL imageUrl;
 		BufferedImage image = null;
@@ -164,19 +144,14 @@ public class ViewController {
 			HttpURLConnection urlConn = (HttpURLConnection) imageUrl
 			.openConnection();
 
-    InputStream is = urlConn.getInputStream();
-	image = ImageIO.read(is);
-		is.close();
-	
-			
-	
+			InputStream is = urlConn.getInputStream();
+			image = ImageIO.read(is);
+			is.close();
+
 		} catch (MalformedURLException e) {
-	
 			e.printStackTrace();
 		} catch (IOException e) {
-	
-
-			System.out.println("IO EXEPTION !!!!!!! url: " + url);
+			e.printStackTrace();
 		}
 
 		return image;
@@ -193,16 +168,10 @@ public class ViewController {
 
 		for (SettingsPicture pic : list) {
 			if (pic == null)
-				System.out.println("Picture is null");
-
-		
 
 			if (pic.getIsFlagged()) {
 				id = pic.getId();
 				flaggedList.add(id);
-				System.out
-						.println("Got a flagged SettingsPicture object, sending ID: "
-								+ id + "to dbMan");
 			}
 		}
 
@@ -312,19 +281,14 @@ public class ViewController {
 	}
 
 	public void setRandom(boolean isRandom) {
-		System.out.println("Random is " + isRandom);
 		this.isRandom = isRandom;
 	}
 
 	public int getDisplayTime() {
-		System.out.println("getDisplayTime " + displayTime);
 		return displayTime / 1000;
 	}
 
 	public void setDisplayTime(int displayTime) {
-		System.out.println("Set DisplayTime: " + displayTime);
 		this.displayTime = displayTime * 1000;
 	}
-
-	
 }

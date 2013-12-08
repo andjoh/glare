@@ -54,11 +54,9 @@ public class CallableSettingsPictureTask implements Callable<SettingsPicture> {
 			is.close();
 
 		} catch (MalformedURLException e) {
-
 			e.printStackTrace();
 		} catch (IOException e) {
-
-			System.out.println("IO EXEPTION !!!!!!! url: " + url);
+			e.printStackTrace();
 		}
 		if (image == null)
 			return null;

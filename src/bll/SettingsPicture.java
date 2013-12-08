@@ -5,6 +5,13 @@ import java.io.IOException;
 import javax.swing.ImageIcon;
 import net.coobird.thumbnailator.Thumbnails;
 
+/**
+ * Class to handle thumbnails used by Settings Panel
+ * Pictures are created in ViewController and sent to Settings Panel, 
+ * then processed and sent back again to ViewController
+ * @author Petter Austerheim
+ *
+ */
 public class SettingsPicture {
 	private String id;
 	private boolean isFlagged, isTempFlagged;
@@ -28,16 +35,16 @@ public class SettingsPicture {
 	public ImageIcon getIcon(int w, int h) {
 		BufferedImage img = null;
 		ImageIcon ic = null;
-       if(image!=null){
-		try {
-			if (image != null)
-				img = Thumbnails.of(image).size(w, h).asBufferedImage();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(image!=null){
+			try {
+				if (image != null)
+					img = Thumbnails.of(image).size(w, h).asBufferedImage();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			ic = new ImageIcon(img);
 		}
-		ic = new ImageIcon(img);
-		}
-       return ic;
+		return ic;
 	}
 
 	public void setIsTempFlagged(boolean isTempFlagged) {

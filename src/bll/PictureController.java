@@ -2,6 +2,7 @@ package bll;
 
 import glare.*;
 import dal.*;
+
 import java.util.*;
 
 /**
@@ -221,5 +222,20 @@ public class PictureController {
 	
 	public List<PictureData> getPictureDataToSave() {
 		return pictureDataToSave;
+	}
+	
+	/**
+	 * Utility to sort picturedata by id and hashtag
+	 * @author Petter Austerheim
+	 *
+	 */
+	private class SortPictureDataByIdAndHt implements Comparator<PictureData> {
+	    public int compare(PictureData pd1, PictureData pd2) {
+	    	int value = (int) (pd1.getId().compareTo(pd2.getId()));
+	    	if ( value == 0 ) {
+	    		value+= (int) (pd1.getHashtags().iterator().next().getHashtag().compareTo(pd2.getHashtags().iterator().next().getHashtag()));
+	    	}
+	    	return value;
+	    }
 	}
 }
