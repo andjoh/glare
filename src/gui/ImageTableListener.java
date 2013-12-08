@@ -47,8 +47,7 @@ public class ImageTableListener implements ListSelectionListener {
 			rStart = table.getSelectedRow();
 			rEnd = table.getSelectionModel().getMaxSelectionIndex();
 			colIndexStart = table.getSelectedColumn();
-			colIndexEnd = table.getColumnModel().getSelectionModel()
-					.getMaxSelectionIndex();
+			colIndexEnd = table.getColumnModel().getSelectionModel().getMaxSelectionIndex();
 			getCells();
  
 		}

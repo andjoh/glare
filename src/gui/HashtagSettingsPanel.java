@@ -48,16 +48,10 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 	private JButton delhashButton, addhashButton;
 	private JScrollPane jlistScroller;
 
-	/**
-	 * 
-	 */
 	private Constraints[] gbcs = new Constraints[] { new Constraints(),
 			new Constraints(), new Constraints(), new Constraints(),
 			new Constraints() };
 
-	/**
-	 * 
-	 */
 	public HashtagSettingsPanel() {
 
 		setAutoscrolls(true);
@@ -70,18 +64,12 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 
 	}
 
-	/**
-	 * 
-	 */
 	private void addKeyBindings() {
 
 		input = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "enter");
 		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "delete");
 		getActionMap().put("enter", new AbstractAction() {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -92,9 +80,6 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 			}
 		});
 		getActionMap().put("delete", new AbstractAction() {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			@Override
@@ -113,8 +98,7 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 
 		listModel = new DefaultListModel<String>();
 		hashJList = new JList<String>(listModel);
-		hashJList
-				.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		hashJList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
 		// jlistScroller properties
 		jlistScroller = new JScrollPane();
@@ -125,16 +109,14 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 		hashJList.setVisibleRowCount(5);
 		// set addHashButtons properties
 		addhashButton = new JButton();
-		addhashButton.setIcon(new ImageIcon(getClass().getResource(
-				"/resource/img/add.gif")));
+		addhashButton.setIcon(new ImageIcon(getClass().getResource("/resource/img/add.gif")));
 		addhashButton.setBorderPainted(false);
 		addhashButton.setContentAreaFilled(false);
 		addhashButton.addActionListener(this);
 		addhashButton.setEnabled(false);
 		// delHashButton properties
 		delhashButton = new JButton();
-		delhashButton.setIcon(new ImageIcon(getClass().getResource(
-				"/resource/img/del.gif")));
+		delhashButton.setIcon(new ImageIcon(getClass().getResource("/resource/img/del.gif")));
 		delhashButton.setBorderPainted(false);
 		delhashButton.setContentAreaFilled(false);
 		delhashButton.addActionListener(this);
@@ -249,9 +231,6 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 
 	}
 
-	/**
-	 * 
-	 */
 	private void checkFieldsFull() {
 
 		if (addhashField.getText().trim().isEmpty()) {
@@ -263,16 +242,10 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 
 	}
 
-	/**
-	 * @return
-	 */
 	public DefaultListModel<String> getListModel() {
 		return listModel;
 	}
 
-	/**
-	 * @return
-	 */
 	public Set<String> getHashtagList() {
 		Object[] stringList = listModel.toArray();
 		Set<String> hashtagList = new HashSet<String>();
@@ -283,9 +256,6 @@ public class HashtagSettingsPanel extends JPanel implements ActionListener,
 		return hashtagList;
 	}
 
-	/**
-	 * @param hashtags
-	 */
 	public void setHashtagList(Set<String> hashtags) {
 		for (String ht : hashtags) {
 			listModel.addElement(ht);
