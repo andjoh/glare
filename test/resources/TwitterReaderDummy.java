@@ -1,7 +1,6 @@
 package resources;
 
 import java.util.*;
-
 import dal.Hashtag;
 import dal.IReader;
 import dal.PictureData;

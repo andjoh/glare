@@ -1,4 +1,4 @@
-package unit;
+package integration;
 
 import gui.SettingsFrame;
 import gui.ShowInterface;
@@ -86,7 +86,6 @@ public class MainTest {
 				try {
 					showInterface = new ShowInterface(vc);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
