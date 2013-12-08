@@ -28,7 +28,7 @@ public class DisplaySettingsPanel extends JPanel {
 	private JLabel viewdelayLabel, viewmodeLabel;  // label that shows the text "View Delay"
 	private static final long serialVersionUID = 1L;
 	private static int SPINNER_DEFAULT = 3; // the default value of the spinner
-	private final int SPINNER_MINIMUM = 1, SPINNER_MAXIMUM = 10; // constant min,max values for spinner
+	private final int SPINNER_MINIMUM = 1, SPINNER_MAXIMUM = 9; // constant min,max values for spinner
 	private Constraints[] gbcs = new Constraints[] { new Constraints(), // constraints for GBC layout
 			new Constraints(), new Constraints(), new Constraints() };
 

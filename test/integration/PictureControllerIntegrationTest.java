@@ -38,14 +38,7 @@ public class PictureControllerIntegrationTest {
 		// Set dummy hashtag
 		hashtagsDummy = new HashSet<String>();
 		hashtagsDummy.add("winter");
-		hashtagsDummy.add("raskebriller");
-//		hashtagsDummy.add("summer");
-//		hashtagsDummy.add("football");
-//		hashtagsDummy.add("christmas");
-//		hashtagsDummy.add("happy");
-//		hashtagsDummy.add("lol");
-//		hashtagsDummy.add("f");
-						
+		hashtagsDummy.add("raskebriller");				
 	}
 	
 	@After
@@ -72,18 +65,6 @@ public class PictureControllerIntegrationTest {
 		picCtrl.getNewPictureData();
 		
 		List<PictureData> pictureData = dbManagerDummy.getPictureDataFromDb();
-
-		// Additional output
-		System.out.println("PictureData from Instagram and Twitter");
-		for ( PictureData pd : pictureData )
-		{
-			System.out.println(pd.getId());
-			System.out.println(pd.getUrlStd());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}			
-		}
-		System.out.println("");
 		
 		assertThat(pictureData.isEmpty(),is(false));
 	}
@@ -101,19 +82,6 @@ public class PictureControllerIntegrationTest {
 		picCtrl.getNewPictureData();
 		
 		List<PictureData> pictureData = dbManager.getPictureDataFromDb();
-
-		// Additional output
-		System.out.println("");
-		System.out.println("PictureData from db");
-		for ( PictureData pd : pictureData )
-		{
-			System.out.println(pd.getId());
-			System.out.println(pd.getUrlStd());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}			
-		}
-		System.out.println("");
 		
 		assertThat(pictureData.isEmpty(),is(false));
 	}
@@ -130,19 +98,6 @@ public class PictureControllerIntegrationTest {
 		picCtrl.getNewPictureData();
 		
 		List<PictureData> pictureData = dbManager.getPictureDataFromDb();
-
-		// Additional output
-		System.out.println("");
-		System.out.println("PictureData from db");
-		for ( PictureData pd : pictureData )
-		{
-			System.out.println(pd.getId());
-			System.out.println(pd.getUrlStd());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}			
-		}
-		System.out.println("");
 		
 		assertThat(pictureData.isEmpty(),is(false));
 	}

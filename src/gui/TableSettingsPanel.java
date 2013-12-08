@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -28,16 +29,16 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Constraints[] gbc; // Constraints for layout
-	private ImageTableModel tablemodel; // the table model
-	private JButton removeButton; // button to remove pictures
-	private List<SettingsPicture> settingsPictures; // list of settingspictures
-													// passed to the table model
-	private Dimension dim; // dimensions of this panel
-	private InputMap input; // map for inputs from keyboard
+	private Constraints[] gbc;
+	private final static int COLS = 5, ROWS = 20;
+	private ImageTableModel tablemodel;
+	private JButton removeButton;
+	private List<SettingsPicture> settingsPictures;
+	private Dimension dim;
+    private InputMap input;
 	private ViewController viewCtrl;
 	private JScrollPane tableScroller;
-	private ImageTable thumbnailTable; // the table showing thumbnails
+	private ImageTable thumbnailTable;
 
 	public TableSettingsPanel(ViewController viewCtrl, Dimension dim) {
 		this.dim = dim;
@@ -47,64 +48,58 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 		gbc = new Constraints[] { new Constraints(), new Constraints() };
 		setFocusable(true);
 		this.setRequestFocusEnabled(true);
-
+	
 		init();
+		System.out.println("TableSettingsPanel" + super.getSize());
 		setConstraints();
 		addKeyBindings();
 	}
 
 	private void init() {
 		// thumbnailTable properties
-		settingsPictures = viewCtrl.getSettingsPictures();
-		tablemodel = new ImageTableModel(settingsPictures,dim);
+		settingsPictures=viewCtrl.getSettingsPictures();
+		System.out.println();
+		tablemodel = new ImageTableModel(settingsPictures);
 		thumbnailTable = new ImageTable(tablemodel, dim);
-		// removeButton Properties
+
 		removeButton = new JButton("Remove");
 		removeButton.addActionListener(this);
 
 		// tableScroller properties
 		tableScroller = new JScrollPane();
 		tableScroller.setOpaque(false);
-		tableScroller.setColumnHeader(null);
+		// tableScroller.setColumnHeader(null);
 		tableScroller.setBackground(Color.white.brighter());
+
 		tableScroller.setCursor(new Cursor(Cursor.MOVE_CURSOR));
 		tableScroller.setViewportView(thumbnailTable);
 		tableScroller
 				.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
 		tableScroller
 				.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		// removeButton Properties
+		System.out.println("Screensize : "
+				+ Toolkit.getDefaultToolkit().getScreenSize());
 
+		;
 	}
-
-	/**
-	 * Adds keybindings to panel When user press BackSpace an action event will
-	 * be fired
-	 */
-	private void addKeyBindings() {
-
-		input = getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0),
-				"backspace");
-		getActionMap().put("backspace", new AbstractAction() {
-			/**
+private void addKeyBindings(){
+		
+		input= getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "backspace");
+         getActionMap().put("backspace", new AbstractAction() {
+			            /**
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
 
-			// action event is fired
-			// call method to click removeButton
-			@Override
-			public void actionPerformed(ActionEvent e) {;
-				removeButton.doClick();
-			}
-		});
+						@Override
+			            public void actionPerformed(ActionEvent e) {
+                            System.out.println("Table KeyBindings");
+			            	removeButton.doClick();
+			            }
+			        });	
 	}
-
-	/**
-	 * Method called by the constructor to Set the Constraints for GUI
-	 * components And add them to the Panel
-	 * 
-	 */
 	private void setConstraints() {
 		gbc[0].fill = GridBagConstraints.BOTH;
 		gbc[0].set(0, 0, 1, 1, dim.width, dim.height * 3 / 4, 1.0, 1.0,
@@ -117,18 +112,10 @@ public class TableSettingsPanel extends JPanel implements ActionListener {
 		add(removeButton, gbc[1]);
 	}
 
-	/**
-	 * @return
-	 */
 	public ImageTableModel getImageTableModel() {
 		return tablemodel;
 	}
 
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(removeButton)) {

@@ -1,33 +1,32 @@
 package gui;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import bll.ViewController;
+
+import java.awt.event.*;
+import java.awt.*;
+
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import bll.ViewController;
 
 /**
  * 
  * @author Andreas Johnstad
  */
-
 @SuppressWarnings("serial")
 final public class SettingsFrame extends JDialog {
-	/**
-	 * Modal JDialog box that contains GUI for settings
-	 */
-	private SettingsContentPanel contp; // Panel that contains all settings GUI
 
-	private JFrame parent; // the parent : showinterface
-	private Dimension dim; // dimensions of this Dialog
+	private SettingsContentPanel contp;
+	private JFrame parent;
+	private Dimension dim;
 
-	/**
-	 * @param viewCtrl
-	 */
 	public SettingsFrame(ViewController viewCtrl) {
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
+		// setSize(dim.width * 2 / 3, dim.width * 2 / 4);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		contp = new SettingsContentPanel(viewCtrl,this, dim);
+
 		getContentPane().add(contp);
 		setLocationRelativeTo(parent);
 		setUndecorated(true);
@@ -36,7 +35,17 @@ final public class SettingsFrame extends JDialog {
 		setAlwaysOnTop(true);
 		requestFocusInWindow();
 		setLocationRelativeTo(parent);
+		// Testing add hashtags to list
+		// Image img = new
+		// ImageIcon(SettingsFrame.class.getResource("settings.gif")).getImage();
+		// ((java.awt.Frame)this.getOwner()).setIconImage(img);
 		setModal(true);
+
 		setVisible(true);
 	}
+
+	public boolean validationExit() {
+		return true;
+	}
+
 }

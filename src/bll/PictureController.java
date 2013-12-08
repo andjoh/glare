@@ -2,28 +2,18 @@ package bll;
 
 import glare.*;
 import dal.*;
-
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.*;
 
-import javax.imageio.ImageIO;
-
 /**
- * Controller for getting, processing and sending picture data to database
+ * Controller for getting, processing and sending new picture data to database
  * @author Petter Austerheim
  */
 public class PictureController {
+
 	private DatabaseManager databaseManager;
-
-	private List<PictureData> pictureDataFromSources;  // PictureData from Instagram etc.
-	private List<PictureData> pictureDataNew;          // PictureData not in db
-	private List<PictureData> pictureDataModified;     // Existing pictureData with new hashtag
-
+	private List<PictureData> pictureDataFromSources;
+	private List<PictureData> pictureDataToSave; 
+	
 	/**
 	 * Constructor
 	 * @param databaseManager
@@ -50,28 +40,9 @@ public class PictureController {
 
 			processPictureData();
 
-			List<PictureData> tmpPictureDataToSave = new ArrayList<PictureData>();
-			List<PictureData> pictureDataToSave    = new ArrayList<PictureData>();
-
-			if ( !pictureDataNew.isEmpty() ) 
-				tmpPictureDataToSave.addAll(pictureDataNew);
-
-			if ( !pictureDataModified.isEmpty() )
-				tmpPictureDataToSave.addAll(pictureDataModified);				
-
-			if ( !tmpPictureDataToSave.isEmpty() ) {
-				pictureDataToSave.addAll(pictureDataModified);
-
-				// Check if access to pictures
-				for ( PictureData pd : tmpPictureDataToSave ) {
-					//if ( accessToPicture(pd) )
-						pictureDataToSave.add(pd);
-				}
-
-				if ( !pictureDataToSave.isEmpty() ) {
-					databaseManager.savePictureDataToDb(pictureDataToSave);
-					success = true;
-				}
+			if ( !pictureDataToSave.isEmpty() ) {
+				databaseManager.savePictureDataToDb(pictureDataToSave);
+				success = true;
 			}
 		}			
 
@@ -80,11 +51,11 @@ public class PictureController {
 
 	/**
 	 * Search for picture data on sources with given hashtags
-	 * Save list, without duplicates, to class variable pictureDataFromSources.
+	 * Save list to class variable pictureDataFromSources.
 	 * 
 	 * @return - True if new picture data are found
 	 */
-	private boolean searchPictureData() {	
+	public boolean searchPictureData() {	
 	
 		pictureDataFromSources = new ArrayList<PictureData>();
 
@@ -108,7 +79,7 @@ public class PictureController {
 		
 		if ( pictureDataFromSources.isEmpty() )
 			return false;
-		
+				
 		return true;
 	}
 
@@ -137,66 +108,88 @@ public class PictureController {
 	 * Find existing pictureData which have got new hashtags and store in list pictureDataModified
 	 */		
 	private void processPictureData() {
-		
-		// Get pictureData from db.
+
+		// Remove duplicated picture data fetched from sources
+		List<PictureData> pictureDataPossibleNew = new ArrayList<PictureData>(pictureDataFromSources);
+		pictureDataPossibleNew = removeDuplicatePictureData(pictureDataPossibleNew);
+
+		// Get existing pictureData from db
 		List<PictureData> pictureDataExisting = databaseManager.getPictureDataFromDb();
 
-		// Init lists
-		pictureDataNew      = new ArrayList<PictureData>();
-		pictureDataModified = new ArrayList<PictureData>();		
+		pictureDataToSave = new ArrayList<PictureData>();	
 		Set<String> newHashtags;
-		
-		// Iterate over picture data from sources
 		boolean pictureDataExists;
-		for ( PictureData pdPossibleNew : pictureDataFromSources ) {
 
+		// Iterate over picture data from sources
+		for ( PictureData pdPossibleNew : pictureDataPossibleNew ) {
 			pictureDataExists = false;
-
+			
 			// Check if this pictureData already exists in the db
 			for ( PictureData pdExisting : pictureDataExisting ) {
 
-				if ( pdPossibleNew.getId() == pdExisting.getId() ) {			
+				if ( pdPossibleNew.getId().equals(pdExisting.getId()) ) {			
 					pictureDataExists = true;
 
 					// Check if hashtag connected to possible new is already connected to existing picture data
+					// TODO Denne må flyttes opp
 					newHashtags = new HashSet<String>();
 					newHashtags = checkForNewHashtags(pdExisting, pdPossibleNew);
 					
 					// If new hashtags - add to existing for further check of possible new picture data,
-					// and add possible new, with existing remove flag to modified list
+					// and add possible new, with existing remove flag to data-to-save list
 					if ( !newHashtags.isEmpty() ) {
 						for ( String ht : newHashtags ) 
 							pdExisting.addHashtag(new Hashtag(ht));
 						pdPossibleNew.setRemoveFlag(pdExisting.isRemoveFlag());
-						pictureDataModified.add(pdPossibleNew);
+						pictureDataToSave.add(pdPossibleNew);
 					}
-
 					break;
-				}				
+				}
 			}
-
+			
 			// Picture data doesn't exist - add to list
-			if ( !pictureDataExists ) {
-				pictureDataNew.add(pdPossibleNew);
-
-//				// Create new object to add to existing list
-//				PictureData pd = new PictureData();
-//				pd.setId(pdPossibleNew.getId());
-//				pd.setCreatedTime(pdPossibleNew.getCreatedTime());
-//				pd.setHashtags(pdPossibleNew.getHashtags());
-//				pd.setUrlStd(pdPossibleNew.getUrlStd());
-//				pd.setUrlThumb(pdPossibleNew.getUrlThumb());
-//				
-//				//PictureData copyNew = (PictureData) pdPossibleNew.clone();
-//				pictureDataExisting.add(pd);
-			}
+			if ( !pictureDataExists )			
+				pictureDataToSave.add(pdPossibleNew);
 		}	
-		
-
-	
-	
 	}
 
+	/**
+	 * Search on Instagram and Twitter might give same picture with the same hashtag, 
+	 * i.e. duplicate PictureData object. This method removes those duplicates
+	 * @param pictureData
+	 * @return List of PictureData without duplicates
+	 */
+	private List<PictureData> removeDuplicatePictureData(List<PictureData> pictureData) {
+
+		// Make sure the list is sorted
+		Collections.sort(pictureData, new SortPictureDataByIdAndHt());
+
+		// We only need one object with same id and hashtag
+		Iterator<PictureData> iter = pictureData.iterator();
+		PictureData firstPd = iter.next();
+		PictureData secPd;
+		String firstHt, secHt;
+		while ( iter.hasNext() ) {
+			secPd = iter.next();
+			if ( secPd.getId().equals(firstPd.getId()) ) {
+				firstHt = firstPd.getHashtags().iterator().next().getHashtag();
+				secHt   = secPd.getHashtags().iterator().next().getHashtag();
+				if ( secHt.equals(firstHt) ) {
+					iter.remove();
+				}
+			}
+			firstPd = secPd;
+		}
+		
+		return pictureData;
+	}
+	
+	/**
+	 * Check if new picture data has new hashtags compared with the same existing picture data
+	 * @param pdExisting
+	 * @param pdNew
+	 * @return List of hashtags as string
+	 */
 	private Set<String> checkForNewHashtags(PictureData pdExisting, PictureData pdNew) {
 		Set<String> newHashtags = new HashSet<String>();
 		String htPossibleNew;
@@ -221,23 +214,12 @@ public class PictureController {
 
 		return newHashtags;
 	}
-	//
-	/**
-	 * Check to see if access to picture
-	 * @param pdPossibleNew
-	 * @return true/false
-	 */
-	////////////////////////////
 
 	public List<PictureData> getPictureDataFromSources() {
 		return pictureDataFromSources;
 	}
-
-	public List<PictureData> getPictureDataNew() {
-		return pictureDataNew;
-	}
-
-	public List<PictureData> getPictureDataModified() {
-		return pictureDataModified;
+	
+	public List<PictureData> getPictureDataToSave() {
+		return pictureDataToSave;
 	}
 }

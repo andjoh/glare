@@ -18,7 +18,6 @@ public class PictureControllerTest {
 	private Set<String> hashtagsDummy;
 	private ArrayList<PictureData> pictureDataFromDbDummy;
 	private List<String> sourcesDummy;
-
 	
 	@Before
 	public void setUp() {
@@ -47,7 +46,7 @@ public class PictureControllerTest {
 		p.setCreatedTime(1);
 		p.setUrlStd("http://distilleryimage3.s3.amazonaws.com/3abc20ec398811e3b44322000a1f92df_8.jpg");
 		p.setUrlThumb("http://distilleryimage5.s3.amazonaws.com/b50b6e1097bd11e2934722000a9f3cae_7.jpg");
-		p.addHashtag(new Hashtag("hashtag 1"));
+		p.addHashtag(new Hashtag("winter"));
 		pictureDataFromDbDummy.add(p);
 		
 		p = new PictureData();
@@ -89,16 +88,6 @@ public class PictureControllerTest {
 		picCtrl.getNewPictureData();
 		
 		List<PictureData> pictureData = dbManagerDummy.getPictureDataFromDb();
-
-		// Additional output
-		System.out.println("PictureData saved to db");
-		for ( PictureData pd : pictureData ) {
-			System.out.println(pd.getId());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}
-		}
-		System.out.println("");
 			
 		assertThat(pictureData.isEmpty(),is(false));
 	}
@@ -115,34 +104,12 @@ public class PictureControllerTest {
 		picCtrl.getNewPictureData();			
 		
 		List<PictureData> pictureData = dbManagerDummy.getPictureDataFromDb();
-
-		// Additional output
-		System.out.println("All available PictureData after get from sources and db");
-		for ( PictureData pd : pictureData ) {
-			System.out.println(pd.getId());
-			System.out.println(pd.isRemoveFlag());
-			for ( Hashtag ht : pd.getHashtags() ) {
-				System.out.println(" - " + ht.getHashtag());
-			}
-		}
-		System.out.println("");
 		
 		assertThat(pictureData.isEmpty(),is(false));
 	}
 
 	@Test
 	public void GetNewPictureData_NoSources_NoHashtags_WhenCalled_ReturnsNotSuccess() {
-		
-		boolean success = picCtrl.getNewPictureData();
-		
-		assertThat(success,is(false));
-	}
-	
-	@Test
-	public void GetNewPictureData_NoHashtags_DummyPictureDataFromDb_WhenCalled_ReturnsNotSuccess() {
-		// Set dummy sources
-		dbManagerDummy.setSources(sourcesDummy);
-		dbManagerDummy.setPictureDataFromDb(pictureDataFromDbDummy);
 		
 		boolean success = picCtrl.getNewPictureData();
 		

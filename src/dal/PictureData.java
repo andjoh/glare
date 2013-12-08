@@ -8,7 +8,7 @@ import java.util.*;
  * @author Andreas Bjerga & Marius Vasshus
  */
 
-public class PictureData implements Cloneable {
+public class PictureData {
 	private String id;
 	private String urlStd;
 	private String urlThumb;
@@ -21,8 +21,7 @@ public class PictureData implements Cloneable {
 		hashtags = new HashSet<Hashtag>();
 	}
 
-	public PictureData(String id, String urlStd, String urlThumb,
-			long createdTime, boolean removeFlag) {
+	public PictureData(String id, String urlStd, String urlThumb, long createdTime, boolean removeFlag){
 		this.id = id;
 		this.urlStd = urlStd;
 		this.urlThumb = urlThumb;
@@ -105,16 +104,6 @@ public class PictureData implements Cloneable {
 				return true;
 		}
 		return false;
-	}
-
-	@Override
-	public Object clone() {
-		try {
-			PictureData a = (PictureData) super.clone();
-			return a;
-		} catch (CloneNotSupportedException e) {
-			throw new InternalError();
-		}
 	}
 
 	@Override

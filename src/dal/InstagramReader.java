@@ -18,8 +18,7 @@ public class InstagramReader implements IReader {
 	InstagramParser parser;
 	ConfigurationReader confReader;
 
-	public InstagramReader(InstagramParser parser,
-			ConfigurationReader confReader) {
+	public InstagramReader(InstagramParser parser, ConfigurationReader confReader){
 		this.parser = parser;
 		this.confReader = confReader;
 	}
@@ -30,8 +29,7 @@ public class InstagramReader implements IReader {
 	public List<PictureData> getPictures(String searchTag) {
 		confReader.setPath("src/resource/conf.ini");
 
-		String instagramURL = "https://api.instagram.com/v1/tags/" + searchTag
-				+ "/media/recent?client_id=" + confReader.read("client_id");
+		String instagramURL = "https://api.instagram.com/v1/tags/"+searchTag+"/media/recent?client_id=" + confReader.read("client_id");
 		List<PictureData> pictures = new ArrayList<PictureData>();
 		
 

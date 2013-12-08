@@ -1,27 +1,26 @@
 package bll;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-import javax.imageio.ImageIO;
-
-import dal.DatabaseManager;
-import dal.Hashtag;
-import dal.PictureData;
+import dal.*;
 
 /**
  * Single point of contact for display and settings panel.
@@ -31,7 +30,7 @@ import dal.PictureData;
  * which can be manipulated by the settings dialog. This controller holds
  * thumbnails to be used by settings dialog.
  * 
- * @author Simen Sollie, Kristine Svaboe, Petter Austerheim, Andreas J
+ * @author Simen Sollie, Kristine Svaboe, Petter Austerheim
  * @since 2013-11-04
  */
 
@@ -50,7 +49,7 @@ public class ViewController {
 	 * 
 	 * @param dbMan
 	 */
-	public ViewController(DatabaseManager dbMan) {
+	public ViewController(DatabaseManager dbMan)  {
 		this.dbMan = dbMan;
 		sortedPictureList = new ArrayList<PictureData>();
 
@@ -77,6 +76,7 @@ public class ViewController {
 			}
 
 			PictureData p;
+
 			if (isRandom) {
 				p = randomPictureList.remove(0);
 				sortedPictureList.remove(p);
@@ -84,6 +84,7 @@ public class ViewController {
 				p = sortedPictureList.remove(0);
 				randomPictureList.remove(p);
 			}
+
 			image = getBufImage(p.getUrlStd());
 
 			if (image != null) {
@@ -94,69 +95,51 @@ public class ViewController {
 		return image;
 	}
 
-	/**
-	 * Returns a list of SettingsPictures Uses Callable and future.
-	 * 
-	 * @return
-	 */
-	public List<SettingsPicture> getSettingsPictures() {
-		// The list of settingspictures
+
+
+	
+	public List<SettingsPicture> getSettingsPictures(){
+		
+		//CopyOnWriteArrayList<String> cpList=new CopyOnWriteArrayList<String>(new ArrayList<String>());
 		List<SettingsPicture> setPics = new ArrayList<SettingsPicture>();
-		// ExecutorService has a thread pool of size 10
-		// Used to execute Callable tasks as defined in
-		// CallableSettingsPictureTask
-		ExecutorService executor = Executors.newFixedThreadPool(10);
-		// List of Futures that store the return value from call
-		List<Future<SettingsPicture>> futurelist = new ArrayList<Future<SettingsPicture>>();
-		// Goes through the list of urls
-		// Creates callables with passed parameters to load img from
-		// url.
-		// Submits to executor
-		for (PictureData pd : pictureDataList) {
+		 ExecutorService executor = Executors.newFixedThreadPool(10);
+		    List<Future<SettingsPicture>> list = new ArrayList<Future<SettingsPicture>>();
+		    for (PictureData  pd: pictureDataList) {
+		      Callable<SettingsPicture> worker = new CallableSettingsPictureTask(pd.getId(),pd.getUrlThumb());
+		      Future<SettingsPicture> submit = executor.submit(worker);
+		      list.add(submit);
+		    }
 
-			Callable<SettingsPicture> worker = new CallableSettingsPictureTask(
-					pd.getId(), pd.getUrlThumb());
-			Future<SettingsPicture> submit = executor.submit(worker);
-			futurelist.add(submit);
-		}
-
-		SettingsPicture pic;
-		// Gets values from future
-		// This is the return value from the call() method
-		// Add SettingsPicture object from futurelist to setPics (the list to
-		// return)
-		for (Future<SettingsPicture> future : futurelist) {
-			try {
-				pic = future.get();
-				if (pic != null)
-					setPics.add(future.get());
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} catch (ExecutionException e) {
-				e.printStackTrace();
-			}
-		}
-		int size = setPics.size(), modulus = size % 5;
-		// If the list cant fill the last row (size/COLS!=null)
-		// Populate data with enough null elements
-		if (modulus != 0) {
-			for (int i = 1; i <= 5 - modulus; i++) {
-				
-				setPics.add(null);
-
-			}
-
-		}
+		    System.out.println(list.size());
+		    SettingsPicture pic;
+		    for (Future<SettingsPicture> future : list) {
+		      try {
+		    	pic= future.get();
+		    	if(pic!=null)
+		       setPics.add(future.get());
+		      } catch (InterruptedException e) {
+		        e.printStackTrace();
+		      } catch (ExecutionException e) {
+		        e.printStackTrace();
+		      }
+		    }
+		 
+		    executor.shutdown();
+		
+		System.out.println("After threads, setPics Size"+setPics.size());
 		return setPics;
-
+		
+		
+		
 	}
-
 	/**
-	 * Load list of pict ure data from database Prepare lists for sequential -
+	 * Load list of pict
+	 * ure data from database Prepare lists for sequential -
 	 * and random view
 	 */
-
+	
 	public void getSortedList() {
+		System.out.println("ViewController getSortedList");
 
 		pictureDataList = dbMan.getSortedPictureData();
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);
@@ -179,17 +162,21 @@ public class ViewController {
 
 			imageUrl = new URL(url);
 			HttpURLConnection urlConn = (HttpURLConnection) imageUrl
-					.openConnection();
+			.openConnection();
 
-			InputStream is = urlConn.getInputStream();
-			image = ImageIO.read(is);
-			is.close();
-
+    InputStream is = urlConn.getInputStream();
+	image = ImageIO.read(is);
+		is.close();
+	
+			
+	
 		} catch (MalformedURLException e) {
-
+	
 			e.printStackTrace();
 		} catch (IOException e) {
+	
 
+			System.out.println("IO EXEPTION !!!!!!! url: " + url);
 		}
 
 		return image;
@@ -205,11 +192,17 @@ public class ViewController {
 		String id = null;
 
 		for (SettingsPicture pic : list) {
+			if (pic == null)
+				System.out.println("Picture is null");
 
-			if (pic != null && (pic.getIsFlagged())) {
+		
+
+			if (pic.getIsFlagged()) {
 				id = pic.getId();
 				flaggedList.add(id);
-
+				System.out
+						.println("Got a flagged SettingsPicture object, sending ID: "
+								+ id + "to dbMan");
 			}
 		}
 
@@ -319,18 +312,19 @@ public class ViewController {
 	}
 
 	public void setRandom(boolean isRandom) {
-
+		System.out.println("Random is " + isRandom);
 		this.isRandom = isRandom;
 	}
 
 	public int getDisplayTime() {
-
+		System.out.println("getDisplayTime " + displayTime);
 		return displayTime / 1000;
 	}
 
 	public void setDisplayTime(int displayTime) {
-
+		System.out.println("Set DisplayTime: " + displayTime);
 		this.displayTime = displayTime * 1000;
 	}
 
+	
 }
