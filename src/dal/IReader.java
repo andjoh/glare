@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface IReader {
 	/**
-	 * Is used by TwitterReader.java & InstagramReader
+	 * Is used by TwitterReader & InstagramReader
 	 * 
 	 * @param searchTag
 	 * @return
