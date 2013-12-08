@@ -101,8 +101,8 @@ public class PictureControllerTest {
 		dbManagerDummy.setPictureDataFromDb(pictureDataFromDbDummy);
 		
 		// Run test
-		picCtrl.getNewPictureData();			
-		
+		picCtrl.getNewPictureData();
+						
 		List<PictureData> pictureData = dbManagerDummy.getPictureDataFromDb();
 		
 		assertThat(pictureData.isEmpty(),is(false));
@@ -112,7 +112,7 @@ public class PictureControllerTest {
 	public void GetNewPictureData_NoSources_NoHashtags_WhenCalled_ReturnsNotSuccess() {
 		
 		boolean success = picCtrl.getNewPictureData();
-		
+
 		assertThat(success,is(false));
 	}
 }
