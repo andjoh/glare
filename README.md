@@ -13,7 +13,7 @@ How to run Glare
  
 DB
   
-    	1. Add connection named "glare" in MySQLWorkbench
+     	1. Add connection named "glare" in MySQLWorkbench
      	2. Set username as "root"
      	3. No password
      	4. Create schema named "glare"
@@ -23,7 +23,7 @@ DB
    
 If you want to run Hibernate Tests:
 
-   1. Click on "hibernate.cfg.xml" in src folder
-   2. Change from "update" to "create" where it says "hbm2ddl.auto"
-   3. Run hibernate/db tests
-   4. Change back from "create" to "update" when you want to run the application
+     1. Click on "hibernate.cfg.xml" in src folder
+     2. Change from "update" to "create" where it says "hbm2ddl.auto"
+     3. Run hibernate/db tests
+     4. Change back from "create" to "update" when you want to run the application
