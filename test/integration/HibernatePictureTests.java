@@ -1,19 +1,9 @@
 package integration;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
-import javax.xml.crypto.Data;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import dal.DatabaseHandler;
