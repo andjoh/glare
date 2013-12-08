@@ -1,22 +1,20 @@
 package glare;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
-import dal.*;
-
-import resources.DatabaseManagerDummy;
-
 import bll.*;
 import gui.*;
 
+/**
+ * The application glare is started from this class
+ *  - GUI that displays the pictures
+ *  - ThreadScheduler to get new picture data from Instagram and Twitter
+ * 
+ * @author Petter Austerheim
+ *
+ */
 public class Main {
 	/**
 	 * @param args
@@ -24,6 +22,7 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
+		// Prepare for start display
 		try {
 			for (UIManager.LookAndFeelInfo info : UIManager
 					.getInstalledLookAndFeels()) {
@@ -45,23 +44,23 @@ public class Main {
 			java.util.logging.Logger.getLogger(SettingsFrame.class.getName())
 					.log(java.util.logging.Level.SEVERE, null, ex);
 		}
-		// Test using dummy DatabaseManager and dummy hashtag
+		
 		SwingUtilities.
 		invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				ViewController vc  = (ViewController) ClassFactory.getBeanByName("viewController");
-				ShowInterface showInterface =null;
+				ShowInterface showInterface = null;
 
 				try {
 					showInterface = new ShowInterface(vc);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
 		});
 		
+		// Scheduler to get picture data
 		ThreadScheduler threadScheduler = new ThreadScheduler();
 		threadScheduler.run();
 	}
