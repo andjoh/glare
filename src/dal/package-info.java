@@ -1,8 +1,0 @@
-/**
- * 
- */
-/**
- * @author Simen
- *
- */
-package dal;

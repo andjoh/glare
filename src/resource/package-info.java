@@ -1,5 +1,0 @@
-/**
- * @author Simen
- *
- */
-package resource;

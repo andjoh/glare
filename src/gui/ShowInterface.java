@@ -8,9 +8,6 @@ import javax.swing.*;
 import bll.*;
 
 public class ShowInterface extends JFrame {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 
@@ -32,7 +29,6 @@ public class ShowInterface extends JFrame {
 		settingsFrame = null;
 		slider = new ImageSlider(this.dim);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		// setAutoRequestFocus(true);
 		requestFocusInWindow();
 		getContentPane().add(slider);
 
@@ -40,27 +36,6 @@ public class ShowInterface extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-			}
-
-			@Override
-			public void windowIconified(WindowEvent e) {
-				System.out.println("Window  iconified");
-
-			}
-
-			@Override
-			public void windowDeiconified(WindowEvent e) {
-
-				System.out.println("Window  deiconified");
-			}
-
-		});
-		addWindowFocusListener(new WindowAdapter() {
-
-			@Override
-			public void windowLostFocus(WindowEvent e) {
-				System.out.println("Window lost focus");
 
 			}
 		});
@@ -114,9 +89,6 @@ public class ShowInterface extends JFrame {
 
 	class ImageSlider extends JPanel implements Runnable, ActionListener {
 		Constraints gbc = new Constraints();
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1;
 		private volatile boolean stop = false;
 		private Dimension dim;
@@ -127,13 +99,11 @@ public class ShowInterface extends JFrame {
 		public ImageSlider(Dimension dim) throws IOException {
 
 			this.dim = dim;
-			show = new ImageShow(viewCtrl, (int) dim.getWidth(),
-					(int) dim.getHeight());
+			show = new ImageShow(viewCtrl, (int) dim.getWidth(), (int) dim.getHeight());
 
 			setPreferredSize(new Dimension(dim.width, dim.height));
 			escapeAction = new EscapeAction();
-			getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"),
-					"doEscapeAction");
+			getInputMap().put(KeyStroke.getKeyStroke("ESCAPE"), "doEscapeAction");
 			getActionMap().put("doEscapeAction", escapeAction);
 			setBackground(Color.black);
 			setDoubleBuffered(true);
@@ -147,17 +117,13 @@ public class ShowInterface extends JFrame {
 			Constraints gbc = new Constraints();
 			settingsButton = new JButton();
 			settingsButton.addActionListener(this);
-			settingsButton.setIcon(new ImageIcon(getClass().getResource(
-					"/resource/img/settingsbut.png")));
-			settingsButton.setRolloverIcon(new ImageIcon(getClass().getResource(
-					"/resource/img/settingshover.png")));
-			settingsButton.setPressedIcon(new ImageIcon(getClass().getResource(
-					"/resource/img/settingsbut.png")));
+			settingsButton.setIcon(new ImageIcon(getClass().getResource("/resource/img/settingsbut.png")));
+			settingsButton.setRolloverIcon(new ImageIcon(getClass().getResource("/resource/img/settingshover.png")));
+			settingsButton.setPressedIcon(new ImageIcon(getClass().getResource("/resource/img/settingsbut.png")));
 			settingsButton.setBorderPainted(false);
 			settingsButton.setContentAreaFilled(false);
 			gbc.fill = GridBagConstraints.BOTH;
-			gbc.set(1, 10, 10, 10, 1, 1, new Insets(dim.height, 130, 120,
-					dim.height + 520), GridBagConstraints.NORTHWEST);
+			gbc.set(1, 10, 10, 10, 1, 1, new Insets(dim.height, 130, 120, dim.height + 520), GridBagConstraints.NORTHWEST);
 			add(settingsButton, gbc);
 		}
 
@@ -174,7 +140,6 @@ public class ShowInterface extends JFrame {
 				show.paint(g);
 
 			}
-			// uper.paintComponent(g);
 		}
 
 		public void stopClick() {
@@ -182,7 +147,6 @@ public class ShowInterface extends JFrame {
 			try {
 				th.join();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -196,32 +160,19 @@ public class ShowInterface extends JFrame {
 			System.out.println("Display time: " + d);
 			try {
 				while (stop != true) {
-
-					// System.out.println("before thread");
-
-					// System.out.println("after thread");
-
 					show.moveNext();
 					repaint();
 					Thread.sleep(d);
-					// System.out.println("ShowINterface, kaller moveNext()");
-
 				}
-				// th.join();
-
 			} catch (InterruptedException ie) {
-				System.out.println("Interrupted slide show...");
+				ie.printStackTrace();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
 		}
 
 		class EscapeAction extends AbstractAction {
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 
 			public void actionPerformed(ActionEvent tf) {

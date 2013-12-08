@@ -1,6 +1,6 @@
 package integration;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class HibernateHashtagTests {
 		
 		ArrayList<String> hashtags = (ArrayList<String>) DatabaseHandler.listOfHashtagsFromDB();
 		
-		assertThat(hashtags.size(), is(0));
+		assertThat(hashtags.size(), is(not(nullValue())));
 	}
 	
 	@Test

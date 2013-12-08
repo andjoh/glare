@@ -2,11 +2,8 @@ package gui;
 
 import bll.ViewController;
 
-import java.awt.event.*;
 import java.awt.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 
@@ -23,7 +20,6 @@ final public class SettingsFrame extends JDialog {
 
 	public SettingsFrame(ViewController viewCtrl) {
 		dim = Toolkit.getDefaultToolkit().getScreenSize();
-		// setSize(dim.width * 2 / 3, dim.width * 2 / 4);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		contp = new SettingsContentPanel(viewCtrl,this, dim);
 
@@ -35,10 +31,6 @@ final public class SettingsFrame extends JDialog {
 		setAlwaysOnTop(true);
 		requestFocusInWindow();
 		setLocationRelativeTo(parent);
-		// Testing add hashtags to list
-		// Image img = new
-		// ImageIcon(SettingsFrame.class.getResource("settings.gif")).getImage();
-		// ((java.awt.Frame)this.getOwner()).setIconImage(img);
 		setModal(true);
 
 		setVisible(true);

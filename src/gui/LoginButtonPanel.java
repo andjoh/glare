@@ -22,9 +22,6 @@ class ButtonPanel extends JPanel implements ActionListener {
 	private Dimension dim;
 	private LoginInputPanel input;
 	private LoginDialog ld;
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private JButton okButton, cancelButton; // buttons: ok,cancel option
 	private JPasswordField passwordInputField; // field to input password
@@ -100,10 +97,8 @@ class ButtonPanel extends JPanel implements ActionListener {
 			}
 		};
 		// add document listener to both fields
-		usernameInputField.getDocument()
-				.addDocumentListener(listenToTextFields);
-		passwordInputField.getDocument()
-				.addDocumentListener(listenToTextFields);
+		usernameInputField.getDocument().addDocumentListener(listenToTextFields);
+		passwordInputField.getDocument().addDocumentListener(listenToTextFields);
         // set properties of okButton
 		okButton = new JButton("Login");
 		okButton.setEnabled(false);
@@ -155,9 +150,6 @@ class ButtonPanel extends JPanel implements ActionListener {
 		super.paintComponent(g);
 	}
 
-	/**
-	 * @return
-	 */
 	public boolean getSucceeded() {
 		return succeeded;
 	}
@@ -201,9 +193,6 @@ class ButtonPanel extends JPanel implements ActionListener {
 	}
 	
 	class EnterAction extends AbstractAction {
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 		/**
