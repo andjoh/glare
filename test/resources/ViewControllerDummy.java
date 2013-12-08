@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 import javax.imageio.ImageIO;
 import bll.PictureController;
 import bll.SettingsPicture;
@@ -19,26 +18,6 @@ import dal.PictureData;
  * @since 2013-11-04
  */
 
-/**
- * @author Andreas Johnstad
- *
- */
-/**
- * @author Andreas Johnstad
- *
- */
-/**
- * @author Andreas Johnstad
- *
- */
-/**
- * @author Andreas Johnstad
- *
- */
-/**
- * @author Andreas Johnstad
- * 
- */
 public class ViewControllerDummy extends ViewController {
 
 	/**
@@ -48,7 +27,6 @@ public class ViewControllerDummy extends ViewController {
 	private List<PictureData> sortedPictureList;
 	private List<PictureData> randomPictureList;
 	private List<PictureData> pictureDataList;
-	private Set<String> hashtags;
 	private boolean isRandom;
 	private int displayTime;
 
@@ -61,9 +39,7 @@ public class ViewControllerDummy extends ViewController {
 		displayTime = 1000;
 	}
 
-	/**
-	 * @return
-	 */
+
 	@Override
 	public BufferedImage getCurrentPicture() {
 		if (sortedPictureList.isEmpty()) {
@@ -85,12 +61,9 @@ public class ViewControllerDummy extends ViewController {
 		return getBufImage(p.getUrlStd());
 	}
 
-	/**
-	 * 
-	 */
+
 	@Override
 	public void getSortedList() {
-		// pictureDataList = picCtrl.getSortedPictureData();
 		sortedPictureList = new ArrayList<PictureData>(pictureDataList);
 		randomPictureList = new ArrayList<PictureData>(sortedPictureList);
 		pictureDataList = new ArrayList<PictureData>(sortedPictureList);
@@ -117,15 +90,11 @@ public class ViewControllerDummy extends ViewController {
 		return tmp;
 	}
 
-	//
-	//
-	//
 	/**
 	 * list of list which were formerly used as data-holder by test to get
 	 * pictures to table by loading local images into a rowsthe abstract table
 	 * model
 	 * 
-	 * @param
 	 * @param cols
 	 * @return
 	 */
@@ -176,37 +145,12 @@ public class ViewControllerDummy extends ViewController {
 
 	}
 
-	/**
-	 * @param hashtagList
-	 */
-	/**
-	 * @param hashtagList
-	 */
-	@Override
-	public void updateHashtags(Set<String> hashtagList) {
-
-	}
-
-	/**
-	 * @return
-	 */
 	@Override
 	public boolean isRandom() {
 		return isRandom;
 
 	}
 
-	/**
-	 * @param isRandom
-	 */
-	@Override
-	public void setRandom(boolean isRandom) {
-
-	}
-
-	/**
-	 * @return
-	 */
 	@Override
 	public int getDisplayTime() {
 		return displayTime / 1000;
