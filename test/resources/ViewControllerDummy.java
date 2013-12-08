@@ -43,9 +43,7 @@ public class ViewControllerDummy extends ViewController {
 	@Override
 	public BufferedImage getCurrentPicture() {
 		if (sortedPictureList.isEmpty()) {
-			System.out.println("Henter ny liste");
 			getSortedList();
-			System.out.println("Ferdig å hente liste");
 		}
 
 		PictureData p;
