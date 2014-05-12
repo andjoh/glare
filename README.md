@@ -11,13 +11,23 @@ Glare is a tool to search for picture on Twitter and Instagram. The application 
 How to run Glare
 ================
  
-DB
-  
+Database
+
      	1. Add connection named "glare" in MySQLWorkbench
      	2. Set username as "root"
      	3. No password
      	4. Create schema named "glare"
      	5. You're good to go, take a sip of Diet Coke:)
+     	
+Access tokens
+
+      1. Create conf.ini and save it in the src/resource folder.
+      2. Add following information:
+             consumer_key="your twitter consumer key"
+             consumer_secret="your twitter consumer secret"
+             access_token="your instagram access token"
+             access_token_secret="your instagram access token secret"
+             client_id="your instagram client id"
 
    Run the application and begin stalking.
    
